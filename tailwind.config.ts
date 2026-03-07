@@ -47,16 +47,13 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        sidebar: {
-          DEFAULT: "hsl(var(--sidebar-background))",
-          foreground: "hsl(var(--sidebar-foreground))",
-          primary: "hsl(var(--sidebar-primary))",
-          "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
-          accent: "hsl(var(--sidebar-accent))",
-          "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
-          border: "hsl(var(--sidebar-border))",
-          ring: "hsl(var(--sidebar-ring))",
-        },
+        "surface-warm": "hsl(var(--surface-warm))",
+        "blob-orange": "hsl(var(--blob-orange))",
+        "blob-green": "hsl(var(--blob-green))",
+      },
+      fontFamily: {
+        display: ["Space Grotesk", "sans-serif"],
+        body: ["Plus Jakarta Sans", "sans-serif"],
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -65,25 +62,27 @@ export default {
       },
       keyframes: {
         "accordion-down": {
-          from: {
-            height: "0",
-          },
-          to: {
-            height: "var(--radix-accordion-content-height)",
-          },
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
         },
         "accordion-up": {
-          from: {
-            height: "var(--radix-accordion-content-height)",
-          },
-          to: {
-            height: "0",
-          },
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+        "float": {
+          "0%, 100%": { transform: "translateY(0px)" },
+          "50%": { transform: "translateY(-15px)" },
+        },
+        "blob-morph": {
+          "0%, 100%": { borderRadius: "30% 70% 70% 30% / 30% 30% 70% 70%" },
+          "50%": { borderRadius: "60% 40% 30% 70% / 60% 30% 70% 40%" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "float": "float 6s ease-in-out infinite",
+        "blob-morph": "blob-morph 8s ease-in-out infinite",
       },
     },
   },
