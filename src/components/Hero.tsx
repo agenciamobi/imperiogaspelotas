@@ -1,81 +1,133 @@
-import { MessageCircle, Clock, MapPin } from "lucide-react";
+import { useState, useCallback, useEffect } from "react";
+import { MessageCircle, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import useEmblaCarousel from "embla-carousel-react";
 import heroBanner from "@/assets/hero-banner.png";
-import botijaoP13 from "@/assets/botijao-p13.png";
+import aguaMineral from "@/assets/agua-mineral.png";
+import liquigasMascote from "@/assets/liquigas-mascote.png";
 
 const WHATSAPP_LINK = "https://wa.me/5553991162002?text=Olá! Gostaria de fazer um pedido.";
 
+const slides = [
+  {
+    title: "Disk Gás e Água\nem Pelotas",
+    subtitle: "Entrega rápida de gás de cozinha e água mineral no conforto da sua casa. Revenda autorizada Liquigás.",
+    cta: "Peça pelo WhatsApp",
+    img: heroBanner,
+    imgAlt: "Botijão de gás e água mineral em Pelotas",
+  },
+  {
+    title: "Água Mineral\n20 Litros",
+    subtitle: "Galão de água mineral com entrega em domicílio. Hidrate-se com qualidade e praticidade.",
+    cta: "Peça sua Água",
+    img: aguaMineral,
+    imgAlt: "Galão de água mineral 20 litros",
+  },
+  {
+    title: "Revenda\nAutorizada Liquigás",
+    subtitle: "Produtos licenciados e inspecionados. Qualidade e segurança garantidas para sua família.",
+    cta: "Saiba Mais",
+    img: liquigasMascote,
+    imgAlt: "Liquigás mascote - revenda autorizada",
+  },
+];
+
 const Hero = () => {
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
+  const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    const onSelect = () => setSelectedIndex(emblaApi.selectedScrollSnap());
+    emblaApi.on("select", onSelect);
+    onSelect();
+
+    // Auto-play
+    const interval = setInterval(() => emblaApi.scrollNext(), 6000);
+    return () => {
+      clearInterval(interval);
+      emblaApi.off("select", onSelect);
+    };
+  }, [emblaApi]);
+
   return (
-    <section id="inicio" className="relative min-h-screen flex items-center overflow-hidden pt-16">
-      {/* Background blobs */}
-      <div className="absolute top-20 -left-32 w-96 h-96 bg-primary/10 blob-shape animate-blob-morph" />
-      <div className="absolute bottom-10 -right-20 w-80 h-80 bg-secondary/15 blob-shape-2 animate-blob-morph" style={{ animationDelay: "2s" }} />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent/30 rounded-full blur-3xl" />
+    <section id="inicio" className="relative pt-[100px]">
+      <div ref={emblaRef} className="overflow-hidden">
+        <div className="flex">
+          {slides.map((slide, i) => (
+            <div key={i} className="flex-[0_0_100%] min-w-0">
+              <div className="hero-gradient relative min-h-[500px] md:min-h-[560px] flex items-center overflow-hidden">
+                {/* Decorative shapes */}
+                <div className="absolute top-0 right-0 w-96 h-96 bg-primary-foreground/5 rounded-full -translate-y-1/2 translate-x-1/3" />
+                <div className="absolute bottom-0 left-0 w-64 h-64 bg-primary-foreground/5 rounded-full translate-y-1/2 -translate-x-1/3" />
 
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left */}
-          <div className="space-y-8">
-            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-semibold">
-              <MapPin className="w-4 h-4" />
-              Entrega em toda Pelotas/RS
-            </div>
-
-            <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-black leading-[0.95] text-foreground">
-              Disk Gás<br />
-              <span className="text-gradient">e Água</span><br />
-              em Pelotas
-            </h1>
-
-            <p className="text-lg sm:text-xl text-muted-foreground max-w-lg">
-              Entrega rápida de <strong className="text-foreground">gás de cozinha</strong> e{" "}
-              <strong className="text-foreground">água mineral</strong> no conforto da sua casa.
-              Revenda autorizada Liquigás.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground text-lg h-14 px-8 rounded-full shadow-lg shadow-primary/25">
-                <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer">
-                  <MessageCircle className="w-5 h-5" />
-                  Peça pelo WhatsApp
-                </a>
-              </Button>
-              <Button asChild variant="outline" size="lg" className="h-14 px-8 rounded-full text-lg">
-                <a href="#botijoes">Ver Produtos</a>
-              </Button>
-            </div>
-
-            <div className="flex items-center gap-6 text-sm text-muted-foreground">
-              <div className="flex items-center gap-2">
-                <Clock className="w-4 h-4 text-secondary" />
-                <span>Entrega até às <strong className="text-foreground">22h</strong></span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-secondary animate-pulse" />
-                <span>Atendendo agora</span>
+                <div className="container mx-auto px-4 relative z-10">
+                  <div className="grid lg:grid-cols-2 gap-8 items-center">
+                    <div className="space-y-6 text-primary-foreground">
+                      <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-black leading-tight whitespace-pre-line">
+                        {slide.title}
+                      </h1>
+                      <p className="text-lg text-primary-foreground/80 max-w-lg">
+                        {slide.subtitle}
+                      </p>
+                      <Button
+                        asChild
+                        size="lg"
+                        className="bg-secondary hover:bg-secondary/90 text-secondary-foreground text-lg h-14 px-8 rounded-full shadow-lg font-bold"
+                      >
+                        <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer">
+                          <MessageCircle className="w-5 h-5" />
+                          {slide.cta}
+                        </a>
+                      </Button>
+                    </div>
+                    <div className="hidden md:flex justify-center">
+                      <img
+                        src={slide.img}
+                        alt={slide.imgAlt}
+                        className="w-full max-w-sm h-auto drop-shadow-2xl object-contain"
+                        loading={i === 0 ? "eager" : "lazy"}
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-
-          {/* Right - product images */}
-          <div className="relative flex items-center justify-center">
-            <div className="absolute w-[400px] h-[400px] bg-primary/10 blob-shape animate-blob-morph" />
-            <img
-              src={heroBanner}
-              alt="Império Gás e Água em Pelotas - Botijão de gás e água mineral"
-              className="relative z-10 w-full max-w-md animate-float drop-shadow-2xl"
-              loading="eager"
-            />
-            <img
-              src={botijaoP13}
-              alt="Botijão P13 Liquigás"
-              className="absolute -bottom-4 -left-4 w-32 z-20 animate-float drop-shadow-xl"
-              style={{ animationDelay: "1s" }}
-              loading="eager"
-            />
-          </div>
+          ))}
         </div>
+      </div>
+
+      {/* Navigation arrows */}
+      <button
+        onClick={scrollPrev}
+        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center text-foreground hover:bg-background transition-colors shadow-md hidden md:flex"
+        aria-label="Slide anterior"
+      >
+        <ChevronLeft className="w-5 h-5" />
+      </button>
+      <button
+        onClick={scrollNext}
+        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center text-foreground hover:bg-background transition-colors shadow-md hidden md:flex"
+        aria-label="Próximo slide"
+      >
+        <ChevronRight className="w-5 h-5" />
+      </button>
+
+      {/* Indicators */}
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
+        {slides.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => emblaApi?.scrollTo(i)}
+            className={`h-2 rounded-full transition-all ${
+              i === selectedIndex ? "w-8 bg-secondary" : "w-2 bg-primary-foreground/40"
+            }`}
+            aria-label={`Ir para slide ${i + 1}`}
+          />
+        ))}
       </div>
     </section>
   );

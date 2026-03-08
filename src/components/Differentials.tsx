@@ -1,38 +1,36 @@
 import { Zap, MessageCircle, ShieldCheck, Award, Search, Building2 } from "lucide-react";
 
 const items = [
-  { icon: Zap, title: "Entrega Rápida", desc: "Receba seu gás ou água em minutos" },
-  { icon: MessageCircle, title: "WhatsApp", desc: "Peça sem sair de casa, pelo celular" },
-  { icon: ShieldCheck, title: "Revenda Liquigás", desc: "Autorizada e certificada" },
-  { icon: Award, title: "Produtos Licenciados", desc: "Qualidade garantida" },
-  { icon: Search, title: "Inspeção de Segurança", desc: "Botijões inspecionados" },
-  { icon: Building2, title: "Residencial & Comercial", desc: "Atendemos todos os segmentos" },
+  { icon: Zap, title: "Entrega Rápida", desc: "Receba seu gás ou água em minutos", color: "bg-secondary/10 text-secondary" },
+  { icon: MessageCircle, title: "WhatsApp", desc: "Peça sem sair de casa, pelo celular", color: "bg-primary/10 text-primary" },
+  { icon: ShieldCheck, title: "Revenda Liquigás", desc: "Autorizada e certificada", color: "bg-secondary/10 text-secondary" },
+  { icon: Award, title: "Produtos Licenciados", desc: "Qualidade garantida", color: "bg-primary/10 text-primary" },
+  { icon: Search, title: "Inspeção de Segurança", desc: "Botijões inspecionados", color: "bg-secondary/10 text-secondary" },
+  { icon: Building2, title: "Residencial & Comercial", desc: "Atendemos todos os segmentos", color: "bg-primary/10 text-primary" },
 ];
 
 const Differentials = () => {
   return (
-    <section className="py-24 relative">
+    <section className="py-20 bg-muted">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 bg-secondary/10 text-secondary px-4 py-2 rounded-full text-sm font-semibold mb-4">
+        <div className="text-center mb-12">
+          <h2 className="font-display text-3xl sm:text-4xl font-black text-foreground">
             Por que escolher a Império?
-          </div>
-          <h2 className="font-display text-4xl sm:text-5xl font-black text-foreground">
-            Nossos Diferenciais
           </h2>
+          <p className="text-muted-foreground mt-3">Nossos diferenciais fazem a diferença na sua experiência</p>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {items.map((item) => (
             <div
               key={item.title}
-              className="group p-8 rounded-2xl bg-card border border-border hover:border-primary/30 hover:shadow-lg transition-all duration-300"
+              className="bg-card rounded-2xl p-6 card-shadow hover:card-shadow-hover hover:-translate-y-0.5 transition-all duration-300 border border-border"
             >
-              <div className="w-14 h-14 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-5 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-                <item.icon className="w-7 h-7" />
+              <div className={`w-12 h-12 rounded-xl ${item.color} flex items-center justify-center mb-4`}>
+                <item.icon className="w-6 h-6" />
               </div>
-              <h3 className="font-display text-xl font-bold text-foreground mb-2">{item.title}</h3>
-              <p className="text-muted-foreground">{item.desc}</p>
+              <h3 className="font-display text-lg font-bold text-foreground mb-1.5">{item.title}</h3>
+              <p className="text-sm text-muted-foreground">{item.desc}</p>
             </div>
           ))}
         </div>

@@ -48,8 +48,7 @@ export default {
           foreground: "hsl(var(--card-foreground))",
         },
         "surface-warm": "hsl(var(--surface-warm))",
-        "blob-orange": "hsl(var(--blob-orange))",
-        "blob-green": "hsl(var(--blob-green))",
+        whatsapp: "hsl(var(--whatsapp))",
       },
       fontFamily: {
         display: ["Space Grotesk", "sans-serif"],
@@ -69,20 +68,15 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-        "float": {
-          "0%, 100%": { transform: "translateY(0px)" },
-          "50%": { transform: "translateY(-15px)" },
-        },
-        "blob-morph": {
-          "0%, 100%": { borderRadius: "30% 70% 70% 30% / 30% 30% 70% 70%" },
-          "50%": { borderRadius: "60% 40% 30% 70% / 60% 30% 70% 40%" },
+        "fade-in-up": {
+          "0%": { opacity: "0", transform: "translateY(20px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "float": "float 6s ease-in-out infinite",
-        "blob-morph": "blob-morph 8s ease-in-out infinite",
+        "fade-in-up": "fade-in-up 0.6s ease-out forwards",
       },
     },
   },

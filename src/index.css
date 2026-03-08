@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    --background: 90 20% 97%;
+    --background: 0 0% 100%;
     --foreground: 150 30% 10%;
 
     --card: 0 0% 100%;
@@ -19,7 +19,7 @@
     --secondary: 30 95% 55%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 90 15% 93%;
+    --muted: 90 10% 96%;
     --muted-foreground: 150 10% 40%;
 
     --accent: 150 35% 92%;
@@ -28,16 +28,15 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 150 15% 85%;
-    --input: 150 15% 85%;
+    --border: 150 10% 90%;
+    --input: 150 10% 90%;
     --ring: 150 45% 23%;
 
     --radius: 0.75rem;
 
-    --hero-gradient: linear-gradient(135deg, hsl(150 45% 23%) 0%, hsl(150 35% 30%) 50%, hsl(140 30% 35%) 100%);
-    --blob-orange: 30 95% 55%;
-    --blob-green: 150 45% 23%;
-    --surface-warm: 35 40% 96%;
+    --hero-gradient: linear-gradient(135deg, hsl(150 45% 20%) 0%, hsl(150 40% 28%) 40%, hsl(145 35% 35%) 100%);
+    --surface-warm: 35 40% 97%;
+    --whatsapp: 142 70% 45%;
   }
 
   .dark {
@@ -84,12 +83,16 @@
     background-image: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%);
   }
 
-  .blob-shape {
-    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+  .hero-gradient {
+    background: var(--hero-gradient);
   }
 
-  .blob-shape-2 {
-    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  .card-shadow {
+    box-shadow: 0 2px 16px -4px hsl(150 20% 10% / 0.08), 0 1px 4px -2px hsl(150 20% 10% / 0.05);
+  }
+
+  .card-shadow-hover {
+    box-shadow: 0 8px 30px -8px hsl(150 20% 10% / 0.12), 0 2px 8px -4px hsl(150 20% 10% / 0.06);
   }
 }
 
