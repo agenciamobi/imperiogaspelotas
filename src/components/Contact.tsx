@@ -5,48 +5,60 @@ const WHATSAPP_LINK = "https://wa.me/5553991162002?text=Olá! Gostaria de fazer 
 
 const Contact = () => {
   return (
-    <section id="contato" className="py-24 bg-primary text-primary-foreground relative overflow-hidden">
-      <div className="absolute -top-10 -right-10 w-60 h-60 bg-secondary/10 blob-shape animate-blob-morph" />
-
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-3xl mx-auto text-center space-y-8">
-          <h2 className="font-display text-4xl sm:text-5xl font-black">
-            Peça agora mesmo!
+    <section id="contato" className="py-20 bg-background">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-12">
+          <h2 className="font-display text-3xl sm:text-4xl font-black text-foreground">
+            Entre em Contato
           </h2>
-          <p className="text-lg text-primary-foreground/80">
-            Ligue ou envie uma mensagem pelo WhatsApp. Entregamos em toda Pelotas.
-          </p>
+          <p className="text-muted-foreground mt-3">Estamos prontos para atender você</p>
+        </div>
 
-          <div className="grid sm:grid-cols-3 gap-6 text-center">
-            <div className="bg-primary-foreground/10 rounded-2xl p-6 space-y-2">
-              <MessageCircle className="w-8 h-8 mx-auto text-secondary" />
-              <p className="font-bold text-lg">(53) 9 9116-2002</p>
-              <p className="text-sm text-primary-foreground/60">WhatsApp</p>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto mb-10">
+          <a
+            href={WHATSAPP_LINK}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-card rounded-2xl p-6 text-center card-shadow hover:card-shadow-hover hover:-translate-y-0.5 transition-all duration-300 border border-border"
+          >
+            <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-3">
+              <MessageCircle className="w-6 h-6 text-primary" />
             </div>
-            <div className="bg-primary-foreground/10 rounded-2xl p-6 space-y-2">
-              <Phone className="w-8 h-8 mx-auto text-secondary" />
-              <p className="font-bold text-lg">(53) 3273-9559</p>
-              <p className="text-sm text-primary-foreground/60">Telefone Fixo</p>
+            <p className="font-bold text-foreground">(53) 9 9116-2002</p>
+            <p className="text-xs text-muted-foreground mt-1">WhatsApp</p>
+          </a>
+
+          <a href="tel:555332739559" className="bg-card rounded-2xl p-6 text-center card-shadow hover:card-shadow-hover hover:-translate-y-0.5 transition-all duration-300 border border-border">
+            <div className="w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center mx-auto mb-3">
+              <Phone className="w-6 h-6 text-secondary" />
             </div>
-            <div className="bg-primary-foreground/10 rounded-2xl p-6 space-y-2">
-              <Phone className="w-8 h-8 mx-auto text-secondary" />
-              <p className="font-bold text-lg">(53) 98415-7194</p>
-              <p className="text-sm text-primary-foreground/60">Telefone</p>
+            <p className="font-bold text-foreground">(53) 3273-9559</p>
+            <p className="text-xs text-muted-foreground mt-1">Telefone Fixo</p>
+          </a>
+
+          <a href="tel:5553984157194" className="bg-card rounded-2xl p-6 text-center card-shadow hover:card-shadow-hover hover:-translate-y-0.5 transition-all duration-300 border border-border">
+            <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-3">
+              <Phone className="w-6 h-6 text-primary" />
             </div>
+            <p className="font-bold text-foreground">(53) 98415-7194</p>
+            <p className="text-xs text-muted-foreground mt-1">Telefone</p>
+          </a>
+
+          <div className="bg-card rounded-2xl p-6 text-center card-shadow border border-border">
+            <div className="w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center mx-auto mb-3">
+              <Clock className="w-6 h-6 text-secondary" />
+            </div>
+            <p className="font-bold text-foreground">Até às 22h</p>
+            <p className="text-xs text-muted-foreground mt-1">Todos os dias</p>
           </div>
+        </div>
 
-          <div className="flex flex-col sm:flex-row justify-center items-center gap-6 text-sm text-primary-foreground/70">
-            <div className="flex items-center gap-2">
-              <Clock className="w-4 h-4 text-secondary" />
-              Entrega até às 22h
-            </div>
-            <div className="flex items-center gap-2">
-              <MapPin className="w-4 h-4 text-secondary" />
-              Toda cidade de Pelotas
-            </div>
+        <div className="text-center">
+          <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground mb-6">
+            <MapPin className="w-4 h-4 text-primary" />
+            Entregamos em toda a cidade de Pelotas – RS
           </div>
-
-          <Button asChild size="lg" className="bg-secondary hover:bg-secondary/90 text-secondary-foreground text-lg h-14 px-10 rounded-full shadow-lg">
+          <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground h-14 px-10 rounded-full font-bold text-lg">
             <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer">
               <MessageCircle className="w-5 h-5" />
               Peça pelo WhatsApp

@@ -8,7 +8,7 @@ const WhatsAppFloat = () => {
       href={WHATSAPP_LINK}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-[hsl(142,70%,45%)] hover:bg-[hsl(142,70%,40%)] text-white rounded-full flex items-center justify-center shadow-lg shadow-[hsl(142,70%,45%)]/30 transition-transform hover:scale-110"
+      className="fixed bottom-20 md:bottom-6 right-6 z-40 w-14 h-14 bg-whatsapp hover:opacity-90 text-primary-foreground rounded-full flex items-center justify-center shadow-lg transition-transform hover:scale-110"
       aria-label="Abrir WhatsApp"
     >
       <MessageCircle className="w-7 h-7" />
