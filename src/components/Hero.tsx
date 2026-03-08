@@ -45,7 +45,6 @@ const Hero = () => {
     emblaApi.on("select", onSelect);
     onSelect();
 
-    // Auto-play
     const interval = setInterval(() => emblaApi.scrollNext(), 6000);
     return () => {
       clearInterval(interval);
@@ -54,23 +53,24 @@ const Hero = () => {
   }, [emblaApi]);
 
   return (
-    <section id="inicio" className="relative pt-[100px]">
+    <section id="inicio" className="relative pt-[100px] section-curve-bottom">
       <div ref={emblaRef} className="overflow-hidden">
         <div className="flex">
           {slides.map((slide, i) => (
             <div key={i} className="flex-[0_0_100%] min-w-0">
-              <div className="hero-gradient relative min-h-[500px] md:min-h-[560px] flex items-center overflow-hidden">
-                {/* Decorative shapes */}
-                <div className="absolute top-0 right-0 w-96 h-96 bg-primary-foreground/5 rounded-full -translate-y-1/2 translate-x-1/3" />
-                <div className="absolute bottom-0 left-0 w-64 h-64 bg-primary-foreground/5 rounded-full translate-y-1/2 -translate-x-1/3" />
+              <div className="gradient-green-vivid relative min-h-[520px] md:min-h-[580px] flex items-center overflow-hidden">
+                {/* Decorative circles */}
+                <div className="absolute top-10 right-[10%] w-[500px] h-[500px] bg-primary-foreground/[0.04] rounded-full" />
+                <div className="absolute -bottom-20 -left-20 w-[400px] h-[400px] bg-primary-foreground/[0.04] rounded-full" />
+                <div className="absolute top-1/2 left-1/2 w-[200px] h-[200px] bg-primary-foreground/[0.03] rounded-full" />
 
                 <div className="container mx-auto px-4 relative z-10">
                   <div className="grid lg:grid-cols-2 gap-8 items-center">
-                    <div className="space-y-6 text-primary-foreground">
-                      <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-black leading-tight whitespace-pre-line">
+                    <div className="space-y-7 text-primary-foreground">
+                      <h1 className="font-display text-4xl sm:text-5xl lg:text-[3.5rem] font-black leading-[1.1] whitespace-pre-line">
                         {slide.title}
                       </h1>
-                      <p className="text-lg text-primary-foreground/80 max-w-lg">
+                      <p className="text-lg sm:text-xl text-primary-foreground/80 max-w-lg leading-relaxed">
                         {slide.subtitle}
                       </p>
                       <Button
@@ -88,7 +88,7 @@ const Hero = () => {
                       <img
                         src={slide.img}
                         alt={slide.imgAlt}
-                        className="w-full max-w-sm h-auto drop-shadow-2xl object-contain"
+                        className="w-full max-w-[360px] h-auto drop-shadow-2xl object-contain"
                         loading={i === 0 ? "eager" : "lazy"}
                       />
                     </div>
@@ -103,27 +103,27 @@ const Hero = () => {
       {/* Navigation arrows */}
       <button
         onClick={scrollPrev}
-        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center text-foreground hover:bg-background transition-colors shadow-md hidden md:flex"
+        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-background/90 backdrop-blur-sm flex items-center justify-center text-foreground hover:bg-background transition-colors shadow-md hidden md:flex"
         aria-label="Slide anterior"
       >
         <ChevronLeft className="w-5 h-5" />
       </button>
       <button
         onClick={scrollNext}
-        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center text-foreground hover:bg-background transition-colors shadow-md hidden md:flex"
+        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-background/90 backdrop-blur-sm flex items-center justify-center text-foreground hover:bg-background transition-colors shadow-md hidden md:flex"
         aria-label="Próximo slide"
       >
         <ChevronRight className="w-5 h-5" />
       </button>
 
       {/* Indicators */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
+      <div className="absolute bottom-16 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
         {slides.map((_, i) => (
           <button
             key={i}
             onClick={() => emblaApi?.scrollTo(i)}
-            className={`h-2 rounded-full transition-all ${
-              i === selectedIndex ? "w-8 bg-secondary" : "w-2 bg-primary-foreground/40"
+            className={`h-2.5 rounded-full transition-all duration-300 ${
+              i === selectedIndex ? "w-10 bg-secondary" : "w-2.5 bg-primary-foreground/40"
             }`}
             aria-label={`Ir para slide ${i + 1}`}
           />
