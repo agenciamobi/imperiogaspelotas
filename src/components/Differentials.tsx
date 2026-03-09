@@ -1,36 +1,31 @@
-import { Zap, MessageCircle, ShieldCheck, Award, Search, Building2 } from "lucide-react";
+import { Clock3, HandCoins, MessageCircle, ShieldCheck, PackageCheck, MapPin } from "lucide-react";
 
 const items = [
-  { icon: Zap, title: "Entrega Rápida", desc: "Receba seu gás ou água em minutos", gradient: "from-secondary/20 to-secondary/5", iconColor: "text-secondary" },
-  { icon: MessageCircle, title: "WhatsApp", desc: "Peça sem sair de casa, pelo celular", gradient: "from-primary/20 to-primary/5", iconColor: "text-primary" },
-  { icon: ShieldCheck, title: "Revenda Liquigás", desc: "Autorizada e certificada", gradient: "from-secondary/20 to-secondary/5", iconColor: "text-secondary" },
-  { icon: Award, title: "Produtos Licenciados", desc: "Qualidade garantida", gradient: "from-primary/20 to-primary/5", iconColor: "text-primary" },
-  { icon: Search, title: "Inspeção de Segurança", desc: "Botijões inspecionados", gradient: "from-secondary/20 to-secondary/5", iconColor: "text-secondary" },
-  { icon: Building2, title: "Residencial & Comercial", desc: "Atendemos todos os segmentos", gradient: "from-primary/20 to-primary/5", iconColor: "text-primary" },
+  { icon: Clock3, title: "Entrega em 30min", desc: "Equipe local para entregas rápidas." },
+  { icon: HandCoins, title: "Sem taxa extra", desc: "Preço transparente no seu pedido." },
+  { icon: ShieldCheck, title: "Revenda autorizada", desc: "Qualidade e segurança certificadas." },
+  { icon: PackageCheck, title: "Botijões inspecionados", desc: "Produtos em ótimo estado de uso." },
+  { icon: MessageCircle, title: "Pedido simplificado", desc: "Tudo resolvido em uma conversa." },
+  { icon: MapPin, title: "Cobertura em Pelotas", desc: "Atendimento em toda a cidade." },
 ];
 
 const Differentials = () => {
   return (
-    <section className="py-20 bg-background">
+    <section id="vantagens" className="py-20 bg-background">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-14">
-          <h2 className="font-display text-3xl sm:text-4xl font-black text-foreground">
-            Por que escolher a Império?
-          </h2>
-          <p className="text-muted-foreground mt-3 max-w-lg mx-auto">Nossos diferenciais fazem a diferença na sua experiência</p>
+        <div className="text-center mb-12">
+          <h2 className="font-display text-3xl sm:text-4xl font-black text-foreground">Vantagens para pedir agora</h2>
+          <p className="text-muted-foreground mt-3">Tudo pensado para você pedir rápido, sem complicação.</p>
         </div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-5xl mx-auto">
           {items.map((item) => (
-            <div
-              key={item.title}
-              className="bg-card rounded-2xl p-6 card-shadow hover:card-shadow-hover hover:-translate-y-0.5 transition-all duration-300 border border-border"
-            >
-              <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${item.gradient} flex items-center justify-center mb-5`}>
-                <item.icon className={`w-6 h-6 ${item.iconColor}`} />
+            <div key={item.title} className="bg-card rounded-2xl p-6 border border-border card-shadow">
+              <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-4">
+                <item.icon className="w-5 h-5 text-primary" />
               </div>
-              <h3 className="font-display text-lg font-bold text-foreground mb-1.5">{item.title}</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+              <h3 className="font-display text-lg font-bold text-foreground mb-1">{item.title}</h3>
+              <p className="text-sm text-muted-foreground">{item.desc}</p>
             </div>
           ))}
         </div>
