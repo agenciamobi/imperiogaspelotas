@@ -1,13 +1,10 @@
 import Header from "@/components/Header";
-import Hero from "@/components/Hero";
-import QuickAccess from "@/components/QuickAccess";
+import ConversionHero from "@/components/ConversionHero";
+import SocialProof from "@/components/SocialProof";
 import ProductsGas from "@/components/ProductsGas";
-import ProductsWater from "@/components/ProductsWater";
 import Differentials from "@/components/Differentials";
 import HowItWorks from "@/components/HowItWorks";
-import P13Usage from "@/components/P13Usage";
-import CtaBanner from "@/components/CtaBanner";
-import BlogPreview from "@/components/BlogPreview";
+import Guarantees from "@/components/Guarantees";
 import FAQ from "@/components/FAQ";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
@@ -19,15 +16,12 @@ const Index = () => {
     <>
       <Header />
       <main>
-        <Hero />
-        <QuickAccess />
+        <ConversionHero />
+        <SocialProof />
         <ProductsGas />
-        <ProductsWater />
         <Differentials />
         <HowItWorks />
-        <P13Usage />
-        <CtaBanner />
-        <BlogPreview />
+        <Guarantees />
         <FAQ />
         <Contact />
       </main>
