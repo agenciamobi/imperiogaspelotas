@@ -1,11 +1,10 @@
 import { MessageCircle, MapPin, Clock3 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-const WHATSAPP_LINK = "https://wa.me/5553991162002?text=Olá! Quero pedir agora na Império Gás e Água.";
+import { getWhatsAppLink, WHATSAPP_MESSAGES } from "@/lib/constants";
 
 const Contact = () => {
   return (
-    <section id="contato" className="py-20 gradient-green-soft">
+    <section id="contato" className="scroll-mt-28 py-20 gradient-green-soft">
       <div className="container mx-auto px-4 max-w-4xl">
         <div className="bg-card border border-border rounded-3xl p-8 md:p-12 text-center card-shadow space-y-5">
           <span className="inline-flex rounded-full bg-accent px-4 py-1.5 text-sm font-bold text-accent-foreground">
@@ -25,7 +24,7 @@ const Contact = () => {
           </div>
 
           <Button asChild size="lg" className="h-14 px-10 bg-cta hover:bg-cta-hover text-primary-foreground rounded-full font-bold text-lg">
-            <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer">
+            <a href={getWhatsAppLink(WHATSAPP_MESSAGES.order)} target="_blank" rel="noopener noreferrer">
               <MessageCircle className="w-5 h-5" />
               Quero pedir no WhatsApp
             </a>

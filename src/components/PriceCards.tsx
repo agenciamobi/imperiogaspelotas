@@ -1,8 +1,9 @@
 import { MessageCircle, Tag } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { getWhatsAppLink, WHATSAPP_MESSAGES } from "@/lib/constants";
 import botijaoP13 from "@/assets/botijao-p13.png";
-import botijaoP08 from "@/assets/botijao-p08.png";
+import botijaoP02 from "@/assets/botijao-p02.png";
 import aguaMineral from "@/assets/agua-mineral.png";
 
 const products = [
@@ -20,7 +21,7 @@ const products = [
     oldPrice: "R$ 488,00",
     price: "R$ 459,90",
     discount: "Economize R$ 28,10",
-    image: botijaoP08,
+    image: botijaoP02,
   },
   {
     title: "Água Mineral 20L",
@@ -36,7 +37,7 @@ const PriceCards = () => {
   return (
     <div className="grid md:grid-cols-3 gap-5">
       {products.map((product) => {
-        const whatsappLink = `https://wa.me/5553991162002?text=${encodeURIComponent(`Olá! Quero pedir ${product.title} pelo valor promocional de ${product.price}.`)}`;
+        const whatsappLink = getWhatsAppLink(WHATSAPP_MESSAGES.product(product.title, product.price));
 
         return (
           <Card key={product.title} className="border-border card-shadow hover:card-shadow-hover transition-all duration-300">
