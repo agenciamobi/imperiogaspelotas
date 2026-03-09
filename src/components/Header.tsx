@@ -3,8 +3,7 @@ import { Menu, X, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import UrgencyBar from "@/components/UrgencyBar";
 import logo from "@/assets/logo.png";
-
-const WHATSAPP_LINK = "https://wa.me/5553991162002?text=Olá! Quero fazer um pedido agora.";
+import { getWhatsAppLink, WHATSAPP_MESSAGES } from "@/lib/constants";
 
 const navItems = [
   { label: "Ofertas", href: "#gas" },
@@ -41,7 +40,7 @@ const Header = () => {
 
           <div className="flex items-center gap-3">
             <Button asChild className="hidden sm:inline-flex bg-cta hover:bg-cta-hover text-primary-foreground rounded-full font-bold">
-              <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer">
+              <a href={getWhatsAppLink(WHATSAPP_MESSAGES.order)} target="_blank" rel="noopener noreferrer">
                 <MessageCircle className="w-4 h-4" />
                 Peça Agora
               </a>
@@ -68,7 +67,7 @@ const Header = () => {
               </a>
             ))}
             <Button asChild className="w-full bg-cta hover:bg-cta-hover text-primary-foreground mt-3 rounded-full font-bold">
-              <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer">
+              <a href={getWhatsAppLink(WHATSAPP_MESSAGES.order)} target="_blank" rel="noopener noreferrer">
                 <MessageCircle className="w-4 h-4" />
                 Pedir pelo WhatsApp
               </a>

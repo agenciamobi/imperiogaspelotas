@@ -3,8 +3,7 @@ import { CheckCircle2, MessageCircle, ShieldCheck, Timer } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-
-const BASE_WHATSAPP = "https://wa.me/5553991162002";
+import { getWhatsAppLink, WHATSAPP_MESSAGES } from "@/lib/constants";
 
 const benefits = [
   "Entrega rápida em até 30 minutos",
@@ -16,14 +15,52 @@ const ConversionHero = () => {
   const [nome, setNome] = useState("");
   const [telefone, setTelefone] = useState("");
   const [endereco, setEndereco] = useState("");
+  const [errors, setErrors] = useState<{ nome?: string; telefone?: string }>({});
+
+  const isFormValid = nome.trim().length >= 2 && telefone.replace(/\D/g, "").length >= 10;
+
+  const formatPhone = (value: string) => {
+    const digits = value.replace(/\D/g, "").slice(0, 11);
+    if (digits.length <= 2) return digits;
+    if (digits.length <= 7) return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
+    return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTelefone(formatPhone(e.target.value));
+    if (errors.telefone) setErrors((prev) => ({ ...prev, telefone: undefined }));
+  };
+
+  const handleNomeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNome(e.target.value);
+    if (errors.nome) setErrors((prev) => ({ ...prev, nome: undefined }));
+  };
+
+  const validateAndSubmit = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const newErrors: { nome?: string; telefone?: string } = {};
+
+    if (nome.trim().length < 2) {
+      newErrors.nome = "Informe seu nome";
+    }
+
+    const phoneDigits = telefone.replace(/\D/g, "");
+    if (phoneDigits.length < 10) {
+      newErrors.telefone = "Telefone inválido";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      e.preventDefault();
+      setErrors(newErrors);
+      return;
+    }
+  };
 
   const whatsappLink = useMemo(() => {
-    const text = `Olá! Quero fazer um pedido na Império.\nNome: ${nome || "não informado"}\nTelefone: ${telefone || "não informado"}\nEndereço: ${endereco || "não informado"}`;
-    return `${BASE_WHATSAPP}?text=${encodeURIComponent(text)}`;
+    return getWhatsAppLink(WHATSAPP_MESSAGES.orderForm(nome, telefone, endereco));
   }, [nome, telefone, endereco]);
 
   return (
-    <section id="inicio" className="pt-28 pb-14 md:pt-36 md:pb-20 gradient-green-soft">
+    <section id="inicio" className="scroll-mt-28 pt-28 pb-14 md:pt-36 md:pb-20 gradient-green-soft">
       <div className="container mx-auto px-4">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-10 items-center">
           <div className="space-y-6">
@@ -58,7 +95,7 @@ const ConversionHero = () => {
             </a>
           </div>
 
-          <Card id="formulario" className="border-border card-shadow">
+          <Card id="formulario" className="border-border card-shadow scroll-mt-28">
             <CardHeader>
               <CardTitle className="text-2xl">Solicite seu pedido agora</CardTitle>
               <p className="text-sm text-muted-foreground">
@@ -66,12 +103,48 @@ const ConversionHero = () => {
               </p>
             </CardHeader>
             <CardContent className="space-y-4">
-              <Input placeholder="Seu nome" value={nome} onChange={(e) => setNome(e.target.value)} aria-label="Seu nome" />
-              <Input placeholder="Seu telefone" value={telefone} onChange={(e) => setTelefone(e.target.value)} aria-label="Seu telefone" />
-              <Input placeholder="Seu endereço" value={endereco} onChange={(e) => setEndereco(e.target.value)} aria-label="Seu endereço" />
+              <div>
+                <Input
+                  placeholder="Seu nome *"
+                  value={nome}
+                  onChange={handleNomeChange}
+                  aria-label="Seu nome"
+                  className={errors.nome ? "border-destructive" : ""}
+                />
+                {errors.nome && <p className="text-xs text-destructive mt-1">{errors.nome}</p>}
+              </div>
 
-              <Button asChild className="w-full bg-cta hover:bg-cta-hover text-primary-foreground font-bold h-11 rounded-full">
-                <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+              <div>
+                <Input
+                  placeholder="Seu telefone *"
+                  value={telefone}
+                  onChange={handlePhoneChange}
+                  aria-label="Seu telefone"
+                  className={errors.telefone ? "border-destructive" : ""}
+                  inputMode="tel"
+                />
+                {errors.telefone && <p className="text-xs text-destructive mt-1">{errors.telefone}</p>}
+              </div>
+
+              <Input
+                placeholder="Seu endereço (opcional)"
+                value={endereco}
+                onChange={(e) => setEndereco(e.target.value)}
+                aria-label="Seu endereço"
+              />
+
+              <Button
+                asChild
+                className={`w-full bg-cta hover:bg-cta-hover text-primary-foreground font-bold h-11 rounded-full ${
+                  !isFormValid ? "opacity-60 cursor-not-allowed" : ""
+                }`}
+              >
+                <a
+                  href={whatsappLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={validateAndSubmit}
+                >
                   <MessageCircle className="w-5 h-5" />
                   Quero pedir com desconto
                 </a>

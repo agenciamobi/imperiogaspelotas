@@ -1,8 +1,7 @@
-import { Flame, Clock } from "lucide-react";
+import { Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
-
-const WHATSAPP_LINK = "https://wa.me/5553991162002?text=Olá! Quero aproveitar a promoção da Império Gás e Água.";
+import { getWhatsAppLink, WHATSAPP_MESSAGES, DELIVERY_END_HOUR } from "@/lib/constants";
 
 const UrgencyBar = () => {
   const [timeLeft, setTimeLeft] = useState("");
@@ -11,9 +10,8 @@ const UrgencyBar = () => {
     const calculateTimeLeft = () => {
       const now = new Date();
       const endOfDelivery = new Date();
-      endOfDelivery.setHours(22, 0, 0, 0);
+      endOfDelivery.setHours(DELIVERY_END_HOUR, 0, 0, 0);
 
-      // If it's past 22:00, show "Entregas encerradas"
       if (now >= endOfDelivery) {
         return "Entregas encerradas hoje";
       }
@@ -49,7 +47,7 @@ const UrgencyBar = () => {
           <span className="sm:hidden">⏰ <strong>{timeLeft}</strong></span>
         </p>
         <Button asChild size="sm" className="h-7 px-3 bg-cta hover:bg-cta-hover text-primary-foreground text-xs font-bold rounded-full">
-          <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer">
+          <a href={getWhatsAppLink(WHATSAPP_MESSAGES.promo)} target="_blank" rel="noopener noreferrer">
             Peça Agora
           </a>
         </Button>
