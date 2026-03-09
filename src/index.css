@@ -43,30 +43,6 @@
     --whatsapp: 142 70% 45%;
   }
 
-  .dark {
-    --background: 150 20% 6%;
-    --foreground: 90 20% 95%;
-    --card: 150 20% 9%;
-    --card-foreground: 90 20% 95%;
-    --popover: 150 20% 9%;
-    --popover-foreground: 90 20% 95%;
-    --primary: 150 45% 40%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 30 95% 55%;
-    --secondary-foreground: 0 0% 100%;
-    --muted: 150 15% 15%;
-    --muted-foreground: 150 10% 60%;
-    --accent: 150 20% 15%;
-    --accent-foreground: 150 45% 70%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 150 15% 20%;
-    --input: 150 15% 20%;
-    --ring: 150 45% 40%;
-    --cta: 20 100% 60%;
-    --cta-hover: 19 95% 54%;
-    --urgency: 4 76% 52%;
-  }
 }
 
 @layer base {
