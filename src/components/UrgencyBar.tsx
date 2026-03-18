@@ -1,7 +1,6 @@
 import { Clock } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
-import { getWhatsAppLink, WHATSAPP_MESSAGES, DELIVERY_END_HOUR } from "@/lib/constants";
+import { DELIVERY_END_HOUR } from "@/lib/constants";
 
 const UrgencyBar = () => {
   const [timeLeft, setTimeLeft] = useState("");
@@ -40,17 +39,12 @@ const UrgencyBar = () => {
 
   return (
     <div className="bg-urgency text-primary-foreground">
-      <div className="container mx-auto px-4 h-10 flex items-center justify-between gap-3 text-xs sm:text-sm">
+      <div className="container mx-auto px-4 h-10 flex items-center justify-center gap-2 text-xs sm:text-sm">
         <p className="flex items-center gap-2 font-semibold">
           <Clock className="w-4 h-4 urgency-pulse" />
           <span className="hidden sm:inline">⏰ Faltam <strong>{timeLeft}</strong> — Peça agora!</span>
           <span className="sm:hidden">⏰ <strong>{timeLeft}</strong></span>
         </p>
-        <Button asChild size="sm" className="h-7 px-3 bg-cta hover:bg-cta-hover text-primary-foreground text-xs font-bold rounded-full">
-          <a href={getWhatsAppLink(WHATSAPP_MESSAGES.promo)} target="_blank" rel="noopener noreferrer">
-            Peça Agora
-          </a>
-        </Button>
       </div>
     </div>
   );
