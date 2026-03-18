@@ -44,9 +44,8 @@ const Header = () => {
 
           {/* Center — Logo */}
           <div className="flex items-center justify-center w-1/3">
-            <a href="#inicio" className="flex items-center gap-2">
-              <img src={logo} alt="Império Gás e Água" className="h-10 w-auto" />
-              <span className="font-display font-bold text-lg text-foreground hidden sm:block">Império Gás</span>
+            <a href="#inicio" className="flex items-center">
+              <img src={logo} alt="Império Gás e Água" className="h-14 sm:h-16 w-auto" />
             </a>
           </div>
 
