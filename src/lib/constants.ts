@@ -15,7 +15,7 @@ export const WHATSAPP_MESSAGES = {
   default: "Olá! Gostaria de fazer um pedido.",
   promo: "Olá! Quero aproveitar a promoção da Império Gás e Água.",
   order: "Olá! Quero fazer um pedido agora.",
-  product: (name: string, price: string) => `Olá! Quero pedir ${name} pelo valor promocional de ${price}.`,
+  product: (name: string, price?: string) => price ? `Olá! Quero pedir ${name} pelo valor promocional de ${price}.` : `Olá! Quero pedir ${name}.`,
   orderForm: (nome: string, telefone: string, endereco: string) =>
     `Olá! Quero fazer um pedido na Império.\nNome: ${nome || "não informado"}\nTelefone: ${telefone || "não informado"}\nEndereço: ${endereco || "não informado"}`,
 };

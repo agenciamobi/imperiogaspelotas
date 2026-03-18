@@ -54,7 +54,7 @@ export default {
         whatsapp: "hsl(var(--whatsapp))",
       },
       fontFamily: {
-        display: ["Space Grotesk", "sans-serif"],
+        display: ["Nunito", "sans-serif"],
         body: ["Plus Jakarta Sans", "sans-serif"],
       },
       borderRadius: {
