@@ -48,7 +48,6 @@ const Header = () => {
               <img src={logo} alt="Império Gás e Água" className="h-14 sm:h-16 w-auto" />
             </a>
           </div>
-          </div>
 
           {/* Right — CTA */}
           <div className="flex items-center justify-end w-1/3">
