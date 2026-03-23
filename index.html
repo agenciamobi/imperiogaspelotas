@@ -20,21 +20,109 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
+    <meta name="geo.region" content="BR-RS" />
+    <meta name="geo.placename" content="Pelotas" />
+    <meta name="geo.position" content="-31.7654;-52.3376" />
+    <meta name="ICBM" content="-31.7654, -52.3376" />
+
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
+      "@id": "https://imperiogas.com.br/#business",
       "name": "Império Gás e Água – Disk Gás Pelotas",
-      "description": "Disk gás e água mineral em Pelotas/RS. Entrega rápida até às 22h.",
+      "alternateName": ["Disk Gás Pelotas", "Império Gás Pelotas", "Disk Água Pelotas"],
+      "description": "Disk gás e água mineral em Pelotas/RS. Entrega rápida em até 30 minutos, até às 22h. Botijões P02 a P90 e galões de água 20L. Revenda autorizada Liquigás.",
+      "url": "https://imperiogas.com.br",
       "telephone": ["(53) 9 9116-2002", "(53) 3273-9559", "(53) 98415-7194"],
+      "image": "https://imperiogas.com.br/og-image.png",
+      "priceRange": "$$",
+      "currenciesAccepted": "BRL",
+      "paymentAccepted": "Dinheiro, Pix, Cartão",
       "address": {
         "@type": "PostalAddress",
+        "streetAddress": "Pelotas",
         "addressLocality": "Pelotas",
         "addressRegion": "RS",
+        "postalCode": "96000-000",
         "addressCountry": "BR"
       },
-      "areaServed": "Pelotas",
-      "openingHours": "Mo-Su 08:00-22:00"
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "-31.7654",
+        "longitude": "-52.3376"
+      },
+      "areaServed": {
+        "@type": "City",
+        "name": "Pelotas",
+        "sameAs": "https://pt.wikipedia.org/wiki/Pelotas"
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+        "opens": "08:00",
+        "closes": "22:00"
+      },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Produtos Império Gás e Água",
+        "itemListElement": [
+          {"@type": "Offer", "itemOffered": {"@type": "Product", "name": "Botijão de Gás P13 - 13kg", "description": "Gás de cozinha P13 para uso doméstico em Pelotas"}},
+          {"@type": "Offer", "itemOffered": {"@type": "Product", "name": "Botijão de Gás P02 - 2kg", "description": "Gás camping e pequenos usos em Pelotas"}},
+          {"@type": "Offer", "itemOffered": {"@type": "Product", "name": "Botijão de Gás P45 - 45kg", "description": "Gás comercial para restaurantes e hotéis em Pelotas"}},
+          {"@type": "Offer", "itemOffered": {"@type": "Product", "name": "Galão de Água Mineral 20L", "description": "Água mineral 20 litros com entrega em domicílio em Pelotas"}}
+        ]
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "reviewCount": "5000",
+        "bestRating": "5"
+      },
+      "sameAs": []
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Qual o horário de entrega de gás em Pelotas?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Realizamos entregas de gás de cozinha e água mineral em Pelotas todos os dias, de segunda a domingo, das 8h às 22h."}
+        },
+        {
+          "@type": "Question",
+          "name": "Quanto tempo demora a entrega de gás em Pelotas?",
+          "acceptedAnswer": {"@type": "Answer", "text": "A entrega é rápida, em até 30 minutos para toda a cidade de Pelotas. Basta pedir pelo WhatsApp (53) 9 9116-2002."}
+        },
+        {
+          "@type": "Question",
+          "name": "A Império Gás entrega em toda Pelotas?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Sim! Atendemos toda a cidade de Pelotas, incluindo todos os bairros, com entrega rápida de gás de cozinha e água mineral."}
+        },
+        {
+          "@type": "Question",
+          "name": "Quais tipos de botijão de gás estão disponíveis em Pelotas?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Trabalhamos com botijões P02 (2kg), P05 (5kg), P08 (8kg), P13 (13kg), P20, P45 e P90. Atendemos residências, comércios e indústrias em Pelotas."}
+        }
+      ]
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Império Gás e Água",
+      "url": "https://imperiogas.com.br",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://imperiogas.com.br/?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
     }
     </script>
     <meta property="og:title" content="Império Gás e Água – Disk Gás Pelotas | Entrega Rápida">

@@ -14,13 +14,13 @@ const benefits = [
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 30 },
   animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.6, delay, ease: "easeOut" },
+  transition: { duration: 0.6, delay, ease: "easeOut" as const },
 });
 
 const fadeIn = (delay = 0) => ({
   initial: { opacity: 0, scale: 0.9 },
   animate: { opacity: 1, scale: 1 },
-  transition: { duration: 0.7, delay, ease: "easeOut" },
+  transition: { duration: 0.7, delay, ease: "easeOut" as const },
 });
 
 const ConversionHero = () => {
