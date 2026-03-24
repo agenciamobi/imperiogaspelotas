@@ -21,8 +21,8 @@ const bairros = [
   "Centro", "Fragata", "Areal", "Três Vendas", "Porto", "Navegantes",
   "Simões Lopes", "Cohab Tablada", "Dunas", "Jardim Europa", "Bom Jesus",
   "Guabiroba", "São Gonçalo", "Sítio Floresta", "Cohab Lindóia", "Pestano",
-  "Sanga Funda", "Getúlio Vargas", "Obelisco", "Santa Terezinha", "Vila Nova",
-  "Cruzeiro", "Hipódromo", "Colônia", "Passo dos Negros",
+  "Sanga Funda", "Getúlio Vargas", "Obelisco", "Santa Terezinha",
+  "Cruzeiro", "Hipódromo",
 ];
 
 const Footer = () => {

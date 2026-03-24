@@ -76,7 +76,7 @@ const Header = () => {
               <img
                 src={logo}
                 alt="Império Gás e Água - Disk Gás e Água Mineral em Pelotas RS"
-                className={`w-auto transition-all duration-300 ${scrolled ? "h-12 sm:h-14" : "h-14 sm:h-16"}`}
+                className={`w-auto transition-all duration-300 ${scrolled ? "h-[60px] sm:h-[80px]" : "h-[120px] sm:h-[150px]"}`}
               />
             </a>
           </div>
