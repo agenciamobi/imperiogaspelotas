@@ -1,33 +1,68 @@
 
 
-# Hero de Alto Impacto — Estilo Referência
+# Header Transparente, Mobile Nativo, SEO Bairros de Pelotas
 
-Recriar o hero inspirado no print enviado: fundo verde vibrante com gradiente, botijão grande à direita, mascote Liquigás, elementos decorativos (formas orgânicas verde/laranja), e mockup de WhatsApp. Layout impactante e visual.
+## 1. Header — Transparente com transição ao scroll
 
-## Mudanças
+**Comportamento:** Transparente sobre o hero (sem borda, sem fundo). Ao rolar, transição suave para fundo branco com sombra e textura business.
+- Usar `useState` + `useEffect` com `scroll` listener para detectar `scrollY > 50`
+- Classes dinâmicas: transparente (`bg-transparent text-white`) → sólido (`bg-white/95 backdrop-blur text-foreground shadow`)
+- Logo e nav links mudam de cor conforme estado
+- Manter layout 3 colunas (menu | logo | CTA)
+- UrgencyBar fica acima, sempre visível
 
-### 1. ConversionHero.tsx — Redesign completo
-- **Fundo:** Gradiente verde vibrante cobrindo toda a seção (como no print), com formas decorativas SVG (blob verde escuro + laranja atrás do botijão)
-- **Layout esquerdo:** Título bold grande branco "PEÇA SEU GÁS DE COZINHA AGORA!", subtítulo, dois botões CTA laranja empilhados ("Compre gás pelo WhatsApp" + "Peça gás pelo Telefone")
-- **Layout direito:** Imagem grande do botijão P13 + mascote Liquigás sobrepostos + mockup de chat WhatsApp flutuante (CSS puro, como no print)
-- **Formas decorativas:** Blobs SVG verde escuro e laranja posicionados com absolute atrás das imagens
-- **Mover o formulário** para um componente separado ou removê-lo do hero (o hero agora é visual puro com CTAs diretos)
-- O formulário pode ser mantido na seção Contact ou como um modal
+**Arquivo:** `src/components/Header.tsx`
 
-### 2. Novos assets
-- Copiar as imagens enviadas: botijão com WhatsApp overlay, mascote Liquigás, galões de água
+## 2. Mobile — Experiência tipo app nativo
 
-### 3. CSS
-- Atualizar `--hero-gradient` para verde mais vibrante
-- Adicionar classe para a curva SVG inferior (transição curva entre hero e próxima seção, como no print)
-- Estilizar mockup de chat WhatsApp com CSS
+### Header mobile
+- Hamburger menu abre como drawer full-screen (overlay escuro + slide da esquerda)
+- Links maiores com ícones, espaçamento generoso (touch-friendly)
+- Botão WhatsApp CTA grande no final do menu
 
-### 4. Index.tsx
-- Manter ConversionHero como primeira seção
-- O formulário de pedido migra para a seção de contato ou permanece acessível via scroll
+### MobileBar
+- Redesign: 3 botões (WhatsApp | Ligar | Início) com ícones maiores e labels
+- Cantos arredondados no topo, sombra mais forte
+- Safe area padding para iPhones (`pb-safe`)
 
-## Arquivos
-- `src/components/ConversionHero.tsx` — redesign completo
-- `src/index.css` — gradiente hero atualizado + curva SVG
-- Copiar assets: botijão com overlay, mascote, água
+### WhatsAppFloat
+- Já oculto no mobile (correto), manter
+
+**Arquivos:** `src/components/Header.tsx`, `src/components/MobileBar.tsx`
+
+## 3. Footer — Alto impacto + crédito MOBI
+
+- Adicionar seção de bairros atendidos (grid de links SEO)
+- Bottom bar: "Desenvolvido por MOBI - Marketing Inteligente" com `<a href="https://agenciamobi.com.br/" target="_blank" rel="noopener noreferrer" title="MOBI Marketing Inteligente - Agência de Marketing Digital">`
+- Todos os links do footer com `title` attributes para SEO
+
+**Arquivo:** `src/components/Footer.tsx`
+
+## 4. SEO — Bairros de Pelotas (sem Praia do Laranjal)
+
+### index.html — Schema JSON-LD
+- Expandir `areaServed` de `City` para array com bairros principais
+- Adicionar FAQ schema com perguntas por bairro
+- Keywords meta com bairros
+
+### Footer — Links de bairros
+Grid de links SEO: "Gás Centro Pelotas", "Gás Fragata", "Gás Areal", "Gás Três Vendas", "Gás Porto", "Gás Navegantes", "Gás Simões Lopes", "Gás Cohab Tablada", "Gás Dunas", etc. (~25 bairros)
+
+### Componentes — title/alt attributes
+- Adicionar `title` em todos os `<a>` tags nos componentes principais
+- Alt text com localização em imagens
+
+**Bairros incluídos:** Centro, Fragata, Areal, Três Vendas, Porto, Navegantes, Simões Lopes, Cohab Tablada, Dunas, Jardim Europa, Bom Jesus, Guabiroba, São Gonçalo, Sítio Floresta, Cohab Lindóia, Pestano, Sanga Funda, Getúlio Vargas, Obelisco, Santa Terezinha, Vila Nova, Cruzeiro, Hipódromo, Colônia, Passo dos Negros
+
+## 5. CSS — Ajustes
+
+- Adicionar `env(safe-area-inset-bottom)` para MobileBar
+- Transição suave no header: `transition-all duration-300`
+
+## Arquivos Modificados
+- `src/components/Header.tsx` — transparente + scroll + drawer mobile
+- `src/components/MobileBar.tsx` — estilo app nativo 3 botões
+- `src/components/Footer.tsx` — bairros SEO + crédito MOBI
+- `src/index.css` — safe area, transições
+- `index.html` — SEO bairros schema + keywords
 
