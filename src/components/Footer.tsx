@@ -1,6 +1,7 @@
 import { MessageCircle, Phone, Clock, MapPin, ExternalLink } from "lucide-react";
 import logo from "@/assets/logo.png";
 import { getWhatsAppLink, WHATSAPP_MESSAGES, PHONE_DISPLAY, PHONE_LANDLINE, BUSINESS_HOURS, LOCATION } from "@/lib/constants";
+import { motion } from "framer-motion";
 
 const productLinks = [
   { label: "Botijão P13", href: "#gas", title: "Botijão de Gás P13 em Pelotas" },
@@ -28,11 +29,16 @@ const bairros = [
 const Footer = () => {
   return (
     <footer className="relative bg-primary text-primary-foreground pb-20 md:pb-0 overflow-hidden">
-      {/* Business texture overlay */}
       <div className="texture-business-dark" />
 
       <div className="container mx-auto px-4 py-14 relative z-10">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+        <motion.div
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
           {/* Col 1 — Brand */}
           <div className="space-y-5">
             <img src={logo} alt="Império Gás e Água - Disk Gás Pelotas RS" className="h-12 w-auto" loading="lazy" />
@@ -56,12 +62,7 @@ const Footer = () => {
             <h4 className="font-display text-base font-bold text-primary-foreground">Navegação</h4>
             <nav className="flex flex-col gap-2.5">
               {seoLinks.map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  title={link.title}
-                  className="text-sm text-primary-foreground/70 hover:text-secondary transition-colors"
-                >
+                <a key={link.label} href={link.href} title={link.title} className="text-sm text-primary-foreground/70 hover:text-secondary transition-colors">
                   {link.label}
                 </a>
               ))}
@@ -73,12 +74,7 @@ const Footer = () => {
             <h4 className="font-display text-base font-bold text-primary-foreground">Produtos</h4>
             <nav className="flex flex-col gap-2.5">
               {productLinks.map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  title={link.title}
-                  className="text-sm text-primary-foreground/70 hover:text-secondary transition-colors"
-                >
+                <a key={link.label} href={link.href} title={link.title} className="text-sm text-primary-foreground/70 hover:text-secondary transition-colors">
                   {link.label}
                 </a>
               ))}
@@ -107,10 +103,16 @@ const Footer = () => {
               </p>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Bairros atendidos — SEO grid */}
-        <div className="mt-12 pt-10 border-t border-primary-foreground/10">
+        <motion.div
+          className="mt-12 pt-10 border-t border-primary-foreground/10"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
           <h4 className="font-display text-base font-bold text-primary-foreground mb-4">
             Bairros Atendidos em Pelotas
           </h4>
@@ -126,7 +128,7 @@ const Footer = () => {
               </a>
             ))}
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* Bottom bar */}
