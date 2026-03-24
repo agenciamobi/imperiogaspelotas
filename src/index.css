@@ -149,3 +149,23 @@ html {
 .animate-float-slow {
   animation: float-slow 4s ease-in-out infinite;
 }
+
+/* Safe area for iPhones */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* WhatsApp green */
+.bg-whatsapp {
+  background-color: hsl(var(--whatsapp));
+}
+
+/* Drawer slide animation */
+@keyframes slide-in-left {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+.animate-slide-in-left {
+  animation: slide-in-left 0.25s ease-out;
+}
