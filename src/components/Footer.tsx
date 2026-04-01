@@ -1,6 +1,8 @@
 import { MessageCircle, Phone, Clock, MapPin, ExternalLink } from "lucide-react";
+import { Link } from "react-router-dom";
 import logo from "@/assets/logo.png";
 import { getWhatsAppLink, WHATSAPP_MESSAGES, PHONE_DISPLAY, PHONE_LANDLINE, BUSINESS_HOURS, LOCATION } from "@/lib/constants";
+import { bairros } from "@/lib/bairros";
 import { motion } from "framer-motion";
 
 const productLinks = [
@@ -18,14 +20,6 @@ const seoLinks = [
   { label: "Fale Conosco", href: "#contato", title: "Contato Império Gás Pelotas" },
 ];
 
-const bairros = [
-  "Centro", "Fragata", "Areal", "Três Vendas", "Porto", "Navegantes",
-  "Simões Lopes", "Cohab Tablada", "Dunas", "Jardim Europa", "Bom Jesus",
-  "Guabiroba", "São Gonçalo", "Sítio Floresta", "Cohab Lindóia", "Pestano",
-  "Sanga Funda", "Getúlio Vargas", "Obelisco", "Santa Terezinha",
-  "Cruzeiro", "Hipódromo",
-];
-
 const Footer = () => {
   return (
     <footer className="relative bg-primary text-primary-foreground pb-20 md:pb-0 overflow-hidden">
@@ -41,7 +35,7 @@ const Footer = () => {
         >
           {/* Col 1 — Brand */}
           <div className="space-y-5">
-            <img src={logo} alt="Império Gás e Água - Disk Gás Pelotas RS" className="h-12 w-auto" loading="lazy" />
+            <img src={logo} alt="Império Gás e Água - Disk Gás Pelotas RS" className="h-20 w-auto" loading="lazy" />
             <p className="text-sm text-primary-foreground/75 leading-relaxed max-w-xs">
               Revenda autorizada Liquigás em Pelotas. Entrega rápida de gás de cozinha e água mineral todos os dias.
             </p>
@@ -105,7 +99,7 @@ const Footer = () => {
           </div>
         </motion.div>
 
-        {/* Bairros atendidos — SEO grid */}
+        {/* Bairros atendidos — SEO grid with links to dedicated pages */}
         <motion.div
           className="mt-12 pt-10 border-t border-primary-foreground/10"
           initial={{ opacity: 0 }}
@@ -118,14 +112,14 @@ const Footer = () => {
           </h4>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-4 gap-y-2">
             {bairros.map((bairro) => (
-              <a
-                key={bairro}
-                href="#contato"
-                title={`Disk Gás ${bairro} Pelotas - Entrega Rápida`}
+              <Link
+                key={bairro.slug}
+                to={`/bairro/${bairro.slug}`}
+                title={`Disk Gás ${bairro.nome} Pelotas - Entrega Rápida`}
                 className="text-xs text-primary-foreground/60 hover:text-secondary transition-colors"
               >
-                Gás {bairro}
-              </a>
+                Gás {bairro.nome}
+              </Link>
             ))}
           </div>
         </motion.div>
