@@ -1,68 +1,56 @@
 
 
-# Header Transparente, Mobile Nativo, SEO Bairros de Pelotas
+# Ajustes de Logo, Horário, SEO Produtos e Páginas de Bairros
 
-## 1. Header — Transparente com transição ao scroll
+## 1. Logo no Footer — Aumentar tamanho
+- `Footer.tsx`: Alterar `className="h-12"` para `h-20` na imagem do logo
 
-**Comportamento:** Transparente sobre o hero (sem borda, sem fundo). Ao rolar, transição suave para fundo branco com sombra e textura business.
-- Usar `useState` + `useEffect` com `scroll` listener para detectar `scrollY > 50`
-- Classes dinâmicas: transparente (`bg-transparent text-white`) → sólido (`bg-white/95 backdrop-blur text-foreground shadow`)
-- Logo e nav links mudam de cor conforme estado
-- Manter layout 3 colunas (menu | logo | CTA)
-- UrgencyBar fica acima, sempre visível
+## 2. Header — Esconder barra vermelha ao rolar
+- `Header.tsx`: Envolver `<UrgencyBar />` com condição `{!scrolled && <UrgencyBar />}` para ocultar ao rolar
+- Isso faz o header ficar mais limpo quando sólido/branco
 
-**Arquivo:** `src/components/Header.tsx`
+## 3. Horário de Atendimento 09h–22h + Lógica do Contador
+- `constants.ts`: Adicionar `DELIVERY_START_HOUR = 9`, atualizar `BUSINESS_HOURS = "Todos os dias das 09h às 22h"`
+- `UrgencyBar.tsx`: Reescrever `calculateTimeLeft`:
+  - **Antes das 09h**: "Faltam Xh Xmin para iniciarmos as entregas de hoje"
+  - **Entre 09h–22h**: "Faltam Xh Xmin para encerrar entregas" (comportamento atual)
+  - **Após 22h**: "Faltam Xh Xmin para iniciarmos as entregas de hoje" (conta até 09h do dia seguinte)
 
-## 2. Mobile — Experiência tipo app nativo
+## 4. SEO Forte na Seção Produtos
+- `ProductsGas.tsx`: Adicionar texto SEO rico com keywords locais (h2 com "Gás de Cozinha e Água Mineral em Pelotas"), parágrafo descritivo com bairros, schema `ItemList` inline
+- `PriceCards.tsx`: Adicionar `title` e `alt` SEO-otimizados em cada produto (ex: "Botijão P13 Liquigás - Disk Gás Pelotas RS - Entrega Rápida"), adicionar microdados `itemScope itemType Product` nos cards
 
-### Header mobile
-- Hamburger menu abre como drawer full-screen (overlay escuro + slide da esquerda)
-- Links maiores com ícones, espaçamento generoso (touch-friendly)
-- Botão WhatsApp CTA grande no final do menu
+## 5. Páginas Dedicadas por Bairro — SEO/GEO/LEO/AEO
+Criar um componente `BairroPage.tsx` reutilizável e rotas dinâmicas `/bairro/:slug`:
 
-### MobileBar
-- Redesign: 3 botões (WhatsApp | Ligar | Início) com ícones maiores e labels
-- Cantos arredondados no topo, sombra mais forte
-- Safe area padding para iPhones (`pb-safe`)
+- **`src/pages/BairroPage.tsx`**: Página template com:
+  - H1: "Disk Gás e Água em {Bairro} - Pelotas RS"
+  - Texto SEO descritivo do serviço no bairro
+  - Lista de produtos disponíveis
+  - CTAs WhatsApp/Telefone
+  - FAQ local (3 perguntas específicas do bairro)
+  - JSON-LD `LocalBusiness` com `areaServed` específico do bairro
+  - Meta tags dinâmicas via `document.title` e meta description
+  - Link de volta para a home
+  - Header e Footer reutilizados
 
-### WhatsAppFloat
-- Já oculto no mobile (correto), manter
+- **`src/lib/bairros.ts`**: Array com dados dos 22 bairros (nome, slug, descrição curta)
 
-**Arquivos:** `src/components/Header.tsx`, `src/components/MobileBar.tsx`
+- **`App.tsx`**: Adicionar rota `/bairro/:slug` apontando para `BairroPage`
 
-## 3. Footer — Alto impacto + crédito MOBI
+- **`Footer.tsx`**: Alterar links dos bairros de `href="#contato"` para `href="/bairro/{slug}"` usando `<Link>` do react-router
 
-- Adicionar seção de bairros atendidos (grid de links SEO)
-- Bottom bar: "Desenvolvido por MOBI - Marketing Inteligente" com `<a href="https://agenciamobi.com.br/" target="_blank" rel="noopener noreferrer" title="MOBI Marketing Inteligente - Agência de Marketing Digital">`
-- Todos os links do footer com `title` attributes para SEO
-
-**Arquivo:** `src/components/Footer.tsx`
-
-## 4. SEO — Bairros de Pelotas (sem Praia do Laranjal)
-
-### index.html — Schema JSON-LD
-- Expandir `areaServed` de `City` para array com bairros principais
-- Adicionar FAQ schema com perguntas por bairro
-- Keywords meta com bairros
-
-### Footer — Links de bairros
-Grid de links SEO: "Gás Centro Pelotas", "Gás Fragata", "Gás Areal", "Gás Três Vendas", "Gás Porto", "Gás Navegantes", "Gás Simões Lopes", "Gás Cohab Tablada", "Gás Dunas", etc. (~25 bairros)
-
-### Componentes — title/alt attributes
-- Adicionar `title` em todos os `<a>` tags nos componentes principais
-- Alt text com localização em imagens
-
-**Bairros incluídos:** Centro, Fragata, Areal, Três Vendas, Porto, Navegantes, Simões Lopes, Cohab Tablada, Dunas, Jardim Europa, Bom Jesus, Guabiroba, São Gonçalo, Sítio Floresta, Cohab Lindóia, Pestano, Sanga Funda, Getúlio Vargas, Obelisco, Santa Terezinha, Vila Nova, Cruzeiro, Hipódromo, Colônia, Passo dos Negros
-
-## 5. CSS — Ajustes
-
-- Adicionar `env(safe-area-inset-bottom)` para MobileBar
-- Transição suave no header: `transition-all duration-300`
+- **`public/sitemap.xml`**: Adicionar URLs de cada bairro
 
 ## Arquivos Modificados
-- `src/components/Header.tsx` — transparente + scroll + drawer mobile
-- `src/components/MobileBar.tsx` — estilo app nativo 3 botões
-- `src/components/Footer.tsx` — bairros SEO + crédito MOBI
-- `src/index.css` — safe area, transições
-- `index.html` — SEO bairros schema + keywords
+- `src/lib/constants.ts` — horário 09h
+- `src/components/UrgencyBar.tsx` — lógica antes/depois do horário
+- `src/components/Header.tsx` — esconder barra ao rolar
+- `src/components/Footer.tsx` — logo maior + links bairros com rotas
+- `src/components/ProductsGas.tsx` — SEO forte
+- `src/components/PriceCards.tsx` — microdados produtos
+- `src/lib/bairros.ts` — dados dos bairros (novo)
+- `src/pages/BairroPage.tsx` — página dedicada (novo)
+- `src/App.tsx` — rota bairro
+- `public/sitemap.xml` — URLs bairros
 
