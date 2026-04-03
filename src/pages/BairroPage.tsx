@@ -135,7 +135,7 @@ const BairroPage = () => {
                   <h3 className="font-display text-lg font-bold" itemProp="name">{prod.title}</h3>
                   <p className="text-sm text-muted-foreground" itemProp="description">{prod.desc}</p>
                   <meta itemProp="brand" content="Liquigás" />
-                  <Button asChild className="w-full bg-cta hover:bg-cta-hover text-primary-foreground rounded-full font-bold">
+                  <Button asChild className="w-full bg-cta hover:bg-cta-hover text-white rounded-full font-bold">
                     <a href={getWhatsAppLink(WHATSAPP_MESSAGES.product(prod.title))} target="_blank" rel="noopener noreferrer" title={prod.alt}>
                       <MessageCircle className="w-4 h-4" />
                       Pedir Agora
