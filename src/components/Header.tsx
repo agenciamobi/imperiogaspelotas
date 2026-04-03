@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { Menu, X, MessageCircle, Flame, Phone, ShoppingBag, HelpCircle, Award } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import UrgencyBar from "@/components/UrgencyBar";
@@ -6,15 +7,19 @@ import logo from "@/assets/logo.png";
 import { getWhatsAppLink, WHATSAPP_MESSAGES } from "@/lib/constants";
 
 const navItems = [
-  { label: "Ofertas", href: "#gas", icon: ShoppingBag },
-  { label: "Vantagens", href: "#vantagens", icon: Award },
-  { label: "FAQ", href: "#faq", icon: HelpCircle },
-  { label: "Pedido", href: "#contato", icon: Phone },
+  { label: "Ofertas", id: "gas", icon: ShoppingBag },
+  { label: "Vantagens", id: "vantagens", icon: Award },
+  { label: "FAQ", id: "faq", icon: HelpCircle },
+  { label: "Pedido", id: "contato", icon: Phone },
 ];
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const location = useLocation();
+  const isHome = location.pathname === "/";
+
+  const getHref = (id: string) => (isHome ? `#${id}` : `/#${id}`);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -22,7 +27,6 @@ const Header = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Lock body scroll when drawer is open
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
@@ -39,7 +43,6 @@ const Header = () => {
             : "bg-transparent border-b border-transparent"
         } overflow-hidden`}
       >
-        {/* Business texture — only visible when scrolled */}
         {scrolled && <div className="texture-business-light" />}
 
         <div className={`container mx-auto px-4 flex items-center justify-between relative z-10 transition-all duration-300 ${scrolled ? "h-20 sm:h-24" : "h-32 sm:h-40"}`}>
@@ -55,8 +58,8 @@ const Header = () => {
             <nav className="hidden lg:flex items-center gap-1">
               {navItems.map((item) => (
                 <a
-                  key={item.href}
-                  href={item.href}
+                  key={item.id}
+                  href={getHref(item.id)}
                   title={`${item.label} - Império Gás e Água Pelotas`}
                   className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
                     scrolled
@@ -72,7 +75,7 @@ const Header = () => {
 
           {/* Center — Logo */}
           <div className="flex items-center justify-center w-1/3">
-            <a href="#inicio" title="Império Gás e Água - Disk Gás Pelotas" className="flex items-center">
+            <a href={isHome ? "#inicio" : "/"} title="Império Gás e Água - Disk Gás Pelotas" className="flex items-center">
               <img
                 src={logo}
                 alt="Império Gás e Água - Disk Gás e Água Mineral em Pelotas RS"
@@ -85,7 +88,7 @@ const Header = () => {
           <div className="flex items-center justify-end w-1/3">
             <Button
               asChild
-              className="bg-cta hover:bg-cta-hover text-primary-foreground rounded-full font-bold text-xs sm:text-sm shadow-lg"
+              className="bg-cta hover:bg-cta-hover text-white rounded-full font-bold text-xs sm:text-sm shadow-lg"
             >
               <a
                 href={getWhatsAppLink(WHATSAPP_MESSAGES.order)}
@@ -102,18 +105,15 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Mobile Drawer — Full screen overlay */}
+      {/* Mobile Drawer */}
       {isOpen && (
         <div className="lg:hidden fixed inset-0 z-[60]" style={{ top: 0 }}>
-          {/* Backdrop */}
           <div
             className="absolute inset-0 bg-foreground/60 backdrop-blur-sm"
             onClick={() => setIsOpen(false)}
           />
 
-          {/* Drawer panel */}
           <div className="absolute left-0 top-0 bottom-0 w-[80%] max-w-xs bg-background shadow-2xl flex flex-col animate-slide-in-left">
-            {/* Drawer header */}
             <div className="flex items-center justify-between p-5 border-b border-border">
               <img src={logo} alt="Império Gás e Água" className="h-10 w-auto" />
               <button onClick={() => setIsOpen(false)} className="p-2 text-muted-foreground" aria-label="Fechar menu">
@@ -121,12 +121,11 @@ const Header = () => {
               </button>
             </div>
 
-            {/* Nav links */}
             <nav className="flex-1 p-4 flex flex-col gap-1">
               {navItems.map((item) => (
                 <a
-                  key={item.href}
-                  href={item.href}
+                  key={item.id}
+                  href={getHref(item.id)}
                   onClick={() => setIsOpen(false)}
                   title={`${item.label} - Império Gás Pelotas`}
                   className="flex items-center gap-3 text-base font-medium text-foreground hover:text-primary hover:bg-primary/5 py-4 px-4 rounded-xl transition-colors"
@@ -137,11 +136,10 @@ const Header = () => {
               ))}
             </nav>
 
-            {/* CTA at bottom */}
             <div className="p-5 border-t border-border">
               <Button
                 asChild
-                className="w-full h-14 bg-cta hover:bg-cta-hover text-primary-foreground rounded-full font-bold text-base shadow-lg"
+                className="w-full h-14 bg-cta hover:bg-cta-hover text-white rounded-full font-bold text-base shadow-lg"
               >
                 <a
                   href={getWhatsAppLink(WHATSAPP_MESSAGES.order)}
