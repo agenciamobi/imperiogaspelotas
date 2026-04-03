@@ -5,19 +5,19 @@ import { getWhatsAppLink, WHATSAPP_MESSAGES, PHONE_DISPLAY, PHONE_LANDLINE, BUSI
 import { bairros } from "@/lib/bairros";
 import { motion } from "framer-motion";
 
-const productLinks = [
-  { label: "Botijão P13", href: "#gas", title: "Botijão de Gás P13 em Pelotas" },
-  { label: "Botijão P45", href: "#gas", title: "Botijão de Gás P45 Comercial em Pelotas" },
-  { label: "Água Mineral 20L", href: "#gas", title: "Galão de Água Mineral 20 Litros em Pelotas" },
-  { label: "Gás Comercial", href: "#gas", title: "Gás Comercial e Industrial em Pelotas" },
+const navigationLinks = [
+  { label: "Disk Gás Pelotas", to: "/disk-gas-pelotas", title: "Disk Gás Pelotas - Entrega Rápida de Gás de Cozinha" },
+  { label: "Entrega Rápida de Gás", to: "/entrega-rapida-gas", title: "Entrega Rápida de Gás em Pelotas RS" },
+  { label: "Água Mineral Pelotas", to: "/agua-mineral-pelotas", title: "Disk Água Mineral em Pelotas RS" },
+  { label: "Perguntas Frequentes", to: "/perguntas-frequentes", title: "FAQ - Dúvidas sobre Gás e Água em Pelotas" },
+  { label: "Fale Conosco", to: "/fale-conosco", title: "Contato Império Gás e Água Pelotas" },
 ];
 
-const seoLinks = [
-  { label: "Disk Gás Pelotas", href: "#inicio", title: "Disk Gás Pelotas - Entrega Rápida" },
-  { label: "Entrega Rápida de Gás", href: "#vantagens", title: "Entrega Rápida de Gás em Pelotas RS" },
-  { label: "Água Mineral Pelotas", href: "#gas", title: "Disk Água Mineral em Pelotas RS" },
-  { label: "Perguntas Frequentes", href: "#faq", title: "FAQ - Dúvidas sobre Gás e Água em Pelotas" },
-  { label: "Fale Conosco", href: "#contato", title: "Contato Império Gás Pelotas" },
+const productLinks = [
+  { label: "Botijão P13", to: "/produto/botijao-p13", title: "Botijão de Gás P13 Liquigás em Pelotas RS" },
+  { label: "Botijão P45", to: "/produto/botijao-p45", title: "Botijão de Gás P45 Comercial em Pelotas RS" },
+  { label: "Água Mineral 20L", to: "/produto/agua-mineral-20l", title: "Galão de Água Mineral 20 Litros em Pelotas RS" },
+  { label: "Gás Comercial", to: "/produto/gas-comercial", title: "Gás Comercial e Industrial em Pelotas RS" },
 ];
 
 const Footer = () => {
@@ -35,7 +35,7 @@ const Footer = () => {
         >
           {/* Col 1 — Brand */}
           <div className="space-y-5">
-            <img src={logo} alt="Império Gás e Água - Disk Gás Pelotas RS" className="h-20 w-auto" loading="lazy" />
+            <img src={logo} alt="Império Gás e Água - Disk Gás Pelotas RS" className="h-24 w-auto" loading="lazy" />
             <p className="text-sm text-primary-foreground/75 leading-relaxed max-w-xs">
               Revenda autorizada Liquigás em Pelotas. Entrega rápida de gás de cozinha e água mineral todos os dias.
             </p>
@@ -44,21 +44,21 @@ const Footer = () => {
               target="_blank"
               rel="noopener noreferrer"
               title="Pedir gás pelo WhatsApp - Império Gás Pelotas"
-              className="inline-flex items-center gap-2 rounded-full bg-cta px-5 py-2.5 text-sm font-bold text-primary-foreground hover:bg-cta-hover transition-colors"
+              className="inline-flex items-center gap-2 rounded-full bg-cta px-5 py-2.5 text-sm font-bold text-white hover:bg-cta-hover transition-colors"
             >
               <MessageCircle className="w-4 h-4" />
               Pedir no WhatsApp
             </a>
           </div>
 
-          {/* Col 2 — Institutional / SEO links */}
+          {/* Col 2 — Navigation */}
           <div className="space-y-4">
             <h4 className="font-display text-base font-bold text-primary-foreground">Navegação</h4>
             <nav className="flex flex-col gap-2.5">
-              {seoLinks.map((link) => (
-                <a key={link.label} href={link.href} title={link.title} className="text-sm text-primary-foreground/70 hover:text-secondary transition-colors">
+              {navigationLinks.map((link) => (
+                <Link key={link.to} to={link.to} title={link.title} className="text-sm text-primary-foreground/70 hover:text-secondary transition-colors">
                   {link.label}
-                </a>
+                </Link>
               ))}
             </nav>
           </div>
@@ -68,9 +68,9 @@ const Footer = () => {
             <h4 className="font-display text-base font-bold text-primary-foreground">Produtos</h4>
             <nav className="flex flex-col gap-2.5">
               {productLinks.map((link) => (
-                <a key={link.label} href={link.href} title={link.title} className="text-sm text-primary-foreground/70 hover:text-secondary transition-colors">
+                <Link key={link.to} to={link.to} title={link.title} className="text-sm text-primary-foreground/70 hover:text-secondary transition-colors">
                   {link.label}
-                </a>
+                </Link>
               ))}
             </nav>
           </div>
@@ -99,7 +99,7 @@ const Footer = () => {
           </div>
         </motion.div>
 
-        {/* Bairros atendidos — SEO grid with links to dedicated pages */}
+        {/* Bairros atendidos */}
         <motion.div
           className="mt-12 pt-10 border-t border-primary-foreground/10"
           initial={{ opacity: 0 }}
@@ -130,8 +130,8 @@ const Footer = () => {
         <div className="container mx-auto px-4 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-primary-foreground/50">
           <p>© {new Date().getFullYear()} Império Gás e Água. Todos os direitos reservados.</p>
           <div className="flex items-center gap-4">
-            <a href="#faq" title="Política de Privacidade - Império Gás Pelotas" className="hover:text-primary-foreground/80 transition-colors">Política de Privacidade</a>
-            <a href="#faq" title="Termos de Uso - Império Gás Pelotas" className="hover:text-primary-foreground/80 transition-colors">Termos de Uso</a>
+            <Link to="/perguntas-frequentes" title="Política de Privacidade - Império Gás Pelotas" className="hover:text-primary-foreground/80 transition-colors">Política de Privacidade</Link>
+            <Link to="/perguntas-frequentes" title="Termos de Uso - Império Gás Pelotas" className="hover:text-primary-foreground/80 transition-colors">Termos de Uso</Link>
             <span className="text-primary-foreground/30">|</span>
             <a
               href="https://agenciamobi.com.br/"
