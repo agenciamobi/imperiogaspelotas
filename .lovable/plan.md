@@ -1,56 +1,74 @@
 
 
-# Ajustes de Logo, Horário, SEO Produtos e Páginas de Bairros
+# Correção de Cores, Links Funcionais e Páginas Dedicadas SEO
 
-## 1. Logo no Footer — Aumentar tamanho
-- `Footer.tsx`: Alterar `className="h-12"` para `h-20` na imagem do logo
+## Problemas Identificados
 
-## 2. Header — Esconder barra vermelha ao rolar
-- `Header.tsx`: Envolver `<UrgencyBar />` com condição `{!scrolled && <UrgencyBar />}` para ocultar ao rolar
-- Isso faz o header ficar mais limpo quando sólido/branco
+1. **Botões no BairroPage hero**: o botão "Pedir pelo WhatsApp" usa `bg-cta text-primary-foreground` (laranja com texto branco — OK), mas o botão de telefone usa `text-primary-foreground` sem fundo visível no hero verde, ficando invisível
+2. **Menu no header nas páginas internas**: os nav links apontam para âncoras (`#gas`, `#faq`, etc.) que só existem na home — nas páginas de bairro não funcionam
+3. **Footer "Navegação" e "Produtos"**: links apontam para âncoras simples sem páginas dedicadas
 
-## 3. Horário de Atendimento 09h–22h + Lógica do Contador
-- `constants.ts`: Adicionar `DELIVERY_START_HOUR = 9`, atualizar `BUSINESS_HOURS = "Todos os dias das 09h às 22h"`
-- `UrgencyBar.tsx`: Reescrever `calculateTimeLeft`:
-  - **Antes das 09h**: "Faltam Xh Xmin para iniciarmos as entregas de hoje"
-  - **Entre 09h–22h**: "Faltam Xh Xmin para encerrar entregas" (comportamento atual)
-  - **Após 22h**: "Faltam Xh Xmin para iniciarmos as entregas de hoje" (conta até 09h do dia seguinte)
+## Mudanças
 
-## 4. SEO Forte na Seção Produtos
-- `ProductsGas.tsx`: Adicionar texto SEO rico com keywords locais (h2 com "Gás de Cozinha e Água Mineral em Pelotas"), parágrafo descritivo com bairros, schema `ItemList` inline
-- `PriceCards.tsx`: Adicionar `title` e `alt` SEO-otimizados em cada produto (ex: "Botijão P13 Liquigás - Disk Gás Pelotas RS - Entrega Rápida"), adicionar microdados `itemScope itemType Product` nos cards
+### 1. BairroPage.tsx — Cores dos botões no hero
+- Botão WhatsApp: `bg-cta hover:bg-cta-hover text-white` (garantir texto branco explícito)
+- Botão Telefone: `bg-white/15 border-2 border-white/40 text-white hover:bg-white/20` (visível sobre fundo verde)
+- Botão "Pedir Agora" nos cards de produto: manter `bg-cta text-white`
 
-## 5. Páginas Dedicadas por Bairro — SEO/GEO/LEO/AEO
-Criar um componente `BairroPage.tsx` reutilizável e rotas dinâmicas `/bairro/:slug`:
+### 2. Header.tsx — Links funcionais em páginas internas
+- Detectar se estamos na home (`useLocation`) 
+- Se na home: manter `href="#gas"` etc.
+- Se em página interna: mudar para `href="/#gas"`, `href="/#faq"` etc. (volta à home + scroll)
+- Manter cores corretas: transparente = texto branco, scrolled = texto escuro
 
-- **`src/pages/BairroPage.tsx`**: Página template com:
-  - H1: "Disk Gás e Água em {Bairro} - Pelotas RS"
-  - Texto SEO descritivo do serviço no bairro
-  - Lista de produtos disponíveis
-  - CTAs WhatsApp/Telefone
-  - FAQ local (3 perguntas específicas do bairro)
-  - JSON-LD `LocalBusiness` com `areaServed` específico do bairro
-  - Meta tags dinâmicas via `document.title` e meta description
-  - Link de volta para a home
-  - Header e Footer reutilizados
+### 3. Páginas dedicadas para itens do Footer
 
-- **`src/lib/bairros.ts`**: Array com dados dos 22 bairros (nome, slug, descrição curta)
+Criar 9 páginas dedicadas com SEO completo:
 
-- **`App.tsx`**: Adicionar rota `/bairro/:slug` apontando para `BairroPage`
+**Navegação:**
+- `/disk-gas-pelotas` — Disk Gás Pelotas
+- `/entrega-rapida-gas` — Entrega Rápida de Gás
+- `/agua-mineral-pelotas` — Água Mineral Pelotas
+- `/perguntas-frequentes` — Perguntas Frequentes
+- `/fale-conosco` — Fale Conosco
 
-- **`Footer.tsx`**: Alterar links dos bairros de `href="#contato"` para `href="/bairro/{slug}"` usando `<Link>` do react-router
+**Produtos:**
+- `/produto/botijao-p13` — Botijão P13
+- `/produto/botijao-p45` — Botijão P45
+- `/produto/agua-mineral-20l` — Água Mineral 20L
+- `/produto/gas-comercial` — Gás Comercial
 
-- **`public/sitemap.xml`**: Adicionar URLs de cada bairro
+Cada página terá:
+- H1 SEO otimizado, descrição rica, CTAs WhatsApp/Telefone
+- JSON-LD (`Product`, `Service`, `FAQPage` conforme o caso)
+- Meta title e description dinâmicos
+- Header e Footer reutilizados
+- FAQ local relevante (3 perguntas)
+- Animações framer-motion
 
-## Arquivos Modificados
-- `src/lib/constants.ts` — horário 09h
-- `src/components/UrgencyBar.tsx` — lógica antes/depois do horário
-- `src/components/Header.tsx` — esconder barra ao rolar
-- `src/components/Footer.tsx` — logo maior + links bairros com rotas
-- `src/components/ProductsGas.tsx` — SEO forte
-- `src/components/PriceCards.tsx` — microdados produtos
-- `src/lib/bairros.ts` — dados dos bairros (novo)
-- `src/pages/BairroPage.tsx` — página dedicada (novo)
-- `src/App.tsx` — rota bairro
-- `public/sitemap.xml` — URLs bairros
+### 4. Novos arquivos de dados
+- `src/lib/pages-data.ts` — array com dados das páginas de navegação e produtos (slug, título, descrição, FAQ, tipo de schema)
+
+### 5. Footer.tsx — Links atualizados
+- Trocar `href="#inicio"` etc. por `<Link to="/disk-gas-pelotas">` etc.
+- Trocar `href="#gas"` nos produtos por `<Link to="/produto/botijao-p13">` etc.
+- Todos com `title` SEO otimizado
+
+### 6. App.tsx — Novas rotas
+- Adicionar rotas para as 9 páginas novas
+
+### 7. sitemap.xml — Novas URLs
+- Adicionar as 9 URLs das páginas dedicadas
+
+## Arquivos
+
+| Arquivo | Ação |
+|---|---|
+| `src/components/Header.tsx` | Links condicionais home/interna |
+| `src/pages/BairroPage.tsx` | Cores botões corrigidas |
+| `src/lib/pages-data.ts` | Dados das páginas (novo) |
+| `src/pages/PageTemplate.tsx` | Template reutilizável para páginas de navegação/produto (novo) |
+| `src/components/Footer.tsx` | Links com rotas internas |
+| `src/App.tsx` | 9 novas rotas |
+| `public/sitemap.xml` | URLs novas |
 
