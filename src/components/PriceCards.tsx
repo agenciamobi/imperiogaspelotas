@@ -2,6 +2,7 @@ import { MessageCircle } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { getWhatsAppLink, WHATSAPP_MESSAGES } from "@/lib/constants";
+import { trackProductClick, appendUtmToWhatsAppLink } from "@/lib/tracking";
 import botijaoP13 from "@/assets/botijao-p13.png";
 import botijaoP02 from "@/assets/botijao-p02.png";
 import aguaMineral from "@/assets/agua-mineral.png";
@@ -35,7 +36,7 @@ const PriceCards = () => {
   return (
     <div className="grid md:grid-cols-3 gap-5">
       {products.map((product, i) => {
-        const whatsappLink = getWhatsAppLink(WHATSAPP_MESSAGES.product(product.title));
+        const whatsappLink = appendUtmToWhatsAppLink(getWhatsAppLink(WHATSAPP_MESSAGES.product(product.title)));
         return (
           <motion.div
             key={product.title}
@@ -69,6 +70,7 @@ const PriceCards = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     title={product.seoTitle}
+                    onClick={() => trackProductClick(product.title)}
                   >
                     <MessageCircle className="w-4 h-4" />
                     Pedir no WhatsApp

@@ -8,6 +8,7 @@ import Footer from "@/components/Footer";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
 import MobileBar from "@/components/MobileBar";
 import { getWhatsAppLink, WHATSAPP_MESSAGES, PHONE_DISPLAY, PHONE_LANDLINE, BUSINESS_HOURS } from "@/lib/constants";
+import { trackWhatsAppClick, trackPhoneClick, appendUtmToWhatsAppLink } from "@/lib/tracking";
 import { motion } from "framer-motion";
 import type { PageData } from "@/lib/pages-data";
 
@@ -92,13 +93,13 @@ const PageTemplate = ({ page }: Props) => {
 
               <div className="flex flex-wrap gap-3">
                 <Button asChild size="lg" className="bg-cta hover:bg-cta-hover rounded-full font-bold shadow-lg text-white">
-                  <a href={getWhatsAppLink(WHATSAPP_MESSAGES.order)} target="_blank" rel="noopener noreferrer" title={`${page.h1} - Pedir pelo WhatsApp`}>
+                  <a href={appendUtmToWhatsAppLink(getWhatsAppLink(WHATSAPP_MESSAGES.order))} target="_blank" rel="noopener noreferrer" title={`${page.h1} - Pedir pelo WhatsApp`} onClick={() => trackWhatsAppClick(`page_${page.path}_hero`)}>
                     <MessageCircle className="w-5 h-5" />
                     Pedir pelo WhatsApp
                   </a>
                 </Button>
                 <Button asChild size="lg" className="bg-white/15 border-2 border-white/40 text-white hover:bg-white/25 rounded-full font-bold">
-                  <a href={`tel:${PHONE_DISPLAY.replace(/\D/g, "")}`} title={`Ligar para Império Gás - ${page.h1}`}>
+                  <a href="tel:+5553991162002" title={`Ligar para Império Gás - ${page.h1}`} onClick={() => trackPhoneClick(`page_${page.path}_hero`)}>
                     <Phone className="w-5 h-5" />
                     {PHONE_DISPLAY}
                   </a>
@@ -159,7 +160,7 @@ const PageTemplate = ({ page }: Props) => {
                 Atendimento {BUSINESS_HOURS.toLowerCase()}. Entrega rápida em Pelotas RS.
               </p>
               <Button asChild size="lg" className="bg-cta hover:bg-cta-hover rounded-full font-bold text-lg px-10 shadow-xl text-white">
-                <a href={getWhatsAppLink(WHATSAPP_MESSAGES.order)} target="_blank" rel="noopener noreferrer" title={`${page.h1} - Peça agora pelo WhatsApp`}>
+                <a href={appendUtmToWhatsAppLink(getWhatsAppLink(WHATSAPP_MESSAGES.order))} target="_blank" rel="noopener noreferrer" title={`${page.h1} - Peça agora pelo WhatsApp`} onClick={() => trackWhatsAppClick(`page_${page.path}_cta_final`)}>
                   <MessageCircle className="w-5 h-5" />
                   Pedir pelo WhatsApp
                 </a>

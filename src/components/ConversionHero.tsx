@@ -1,6 +1,7 @@
 import { MessageCircle, Phone, CheckCircle2, Zap, Shield, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getWhatsAppLink, WHATSAPP_MESSAGES, PHONE_DISPLAY } from "@/lib/constants";
+import { trackWhatsAppClick, trackPhoneClick, appendUtmToWhatsAppLink } from "@/lib/tracking";
 import botijaoHero from "@/assets/botijao-hero.png";
 import mascoteLiquigas from "@/assets/mascote-liquigas.png";
 import { motion } from "framer-motion";
@@ -81,14 +82,14 @@ const ConversionHero = () => {
             {/* CTA Buttons */}
             <motion.div {...fadeUp(0.45)} className="flex flex-col sm:flex-row gap-4 pt-2 justify-center lg:justify-start">
               <Button asChild size="lg" className="h-16 px-10 bg-[hsl(var(--cta))] hover:bg-[hsl(var(--cta-hover))] text-white rounded-full font-bold text-lg shadow-xl hover:shadow-2xl transition-all hover:scale-105">
-                <a href={getWhatsAppLink(WHATSAPP_MESSAGES.order)} target="_blank" rel="noopener noreferrer">
+                <a href={appendUtmToWhatsAppLink(getWhatsAppLink(WHATSAPP_MESSAGES.order))} target="_blank" rel="noopener noreferrer" onClick={() => trackWhatsAppClick("hero")}>
                   <MessageCircle className="w-6 h-6" />
                   Compre pelo WhatsApp
                 </a>
               </Button>
 
               <Button asChild size="lg" variant="outline" className="h-16 px-10 bg-white/10 backdrop-blur-sm border-2 border-white/40 text-white hover:bg-white/20 hover:text-white rounded-full font-bold text-lg transition-all">
-                <a href={`tel:${PHONE_DISPLAY.replace(/\D/g, "")}`}>
+                <a href="tel:+5553991162002" onClick={() => trackPhoneClick("hero")}>
                   <Phone className="w-5 h-5" />
                   Peça pelo Telefone
                 </a>

@@ -9,6 +9,7 @@ import WhatsAppFloat from "@/components/WhatsAppFloat";
 import MobileBar from "@/components/MobileBar";
 import { bairros } from "@/lib/bairros";
 import { getWhatsAppLink, WHATSAPP_MESSAGES, PHONE_DISPLAY, PHONE_LANDLINE, BUSINESS_HOURS } from "@/lib/constants";
+import { trackWhatsAppClick, trackPhoneClick, trackProductClick, appendUtmToWhatsAppLink } from "@/lib/tracking";
 import { motion } from "framer-motion";
 
 const BairroPage = () => {
@@ -87,13 +88,13 @@ const BairroPage = () => {
 
               <div className="flex flex-wrap gap-3">
                 <Button asChild size="lg" className="bg-cta hover:bg-cta-hover rounded-full font-bold shadow-lg text-white">
-                  <a href={getWhatsAppLink(whatsappMsg)} target="_blank" rel="noopener noreferrer" title={`Pedir gás no ${bairro.nome} pelo WhatsApp`}>
+                  <a href={appendUtmToWhatsAppLink(getWhatsAppLink(whatsappMsg))} target="_blank" rel="noopener noreferrer" title={`Pedir gás no ${bairro.nome} pelo WhatsApp`} onClick={() => trackWhatsAppClick(`bairro_${bairro.slug}_hero`)}>
                     <MessageCircle className="w-5 h-5" />
                     Pedir pelo WhatsApp
                   </a>
                 </Button>
                 <Button asChild size="lg" className="bg-white/15 border-2 border-white/40 text-white hover:bg-white/25 rounded-full font-bold">
-                  <a href={`tel:${PHONE_DISPLAY.replace(/\D/g, "")}`} title={`Ligar para pedir gás no ${bairro.nome}`}>
+                  <a href="tel:+5553991162002" title={`Ligar para pedir gás no ${bairro.nome}`} onClick={() => trackPhoneClick(`bairro_${bairro.slug}_hero`)}>
                     <Phone className="w-5 h-5" />
                     {PHONE_DISPLAY}
                   </a>
@@ -136,7 +137,7 @@ const BairroPage = () => {
                   <p className="text-sm text-muted-foreground" itemProp="description">{prod.desc}</p>
                   <meta itemProp="brand" content="Liquigás" />
                   <Button asChild className="w-full bg-cta hover:bg-cta-hover text-white rounded-full font-bold">
-                    <a href={getWhatsAppLink(WHATSAPP_MESSAGES.product(prod.title))} target="_blank" rel="noopener noreferrer" title={prod.alt}>
+                    <a href={appendUtmToWhatsAppLink(getWhatsAppLink(WHATSAPP_MESSAGES.product(prod.title)))} target="_blank" rel="noopener noreferrer" title={prod.alt} onClick={() => trackProductClick(prod.title)}>
                       <MessageCircle className="w-4 h-4" />
                       Pedir Agora
                     </a>
@@ -224,7 +225,7 @@ const BairroPage = () => {
                 Gás de cozinha e água mineral com entrega rápida no seu bairro. Atendimento {BUSINESS_HOURS.toLowerCase()}.
               </p>
               <Button asChild size="lg" className="bg-cta hover:bg-cta-hover rounded-full font-bold text-lg px-10 shadow-xl text-white">
-                <a href={getWhatsAppLink(whatsappMsg)} target="_blank" rel="noopener noreferrer" title={`Pedir gás e água no ${bairro.nome} Pelotas pelo WhatsApp`}>
+                <a href={appendUtmToWhatsAppLink(getWhatsAppLink(whatsappMsg))} target="_blank" rel="noopener noreferrer" title={`Pedir gás e água no ${bairro.nome} Pelotas pelo WhatsApp`} onClick={() => trackWhatsAppClick(`bairro_${bairro.slug}_cta_final`)}>
                   <MessageCircle className="w-5 h-5" />
                   Pedir pelo WhatsApp
                 </a>
