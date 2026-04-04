@@ -70,6 +70,7 @@ const PriceCards = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     title={product.seoTitle}
+                    onClick={() => trackProductClick(product.title)}
                   >
                     <MessageCircle className="w-4 h-4" />
                     Pedir no WhatsApp

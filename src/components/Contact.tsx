@@ -32,7 +32,7 @@ const Contact = () => {
           </div>
 
           <Button asChild size="lg" className="h-14 px-10 bg-cta hover:bg-cta-hover text-primary-foreground rounded-full font-bold text-lg">
-            <a href={getWhatsAppLink(WHATSAPP_MESSAGES.order)} target="_blank" rel="noopener noreferrer">
+            <a href={appendUtmToWhatsAppLink(getWhatsAppLink(WHATSAPP_MESSAGES.order))} target="_blank" rel="noopener noreferrer" onClick={() => trackWhatsAppClick("contact_section")}>
               <MessageCircle className="w-5 h-5" />
               Quero pedir no WhatsApp
             </a>
