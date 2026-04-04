@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -8,8 +9,16 @@ import BairroPage from "./pages/BairroPage";
 import NotFound from "./pages/NotFound";
 import PageTemplate from "./pages/PageTemplate";
 import { allPages } from "./lib/pages-data";
+import { captureUtmParams } from "./lib/tracking";
 
 const queryClient = new QueryClient();
+
+function UtmCapture() {
+  useEffect(() => {
+    captureUtmParams();
+  }, []);
+  return null;
+}
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
