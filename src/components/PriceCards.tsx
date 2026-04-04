@@ -2,6 +2,7 @@ import { MessageCircle } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { getWhatsAppLink, WHATSAPP_MESSAGES } from "@/lib/constants";
+import { trackProductClick, appendUtmToWhatsAppLink } from "@/lib/tracking";
 import botijaoP13 from "@/assets/botijao-p13.png";
 import botijaoP02 from "@/assets/botijao-p02.png";
 import aguaMineral from "@/assets/agua-mineral.png";
