@@ -99,7 +99,7 @@ const PageTemplate = ({ page }: Props) => {
                   </a>
                 </Button>
                 <Button asChild size="lg" className="bg-white/15 border-2 border-white/40 text-white hover:bg-white/25 rounded-full font-bold">
-                  <a href={`tel:${PHONE_DISPLAY.replace(/\D/g, "")}`} title={`Ligar para Império Gás - ${page.h1}`}>
+                  <a href="tel:+5553991162002" title={`Ligar para Império Gás - ${page.h1}`} onClick={() => trackPhoneClick(`page_${page.path}_hero`)}>
                     <Phone className="w-5 h-5" />
                     {PHONE_DISPLAY}
                   </a>
