@@ -36,7 +36,7 @@ const PriceCards = () => {
   return (
     <div className="grid md:grid-cols-3 gap-5">
       {products.map((product, i) => {
-        const whatsappLink = getWhatsAppLink(WHATSAPP_MESSAGES.product(product.title));
+        const whatsappLink = appendUtmToWhatsAppLink(getWhatsAppLink(WHATSAPP_MESSAGES.product(product.title)));
         return (
           <motion.div
             key={product.title}
