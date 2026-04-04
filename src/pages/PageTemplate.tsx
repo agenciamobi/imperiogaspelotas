@@ -160,7 +160,7 @@ const PageTemplate = ({ page }: Props) => {
                 Atendimento {BUSINESS_HOURS.toLowerCase()}. Entrega rápida em Pelotas RS.
               </p>
               <Button asChild size="lg" className="bg-cta hover:bg-cta-hover rounded-full font-bold text-lg px-10 shadow-xl text-white">
-                <a href={getWhatsAppLink(WHATSAPP_MESSAGES.order)} target="_blank" rel="noopener noreferrer" title={`${page.h1} - Peça agora pelo WhatsApp`}>
+                <a href={appendUtmToWhatsAppLink(getWhatsAppLink(WHATSAPP_MESSAGES.order))} target="_blank" rel="noopener noreferrer" title={`${page.h1} - Peça agora pelo WhatsApp`} onClick={() => trackWhatsAppClick(`page_${page.path}_cta_final`)}>
                   <MessageCircle className="w-5 h-5" />
                   Pedir pelo WhatsApp
                 </a>

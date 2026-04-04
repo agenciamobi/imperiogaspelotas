@@ -26,6 +26,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <UtmCapture />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/bairro/:slug" element={<BairroPage />} />

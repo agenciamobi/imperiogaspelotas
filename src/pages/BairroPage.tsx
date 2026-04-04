@@ -225,7 +225,7 @@ const BairroPage = () => {
                 Gás de cozinha e água mineral com entrega rápida no seu bairro. Atendimento {BUSINESS_HOURS.toLowerCase()}.
               </p>
               <Button asChild size="lg" className="bg-cta hover:bg-cta-hover rounded-full font-bold text-lg px-10 shadow-xl text-white">
-                <a href={getWhatsAppLink(whatsappMsg)} target="_blank" rel="noopener noreferrer" title={`Pedir gás e água no ${bairro.nome} Pelotas pelo WhatsApp`}>
+                <a href={appendUtmToWhatsAppLink(getWhatsAppLink(whatsappMsg))} target="_blank" rel="noopener noreferrer" title={`Pedir gás e água no ${bairro.nome} Pelotas pelo WhatsApp`} onClick={() => trackWhatsAppClick(`bairro_${bairro.slug}_cta_final`)}>
                   <MessageCircle className="w-5 h-5" />
                   Pedir pelo WhatsApp
                 </a>
