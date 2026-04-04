@@ -82,7 +82,7 @@ const ConversionHero = () => {
             {/* CTA Buttons */}
             <motion.div {...fadeUp(0.45)} className="flex flex-col sm:flex-row gap-4 pt-2 justify-center lg:justify-start">
               <Button asChild size="lg" className="h-16 px-10 bg-[hsl(var(--cta))] hover:bg-[hsl(var(--cta-hover))] text-white rounded-full font-bold text-lg shadow-xl hover:shadow-2xl transition-all hover:scale-105">
-                <a href={getWhatsAppLink(WHATSAPP_MESSAGES.order)} target="_blank" rel="noopener noreferrer">
+                <a href={appendUtmToWhatsAppLink(getWhatsAppLink(WHATSAPP_MESSAGES.order))} target="_blank" rel="noopener noreferrer" onClick={() => trackWhatsAppClick("hero")}>
                   <MessageCircle className="w-6 h-6" />
                   Compre pelo WhatsApp
                 </a>
