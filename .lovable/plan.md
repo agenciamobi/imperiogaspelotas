@@ -1,74 +1,71 @@
 
 
-# Correção de Cores, Links Funcionais e Páginas Dedicadas SEO
+# Preparar Site para Tráfego Pago no Google Ads
 
-## Problemas Identificados
-
-1. **Botões no BairroPage hero**: o botão "Pedir pelo WhatsApp" usa `bg-cta text-primary-foreground` (laranja com texto branco — OK), mas o botão de telefone usa `text-primary-foreground` sem fundo visível no hero verde, ficando invisível
-2. **Menu no header nas páginas internas**: os nav links apontam para âncoras (`#gas`, `#faq`, etc.) que só existem na home — nas páginas de bairro não funcionam
-3. **Footer "Navegação" e "Produtos"**: links apontam para âncoras simples sem páginas dedicadas
+## Objetivo
+Tornar o site pronto para receber tráfego pago do Google Ads com rastreamento de conversões, parâmetros UTM, eventos de conversão e otimizações de Quality Score.
 
 ## Mudanças
 
-### 1. BairroPage.tsx — Cores dos botões no hero
-- Botão WhatsApp: `bg-cta hover:bg-cta-hover text-white` (garantir texto branco explícito)
-- Botão Telefone: `bg-white/15 border-2 border-white/40 text-white hover:bg-white/20` (visível sobre fundo verde)
-- Botão "Pedir Agora" nos cards de produto: manter `bg-cta text-white`
+### 1. Google Ads Global Site Tag (gtag.js)
+**Arquivo: `index.html`**
+- Adicionar script `gtag.js` com placeholder para Google Ads ID (`AW-XXXXXXXXXX`)
+- Configurar `gtag('config', 'AW-XXXXXXXXXX')` pronto para ativar
+- Adicionar evento de conversão padrão `conversion` para cliques no WhatsApp e telefone
 
-### 2. Header.tsx — Links funcionais em páginas internas
-- Detectar se estamos na home (`useLocation`) 
-- Se na home: manter `href="#gas"` etc.
-- Se em página interna: mudar para `href="/#gas"`, `href="/#faq"` etc. (volta à home + scroll)
-- Manter cores corretas: transparente = texto branco, scrolled = texto escuro
+### 2. Utilitário de Tracking de Conversões
+**Arquivo: `src/lib/tracking.ts` (novo)**
+- Função `trackConversion(eventName, params)` que dispara `gtag('event', ...)` se disponivel
+- Função `getUtmParams()` que extrai UTM da URL e persiste no `sessionStorage`
+- Função `appendUtmToWhatsApp(link)` que inclui UTMs na mensagem do WhatsApp para o vendedor saber a origem
+- Eventos pré-definidos: `whatsapp_click`, `phone_click`, `cta_hero_click`, `product_click`
 
-### 3. Páginas dedicadas para itens do Footer
+### 3. Captura e Persistência de UTMs
+**Arquivo: `src/App.tsx`**
+- Ao montar, capturar `utm_source`, `utm_medium`, `utm_campaign`, `utm_content`, `utm_term` e `gclid` da URL
+- Salvar no `sessionStorage` para uso posterior em links e tracking
 
-Criar 9 páginas dedicadas com SEO completo:
+### 4. Eventos de Conversão em Todos os CTAs
+**Arquivos: `ConversionHero.tsx`, `Contact.tsx`, `PriceCards.tsx`, `MobileBar.tsx`, `WhatsAppFloat.tsx`, `BairroPage.tsx`, `PageTemplate.tsx`**
+- Adicionar `onClick` nos botões de WhatsApp e Telefone chamando `trackConversion`
+- Incluir UTMs persistidos na mensagem WhatsApp (ex: "Origem: Google Ads | Campanha: gas-pelotas")
+- Cada CTA dispara evento distinto para segmentar conversões no Google Ads
 
-**Navegação:**
-- `/disk-gas-pelotas` — Disk Gás Pelotas
-- `/entrega-rapida-gas` — Entrega Rápida de Gás
-- `/agua-mineral-pelotas` — Água Mineral Pelotas
-- `/perguntas-frequentes` — Perguntas Frequentes
-- `/fale-conosco` — Fale Conosco
+### 5. Landing Page Otimizada para Quality Score
+**Arquivo: `index.html`**
+- Meta tag `google-site-verification` (placeholder)
+- Garantir que `<title>` e `<meta description>` contém as keywords de campanha
+- Adicionar `noscript` fallback para tracking
 
-**Produtos:**
-- `/produto/botijao-p13` — Botijão P13
-- `/produto/botijao-p45` — Botijão P45
-- `/produto/agua-mineral-20l` — Água Mineral 20L
-- `/produto/gas-comercial` — Gás Comercial
+### 6. Página de Confirmação / Thank You (opcional mas recomendada)
+**Arquivo: `src/components/ConversionConfirmation.tsx` (novo)**
+- Modal/toast que aparece ao clicar no CTA confirmando a ação (ex: "Você será redirecionado ao WhatsApp")
+- Dispara evento `gtag('event', 'conversion', { send_to: 'AW-XXXXXXXXXX/XXXXX' })` nesse momento
 
-Cada página terá:
-- H1 SEO otimizado, descrição rica, CTAs WhatsApp/Telefone
-- JSON-LD (`Product`, `Service`, `FAQPage` conforme o caso)
-- Meta title e description dinâmicos
-- Header e Footer reutilizados
-- FAQ local relevante (3 perguntas)
-- Animações framer-motion
+### 7. Rastreamento de Ligações Telefônicas
+- Adicionar `tel:` links com formatação E.164 (`+5553991162002`)
+- Configurar evento de conversão para cliques em telefone
+- Google Ads pode usar isso para Website Call Conversions
 
-### 4. Novos arquivos de dados
-- `src/lib/pages-data.ts` — array com dados das páginas de navegação e produtos (slug, título, descrição, FAQ, tipo de schema)
+## Arquivos Modificados/Criados
 
-### 5. Footer.tsx — Links atualizados
-- Trocar `href="#inicio"` etc. por `<Link to="/disk-gas-pelotas">` etc.
-- Trocar `href="#gas"` nos produtos por `<Link to="/produto/botijao-p13">` etc.
-- Todos com `title` SEO otimizado
-
-### 6. App.tsx — Novas rotas
-- Adicionar rotas para as 9 páginas novas
-
-### 7. sitemap.xml — Novas URLs
-- Adicionar as 9 URLs das páginas dedicadas
-
-## Arquivos
-
-| Arquivo | Ação |
+| Arquivo | Acao |
 |---|---|
-| `src/components/Header.tsx` | Links condicionais home/interna |
-| `src/pages/BairroPage.tsx` | Cores botões corrigidas |
-| `src/lib/pages-data.ts` | Dados das páginas (novo) |
-| `src/pages/PageTemplate.tsx` | Template reutilizável para páginas de navegação/produto (novo) |
-| `src/components/Footer.tsx` | Links com rotas internas |
-| `src/App.tsx` | 9 novas rotas |
-| `public/sitemap.xml` | URLs novas |
+| `index.html` | gtag.js + google-site-verification |
+| `src/lib/tracking.ts` | Utilitario de tracking e UTM (novo) |
+| `src/App.tsx` | Captura UTMs ao montar |
+| `src/lib/constants.ts` | Google Ads ID placeholder |
+| `src/components/ConversionHero.tsx` | onClick tracking |
+| `src/components/Contact.tsx` | onClick tracking |
+| `src/components/PriceCards.tsx` | onClick tracking |
+| `src/components/MobileBar.tsx` | onClick tracking |
+| `src/components/WhatsAppFloat.tsx` | onClick tracking |
+| `src/pages/BairroPage.tsx` | onClick tracking |
+| `src/pages/PageTemplate.tsx` | onClick tracking |
+
+## Como Ativar
+Apos implementar, o usuario so precisa:
+1. Substituir `AW-XXXXXXXXXX` pelo ID real do Google Ads
+2. Configurar as acoes de conversao no painel do Google Ads
+3. Os eventos ja estarao disparando automaticamente
 
