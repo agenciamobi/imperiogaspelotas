@@ -1,6 +1,7 @@
 import { MessageCircle, MapPin, Clock3 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getWhatsAppLink, WHATSAPP_MESSAGES } from "@/lib/constants";
+import { trackWhatsAppClick, appendUtmToWhatsAppLink } from "@/lib/tracking";
 import { motion } from "framer-motion";
 
 const Contact = () => {
