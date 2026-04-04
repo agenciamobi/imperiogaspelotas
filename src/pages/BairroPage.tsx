@@ -88,7 +88,7 @@ const BairroPage = () => {
 
               <div className="flex flex-wrap gap-3">
                 <Button asChild size="lg" className="bg-cta hover:bg-cta-hover rounded-full font-bold shadow-lg text-white">
-                  <a href={getWhatsAppLink(whatsappMsg)} target="_blank" rel="noopener noreferrer" title={`Pedir gás no ${bairro.nome} pelo WhatsApp`}>
+                  <a href={appendUtmToWhatsAppLink(getWhatsAppLink(whatsappMsg))} target="_blank" rel="noopener noreferrer" title={`Pedir gás no ${bairro.nome} pelo WhatsApp`} onClick={() => trackWhatsAppClick(`bairro_${bairro.slug}_hero`)}>
                     <MessageCircle className="w-5 h-5" />
                     Pedir pelo WhatsApp
                   </a>
