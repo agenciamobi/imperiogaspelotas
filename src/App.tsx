@@ -8,6 +8,8 @@ import Index from "./pages/Index";
 import BairroPage from "./pages/BairroPage";
 import NotFound from "./pages/NotFound";
 import PageTemplate from "./pages/PageTemplate";
+import LandingPromo from "./pages/LandingPromo";
+import AdminLanding from "./pages/AdminLanding";
 import { allPages } from "./lib/pages-data";
 import { captureUtmParams } from "./lib/tracking";
 
