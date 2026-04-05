@@ -83,8 +83,8 @@ export default function LandingPromo() {
     );
   }
 
-  const trustItems: TrustItem[] = (page.trust_items as TrustItem[]) || [];
-  const testimonials: Testimonial[] = (page.testimonials as Testimonial[]) || [];
+  const trustItems = (page.trust_items as unknown as TrustItem[]) || [];
+  const testimonials = (page.testimonials as unknown as Testimonial[]) || [];
   const waLink = appendUtmToWhatsAppLink(getWhatsAppLink(page.whatsapp_message || undefined));
 
   const handleWhatsApp = () => {
