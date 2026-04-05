@@ -14,7 +14,81 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      landing_pages: {
+        Row: {
+          bg_color: string | null
+          created_at: string | null
+          hero_badge: string | null
+          hero_image_url: string | null
+          hero_subtitle: string
+          hero_title: string
+          id: string
+          is_active: boolean | null
+          meta_description: string | null
+          meta_title: string | null
+          offer_cta_text: string | null
+          offer_description: string | null
+          offer_original_price: string | null
+          offer_price: string | null
+          offer_title: string | null
+          offer_valid_until: string | null
+          phone_cta_text: string | null
+          slug: string
+          testimonials: Json | null
+          trust_items: Json | null
+          updated_at: string | null
+          whatsapp_message: string | null
+        }
+        Insert: {
+          bg_color?: string | null
+          created_at?: string | null
+          hero_badge?: string | null
+          hero_image_url?: string | null
+          hero_subtitle?: string
+          hero_title?: string
+          id?: string
+          is_active?: boolean | null
+          meta_description?: string | null
+          meta_title?: string | null
+          offer_cta_text?: string | null
+          offer_description?: string | null
+          offer_original_price?: string | null
+          offer_price?: string | null
+          offer_title?: string | null
+          offer_valid_until?: string | null
+          phone_cta_text?: string | null
+          slug: string
+          testimonials?: Json | null
+          trust_items?: Json | null
+          updated_at?: string | null
+          whatsapp_message?: string | null
+        }
+        Update: {
+          bg_color?: string | null
+          created_at?: string | null
+          hero_badge?: string | null
+          hero_image_url?: string | null
+          hero_subtitle?: string
+          hero_title?: string
+          id?: string
+          is_active?: boolean | null
+          meta_description?: string | null
+          meta_title?: string | null
+          offer_cta_text?: string | null
+          offer_description?: string | null
+          offer_original_price?: string | null
+          offer_price?: string | null
+          offer_title?: string | null
+          offer_valid_until?: string | null
+          phone_cta_text?: string | null
+          slug?: string
+          testimonials?: Json | null
+          trust_items?: Json | null
+          updated_at?: string | null
+          whatsapp_message?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
