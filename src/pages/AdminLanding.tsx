@@ -259,7 +259,7 @@ export default function AdminLanding() {
                 }
               }}
             />
-            <p className="text-xs text-muted-foreground">Formato: [{"name": "Nome", "text": "Depoimento", "rating": 5}]</p>
+            <p className="text-xs text-muted-foreground">{'Formato: [{"name": "Nome", "text": "Depoimento", "rating": 5}]'}</p>
           </div>
 
           {/* Trust Items (JSON) */}

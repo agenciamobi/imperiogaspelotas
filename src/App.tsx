@@ -31,6 +31,8 @@ const App = () => (
         <UtmCapture />
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/lp/:slug" element={<LandingPromo />} />
+          <Route path="/admin/landing" element={<AdminLanding />} />
           <Route path="/bairro/:slug" element={<BairroPage />} />
           {allPages.map((page) => (
             <Route key={page.path} path={page.path} element={<PageTemplate page={page} />} />
