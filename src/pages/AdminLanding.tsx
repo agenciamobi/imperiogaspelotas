@@ -6,7 +6,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
-import { Plus, Save, Trash2, ExternalLink, Upload } from "lucide-react";
+import { Plus, Save, Trash2, ExternalLink, Upload, LogOut, Copy } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import type { Tables } from "@/integrations/supabase/types";
 
 type LandingPage = Tables<"landing_pages">;
@@ -16,6 +17,26 @@ export default function AdminLanding() {
   const [selected, setSelected] = useState<LandingPage | null>(null);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate("/admin/login");
+  };
+
+  const handleDuplicate = async () => {
+    if (!selected) return;
+    const { id, created_at, updated_at, slug, ...rest } = selected;
+    const newSlug = `${slug}-v${Date.now().toString(36)}`;
+    const { data, error } = await supabase.from("landing_pages").insert({ ...rest, slug: newSlug }).select().single();
+    if (error) {
+      toast.error("Erro ao duplicar: " + error.message);
+    } else if (data) {
+      toast.success(`Variação criada: /lp/${newSlug}`);
+      setPages((prev) => [data, ...prev]);
+      setSelected(data);
+    }
+  };
 
   const fetchPages = async () => {
     const { data } = await supabase.from("landing_pages").select("*").order("created_at", { ascending: false });
@@ -98,8 +119,14 @@ export default function AdminLanding() {
           <Button variant="outline" size="sm" onClick={handleCreate} className="text-foreground">
             <Plus className="w-4 h-4 mr-1" /> Nova
           </Button>
+          <Button variant="outline" size="sm" onClick={handleDuplicate} className="text-foreground" disabled={!selected}>
+            <Copy className="w-4 h-4 mr-1" /> Duplicar (A/B)
+          </Button>
           <Button size="sm" onClick={handleSave} disabled={saving} className="bg-cta hover:bg-cta-hover text-white">
             <Save className="w-4 h-4 mr-1" /> {saving ? "Salvando..." : "Salvar"}
+          </Button>
+          <Button variant="outline" size="sm" onClick={handleLogout} className="text-foreground">
+            <LogOut className="w-4 h-4 mr-1" /> Sair
           </Button>
         </div>
       </div>
