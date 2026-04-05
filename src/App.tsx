@@ -8,6 +8,8 @@ import Index from "./pages/Index";
 import BairroPage from "./pages/BairroPage";
 import NotFound from "./pages/NotFound";
 import PageTemplate from "./pages/PageTemplate";
+import LandingPromo from "./pages/LandingPromo";
+import AdminLanding from "./pages/AdminLanding";
 import { allPages } from "./lib/pages-data";
 import { captureUtmParams } from "./lib/tracking";
 
@@ -29,6 +31,8 @@ const App = () => (
         <UtmCapture />
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/lp/:slug" element={<LandingPromo />} />
+          <Route path="/admin/landing" element={<AdminLanding />} />
           <Route path="/bairro/:slug" element={<BairroPage />} />
           {allPages.map((page) => (
             <Route key={page.path} path={page.path} element={<PageTemplate page={page} />} />
