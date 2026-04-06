@@ -11,29 +11,16 @@ export default function AdminLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [isSignUp, setIsSignUp] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-
-    if (isSignUp) {
-      const { error } = await supabase.auth.signUp({ email, password });
-      if (error) {
-        toast.error("Erro ao cadastrar: " + error.message);
-      } else {
-        toast.success("Conta criada! Fazendo login...");
-        const { error: loginError } = await supabase.auth.signInWithPassword({ email, password });
-        if (!loginError) navigate("/admin/landing");
-      }
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) {
+      toast.error("Email ou senha incorretos.");
     } else {
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
-      if (error) {
-        toast.error("Email ou senha incorretos.");
-      } else {
-        navigate("/admin/landing");
-      }
+      navigate("/admin/landing");
     }
     setLoading(false);
   };
@@ -47,7 +34,7 @@ export default function AdminLogin() {
           </div>
           <h1 className="text-xl font-bold text-foreground">Admin — Império Gás</h1>
           <p className="text-sm text-muted-foreground mt-1">
-            {isSignUp ? "Crie sua conta de administrador" : "Faça login para acessar o painel"}
+            Faça login para acessar o painel
           </p>
         </div>
 
@@ -76,20 +63,9 @@ export default function AdminLogin() {
             />
           </div>
           <Button type="submit" className="w-full bg-primary text-primary-foreground" disabled={loading}>
-            {loading ? "Aguarde..." : isSignUp ? "Criar Conta" : "Entrar"}
+            {loading ? "Aguarde..." : "Entrar"}
           </Button>
         </form>
-
-        <p className="text-center text-sm text-muted-foreground">
-          {isSignUp ? "Já tem conta?" : "Primeiro acesso?"}{" "}
-          <button
-            type="button"
-            onClick={() => setIsSignUp(!isSignUp)}
-            className="text-primary font-semibold underline"
-          >
-            {isSignUp ? "Fazer login" : "Criar conta"}
-          </button>
-        </p>
       </div>
     </div>
   );
