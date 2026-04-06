@@ -1,71 +1,64 @@
 
 
-# Preparar Site para Tráfego Pago no Google Ads
+# Métricas de Conversão no Admin + Correção de Inconsistências
 
-## Objetivo
-Tornar o site pronto para receber tráfego pago do Google Ads com rastreamento de conversões, parâmetros UTM, eventos de conversão e otimizações de Quality Score.
+## Visão Geral
+Adicionar tabela de eventos de clique no banco, registrar cada conversão (WhatsApp/telefone) por landing page, e exibir dashboard de métricas no admin. Também corrigir inconsistências encontradas.
+
+## Inconsistências Encontradas
+
+1. **Segurança: qualquer pessoa pode criar conta admin** — O `AdminLogin.tsx` permite "Criar conta" livremente. Qualquer visitante pode se cadastrar e acessar o painel admin.
+2. **`<title>` no JSX não funciona** — Em `LandingPromo.tsx` linha 104, `<title>` dentro de JSX não altera o título da aba. Precisa usar `document.title` ou `react-helmet`.
+3. **`updated_at` trigger ausente** — A função `update_updated_at_column` existe mas não há trigger vinculado à tabela `landing_pages`.
+4. **Delete sem confirmação** — O admin não tem botão de deletar páginas (o `Trash2` é importado mas nunca usado).
 
 ## Mudanças
 
-### 1. Google Ads Global Site Tag (gtag.js)
-**Arquivo: `index.html`**
-- Adicionar script `gtag.js` com placeholder para Google Ads ID (`AW-XXXXXXXXXX`)
-- Configurar `gtag('config', 'AW-XXXXXXXXXX')` pronto para ativar
-- Adicionar evento de conversão padrão `conversion` para cliques no WhatsApp e telefone
+### 1. Tabela `lp_events` (migração)
+```sql
+CREATE TABLE public.lp_events (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  landing_page_id uuid REFERENCES public.landing_pages(id) ON DELETE CASCADE,
+  event_type text NOT NULL, -- 'whatsapp_click', 'phone_click'
+  source text, -- 'hero', 'offer', 'final_cta'
+  utm_source text,
+  utm_campaign text,
+  created_at timestamptz DEFAULT now()
+);
+-- RLS: anyone can insert (anonymous tracking), only authenticated can read
+ALTER TABLE public.lp_events ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Anyone can insert events" ON public.lp_events FOR INSERT TO public WITH CHECK (true);
+CREATE POLICY "Authenticated can read events" ON public.lp_events FOR SELECT TO authenticated USING (true);
+```
 
-### 2. Utilitário de Tracking de Conversões
-**Arquivo: `src/lib/tracking.ts` (novo)**
-- Função `trackConversion(eventName, params)` que dispara `gtag('event', ...)` se disponivel
-- Função `getUtmParams()` que extrai UTM da URL e persiste no `sessionStorage`
-- Função `appendUtmToWhatsApp(link)` que inclui UTMs na mensagem do WhatsApp para o vendedor saber a origem
-- Eventos pré-definidos: `whatsapp_click`, `phone_click`, `cta_hero_click`, `product_click`
+### 2. Trigger `updated_at` na `landing_pages`
+```sql
+CREATE TRIGGER set_updated_at BEFORE UPDATE ON public.landing_pages
+FOR EACH ROW EXECUTE FUNCTION public.update_updated_at_column();
+```
 
-### 3. Captura e Persistência de UTMs
-**Arquivo: `src/App.tsx`**
-- Ao montar, capturar `utm_source`, `utm_medium`, `utm_campaign`, `utm_content`, `utm_term` e `gclid` da URL
-- Salvar no `sessionStorage` para uso posterior em links e tracking
+### 3. `LandingPromo.tsx` — Registrar eventos no banco
+- Nos handlers `handleWhatsApp` e `handlePhone`, inserir registro na tabela `lp_events` com `landing_page_id`, `event_type` e UTMs do sessionStorage
+- Corrigir `<title>` para usar `useEffect` com `document.title`
 
-### 4. Eventos de Conversão em Todos os CTAs
-**Arquivos: `ConversionHero.tsx`, `Contact.tsx`, `PriceCards.tsx`, `MobileBar.tsx`, `WhatsAppFloat.tsx`, `BairroPage.tsx`, `PageTemplate.tsx`**
-- Adicionar `onClick` nos botões de WhatsApp e Telefone chamando `trackConversion`
-- Incluir UTMs persistidos na mensagem WhatsApp (ex: "Origem: Google Ads | Campanha: gas-pelotas")
-- Cada CTA dispara evento distinto para segmentar conversões no Google Ads
+### 4. `AdminLanding.tsx` — Dashboard de métricas
+- Ao selecionar uma página, buscar contagem de eventos agrupados por `event_type` dos últimos 7/30 dias
+- Exibir cards no topo do editor: "Cliques WhatsApp", "Cliques Telefone", "Total Conversões"
+- Exibir mini-tabela comparativa de todas as páginas com cliques totais para fácil comparação A/B
 
-### 5. Landing Page Otimizada para Quality Score
-**Arquivo: `index.html`**
-- Meta tag `google-site-verification` (placeholder)
-- Garantir que `<title>` e `<meta description>` contém as keywords de campanha
-- Adicionar `noscript` fallback para tracking
+### 5. Remover cadastro público no `AdminLogin.tsx`
+- Remover toggle "Criar conta" — login apenas para contas já existentes
+- Manter apenas o formulário de login
 
-### 6. Página de Confirmação / Thank You (opcional mas recomendada)
-**Arquivo: `src/components/ConversionConfirmation.tsx` (novo)**
-- Modal/toast que aparece ao clicar no CTA confirmando a ação (ex: "Você será redirecionado ao WhatsApp")
-- Dispara evento `gtag('event', 'conversion', { send_to: 'AW-XXXXXXXXXX/XXXXX' })` nesse momento
+### 6. Botão de deletar páginas no `AdminLanding.tsx`
+- Adicionar botão com ícone `Trash2` com confirmação (`window.confirm`)
 
-### 7. Rastreamento de Ligações Telefônicas
-- Adicionar `tel:` links com formatação E.164 (`+5553991162002`)
-- Configurar evento de conversão para cliques em telefone
-- Google Ads pode usar isso para Website Call Conversions
+## Arquivos
 
-## Arquivos Modificados/Criados
-
-| Arquivo | Acao |
+| Arquivo | Ação |
 |---|---|
-| `index.html` | gtag.js + google-site-verification |
-| `src/lib/tracking.ts` | Utilitario de tracking e UTM (novo) |
-| `src/App.tsx` | Captura UTMs ao montar |
-| `src/lib/constants.ts` | Google Ads ID placeholder |
-| `src/components/ConversionHero.tsx` | onClick tracking |
-| `src/components/Contact.tsx` | onClick tracking |
-| `src/components/PriceCards.tsx` | onClick tracking |
-| `src/components/MobileBar.tsx` | onClick tracking |
-| `src/components/WhatsAppFloat.tsx` | onClick tracking |
-| `src/pages/BairroPage.tsx` | onClick tracking |
-| `src/pages/PageTemplate.tsx` | onClick tracking |
-
-## Como Ativar
-Apos implementar, o usuario so precisa:
-1. Substituir `AW-XXXXXXXXXX` pelo ID real do Google Ads
-2. Configurar as acoes de conversao no painel do Google Ads
-3. Os eventos ja estarao disparando automaticamente
+| Migração SQL | Criar `lp_events`, trigger `updated_at` |
+| `src/pages/LandingPromo.tsx` | Inserir eventos + corrigir `document.title` |
+| `src/pages/AdminLanding.tsx` | Dashboard métricas + botão deletar |
+| `src/pages/AdminLogin.tsx` | Remover signup público |
 
