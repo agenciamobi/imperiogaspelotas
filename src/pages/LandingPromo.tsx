@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Phone, MessageCircle, Truck, Shield, Clock, Star, CheckCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -30,6 +30,7 @@ const iconMap: Record<string, React.ReactNode> = {
 
 export default function LandingPromo() {
   const { slug = "promo" } = useParams();
+  const [searchParams] = useSearchParams();
   const [page, setPage] = useState<LandingPage | null>(null);
   const [loading, setLoading] = useState(true);
   const [countdown, setCountdown] = useState("");
@@ -46,6 +47,17 @@ export default function LandingPromo() {
         setLoading(false);
       });
   }, [slug]);
+
+  // Set document title
+  useEffect(() => {
+    if (page?.meta_title) {
+      document.title = page.meta_title;
+    }
+    if (page?.meta_description) {
+      const meta = document.querySelector('meta[name="description"]');
+      if (meta) meta.setAttribute("content", page.meta_description);
+    }
+  }, [page?.meta_title, page?.meta_description]);
 
   // Countdown timer
   useEffect(() => {
@@ -67,6 +79,17 @@ export default function LandingPromo() {
     return () => clearInterval(interval);
   }, [page?.offer_valid_until]);
 
+  const trackEvent = (eventType: string, source: string) => {
+    if (!page) return;
+    supabase.from("lp_events").insert({
+      landing_page_id: page.id,
+      event_type: eventType,
+      source,
+      utm_source: searchParams.get("utm_source") || sessionStorage.getItem("utm_source") || null,
+      utm_campaign: searchParams.get("utm_campaign") || sessionStorage.getItem("utm_campaign") || null,
+    }).then(() => {});
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-primary">
@@ -87,23 +110,20 @@ export default function LandingPromo() {
   const testimonials = (page.testimonials as unknown as Testimonial[]) || [];
   const waLink = appendUtmToWhatsAppLink(getWhatsAppLink(page.whatsapp_message || undefined));
 
-  const handleWhatsApp = () => {
+  const handleWhatsApp = (source: string) => {
     trackWhatsAppClick("landing_promo");
+    trackEvent("whatsapp_click", source);
     window.open(waLink, "_blank");
   };
 
-  const handlePhone = () => {
+  const handlePhone = (source: string) => {
     trackPhoneClick("landing_promo");
+    trackEvent("phone_click", source);
     window.location.href = `tel:+55${WHATSAPP_NUMBER}`;
   };
 
   return (
     <>
-      {/* SEO Meta */}
-      {page.meta_title && (
-        <title>{page.meta_title}</title>
-      )}
-
       <div className="min-h-screen bg-background">
         {/* Hero Section */}
         <section
@@ -156,7 +176,7 @@ export default function LandingPromo() {
               className="space-y-4"
             >
               <button
-                onClick={handleWhatsApp}
+                onClick={() => handleWhatsApp("hero")}
                 className="w-full sm:w-auto bg-cta hover:bg-cta-hover text-white font-bold text-lg md:text-xl px-10 py-5 rounded-xl shadow-2xl transition-all hover:scale-105 flex items-center justify-center gap-3 mx-auto"
               >
                 <MessageCircle className="w-7 h-7" />
@@ -164,7 +184,7 @@ export default function LandingPromo() {
               </button>
 
               <button
-                onClick={handlePhone}
+                onClick={() => handlePhone("hero")}
                 className="w-full sm:w-auto bg-white/15 border-2 border-white/40 text-white font-semibold text-base px-8 py-3 rounded-xl hover:bg-white/25 transition-all flex items-center justify-center gap-2 mx-auto"
               >
                 <Phone className="w-5 h-5" />
@@ -239,7 +259,7 @@ export default function LandingPromo() {
               )}
 
               <button
-                onClick={handleWhatsApp}
+                onClick={() => handleWhatsApp("offer")}
                 className="bg-cta hover:bg-cta-hover text-white font-bold text-lg px-10 py-5 rounded-xl shadow-xl transition-all hover:scale-105 flex items-center justify-center gap-3 mx-auto"
               >
                 <MessageCircle className="w-6 h-6" />
@@ -291,7 +311,7 @@ export default function LandingPromo() {
             </p>
             <div className="space-y-4">
               <button
-                onClick={handleWhatsApp}
+                onClick={() => handleWhatsApp("final_cta")}
                 className="w-full sm:w-auto bg-cta hover:bg-cta-hover text-white font-bold text-lg px-10 py-5 rounded-xl shadow-2xl transition-all hover:scale-105 flex items-center justify-center gap-3 mx-auto"
               >
                 <MessageCircle className="w-7 h-7" />
