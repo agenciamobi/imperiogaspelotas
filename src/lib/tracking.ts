@@ -4,16 +4,28 @@ declare global {
   interface Window {
     gtag?: (...args: unknown[]) => void;
     dataLayer?: unknown[];
+    fbq?: (...args: unknown[]) => void;
+    __imperio_integrations?: SiteIntegrations;
   }
 }
 
-// Google Ads conversion ID placeholder
-export const GOOGLE_ADS_ID = "AW-XXXXXXXXXX";
-export const CONVERSION_LABEL_WHATSAPP = "XXXXX_whatsapp";
-export const CONVERSION_LABEL_PHONE = "XXXXX_phone";
+export interface SiteIntegrations {
+  google_ads_id?: string | null;
+  google_ads_conv_label_whatsapp?: string | null;
+  google_ads_conv_label_phone?: string | null;
+  ga4_measurement_id?: string | null;
+  meta_pixel_id?: string | null;
+}
+
+const AW_REGEX = /^AW-\d+$/;
+
+function getIntegrations(): SiteIntegrations {
+  if (typeof window === "undefined") return {};
+  return window.__imperio_integrations || {};
+}
 
 // UTM parameter keys
-const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "gclid"] as const;
+const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "gclid", "wbraid", "gbraid", "fbclid"] as const;
 const STORAGE_KEY = "imperio_utm";
 
 export interface UtmParams {
@@ -23,6 +35,9 @@ export interface UtmParams {
   utm_content?: string;
   utm_term?: string;
   gclid?: string;
+  wbraid?: string;
+  gbraid?: string;
+  fbclid?: string;
 }
 
 /** Capture UTM params from URL and persist in sessionStorage */
@@ -112,28 +127,43 @@ export function trackConversion(
 }
 
 /** Track Google Ads conversion (purchase/lead) */
-export function trackGoogleAdsConversion(label: string): void {
-  if (typeof window.gtag === "function") {
-    window.gtag("event", "conversion", {
-      send_to: `${GOOGLE_ADS_ID}/${label}`,
-    });
-  }
+export function trackGoogleAdsConversion(label?: string | null): void {
+  if (!label) return;
+  const { google_ads_id } = getIntegrations();
+  if (!google_ads_id || !AW_REGEX.test(google_ads_id)) return;
+  if (typeof window.gtag !== "function") return;
+  window.gtag("event", "conversion", {
+    send_to: `${google_ads_id}/${label}`,
+  });
+}
+
+/** Track Meta Pixel event in parallel */
+export function trackMetaPixelEvent(eventName: string, params?: Record<string, unknown>): void {
+  const { meta_pixel_id } = getIntegrations();
+  if (!meta_pixel_id) return;
+  if (typeof window.fbq !== "function") return;
+  window.fbq("track", eventName, params || {});
 }
 
 // Pre-defined event helpers
 export const trackWhatsAppClick = (location: string) => {
   trackConversion("whatsapp_click", { event_category: "engagement", event_label: location });
-  trackGoogleAdsConversion(CONVERSION_LABEL_WHATSAPP);
+  trackConversion("generate_lead", { event_category: "lead", event_label: location, method: "whatsapp" });
+  trackGoogleAdsConversion(getIntegrations().google_ads_conv_label_whatsapp);
+  trackMetaPixelEvent("Lead", { content_name: "WhatsApp Click", source: location });
 };
 
 export const trackPhoneClick = (location: string) => {
   trackConversion("phone_click", { event_category: "engagement", event_label: location });
-  trackGoogleAdsConversion(CONVERSION_LABEL_PHONE);
+  trackConversion("generate_lead", { event_category: "lead", event_label: location, method: "phone" });
+  trackGoogleAdsConversion(getIntegrations().google_ads_conv_label_phone);
+  trackMetaPixelEvent("Contact", { content_name: "Phone Click", source: location });
 };
 
 export const trackProductClick = (productName: string) => {
   trackConversion("product_click", { event_category: "ecommerce", event_label: productName });
-  trackGoogleAdsConversion(CONVERSION_LABEL_WHATSAPP);
+  trackGoogleAdsConversion(getIntegrations().google_ads_conv_label_whatsapp);
+  trackMetaPixelEvent("ViewContent", { content_name: productName });
 };
 
 export const trackCtaClick = (ctaName: string) => {
