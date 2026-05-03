@@ -1,6 +1,6 @@
 import { MessageCircle, Phone, CheckCircle2, Zap, Shield, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { getWhatsAppLink, WHATSAPP_MESSAGES, PHONE_DISPLAY } from "@/lib/constants";
+import { getWhatsAppLink, WHATSAPP_MESSAGES, PHONE_DISPLAY, WHATSAPP_NUMBER } from "@/lib/constants";
 import { trackWhatsAppClick, trackPhoneClick, appendUtmToWhatsAppLink } from "@/lib/tracking";
 import botijaoHero from "@/assets/botijao-hero.png";
 import mascoteLiquigas from "@/assets/mascote-liquigas.png";

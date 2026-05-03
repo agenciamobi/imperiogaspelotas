@@ -1,5 +1,5 @@
 import { MessageCircle, Phone, Home } from "lucide-react";
-import { getWhatsAppLink, WHATSAPP_MESSAGES } from "@/lib/constants";
+import { getWhatsAppLink, WHATSAPP_MESSAGES, WHATSAPP_NUMBER } from "@/lib/constants";
 import { trackWhatsAppClick, trackPhoneClick, appendUtmToWhatsAppLink } from "@/lib/tracking";
 
 const MobileBar = () => {
