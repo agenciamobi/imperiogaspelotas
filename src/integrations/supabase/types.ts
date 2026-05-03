@@ -127,6 +127,57 @@ export type Database = {
           },
         ]
       }
+      site_integrations: {
+        Row: {
+          bing_site_verification: string | null
+          created_at: string
+          custom_body_html: string | null
+          custom_head_html: string | null
+          enabled: boolean
+          ga4_measurement_id: string | null
+          google_ads_conv_label_phone: string | null
+          google_ads_conv_label_whatsapp: string | null
+          google_ads_id: string | null
+          google_site_verification: string | null
+          gtm_id: string | null
+          id: string
+          meta_pixel_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          bing_site_verification?: string | null
+          created_at?: string
+          custom_body_html?: string | null
+          custom_head_html?: string | null
+          enabled?: boolean
+          ga4_measurement_id?: string | null
+          google_ads_conv_label_phone?: string | null
+          google_ads_conv_label_whatsapp?: string | null
+          google_ads_id?: string | null
+          google_site_verification?: string | null
+          gtm_id?: string | null
+          id?: string
+          meta_pixel_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          bing_site_verification?: string | null
+          created_at?: string
+          custom_body_html?: string | null
+          custom_head_html?: string | null
+          enabled?: boolean
+          ga4_measurement_id?: string | null
+          google_ads_conv_label_phone?: string | null
+          google_ads_conv_label_whatsapp?: string | null
+          google_ads_id?: string | null
+          google_site_verification?: string | null
+          gtm_id?: string | null
+          id?: string
+          meta_pixel_id?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
