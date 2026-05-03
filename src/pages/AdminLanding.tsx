@@ -276,7 +276,13 @@ export default function AdminLanding() {
           {/* A/B Comparison Table */}
           {showMetrics && (
             <div className="bg-card rounded-xl p-6 shadow-sm">
-              <h2 className="font-bold text-foreground text-lg mb-4">Comparação A/B — Últimos {metricsDays} dias</h2>
+              <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
+                <h2 className="font-bold text-foreground text-lg">Comparação A/B — Últimos {metricsDays} dias</h2>
+                <label className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Switch checked={showInactive} onCheckedChange={setShowInactive} />
+                  Mostrar inativas
+                </label>
+              </div>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
@@ -289,7 +295,7 @@ export default function AdminLanding() {
                     </tr>
                   </thead>
                   <tbody>
-                    {pages.map((p) => {
+                    {pages.filter((p) => showInactive || p.is_active).map((p) => {
                       const m = allMetrics[p.id] || { whatsapp_clicks: 0, phone_clicks: 0, total: 0 };
                       return (
                         <tr key={p.id} className={`border-b border-border/50 ${selected.id === p.id ? "bg-accent" : ""}`}>
