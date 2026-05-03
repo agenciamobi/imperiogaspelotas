@@ -11,7 +11,9 @@ import PageTemplate from "./pages/PageTemplate";
 import LandingPromo from "./pages/LandingPromo";
 import AdminLanding from "./pages/AdminLanding";
 import AdminLogin from "./pages/AdminLogin";
+import AdminIntegrations from "./pages/AdminIntegrations";
 import AdminGuard from "./components/AdminGuard";
+import TrackingScripts from "./components/TrackingScripts";
 import { allPages } from "./lib/pages-data";
 import { captureUtmParams } from "./lib/tracking";
 
@@ -29,6 +31,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
+      <TrackingScripts />
       <BrowserRouter>
         <UtmCapture />
         <Routes>
@@ -36,6 +39,7 @@ const App = () => (
           <Route path="/lp/:slug" element={<LandingPromo />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/landing" element={<AdminGuard><AdminLanding /></AdminGuard>} />
+          <Route path="/admin/integrations" element={<AdminGuard><AdminIntegrations /></AdminGuard>} />
           <Route path="/bairro/:slug" element={<BairroPage />} />
           {allPages.map((page) => (
             <Route key={page.path} path={page.path} element={<PageTemplate page={page} />} />

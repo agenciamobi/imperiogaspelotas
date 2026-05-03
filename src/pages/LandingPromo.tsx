@@ -57,7 +57,11 @@ export default function LandingPromo() {
       const meta = document.querySelector('meta[name="description"]');
       if (meta) meta.setAttribute("content", page.meta_description);
     }
-  }, [page?.meta_title, page?.meta_description]);
+    if (page?.bg_color) {
+      const themeMeta = document.querySelector('meta[name="theme-color"]');
+      if (themeMeta) themeMeta.setAttribute("content", page.bg_color);
+    }
+  }, [page?.meta_title, page?.meta_description, page?.bg_color]);
 
   // Countdown timer
   useEffect(() => {
@@ -136,6 +140,9 @@ export default function LandingPromo() {
             <img
               src={page.hero_image_url}
               alt=""
+              fetchPriority="high"
+              loading="eager"
+              decoding="async"
               className="absolute inset-0 w-full h-full object-cover opacity-20"
             />
           )}

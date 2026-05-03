@@ -1,5 +1,5 @@
 import { MessageCircle, Phone, Home } from "lucide-react";
-import { getWhatsAppLink, WHATSAPP_MESSAGES } from "@/lib/constants";
+import { getWhatsAppLink, WHATSAPP_MESSAGES, WHATSAPP_NUMBER } from "@/lib/constants";
 import { trackWhatsAppClick, trackPhoneClick, appendUtmToWhatsAppLink } from "@/lib/tracking";
 
 const MobileBar = () => {
@@ -18,7 +18,7 @@ const MobileBar = () => {
           <span className="text-[11px] font-bold">WhatsApp</span>
         </a>
         <a
-          href="tel:+5553991162002"
+          href={`tel:+${WHATSAPP_NUMBER}`}
           title="Ligar para Império Gás Pelotas"
           className="flex flex-col items-center justify-center gap-1 py-3 bg-cta text-primary-foreground active:opacity-80 transition-opacity"
           onClick={() => trackPhoneClick("mobile_bar")}

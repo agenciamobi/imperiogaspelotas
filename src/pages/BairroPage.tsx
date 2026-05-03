@@ -8,7 +8,7 @@ import Footer from "@/components/Footer";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
 import MobileBar from "@/components/MobileBar";
 import { bairros } from "@/lib/bairros";
-import { getWhatsAppLink, WHATSAPP_MESSAGES, PHONE_DISPLAY, PHONE_LANDLINE, BUSINESS_HOURS } from "@/lib/constants";
+import { getWhatsAppLink, WHATSAPP_MESSAGES, PHONE_DISPLAY, PHONE_LANDLINE, BUSINESS_HOURS, WHATSAPP_NUMBER } from "@/lib/constants";
 import { trackWhatsAppClick, trackPhoneClick, trackProductClick, appendUtmToWhatsAppLink } from "@/lib/tracking";
 import { motion } from "framer-motion";
 
@@ -94,7 +94,7 @@ const BairroPage = () => {
                   </a>
                 </Button>
                 <Button asChild size="lg" className="bg-white/15 border-2 border-white/40 text-white hover:bg-white/25 rounded-full font-bold">
-                  <a href="tel:+5553991162002" title={`Ligar para pedir gás no ${bairro.nome}`} onClick={() => trackPhoneClick(`bairro_${bairro.slug}_hero`)}>
+                  <a href={`tel:+${WHATSAPP_NUMBER}`} title={`Ligar para pedir gás no ${bairro.nome}`} onClick={() => trackPhoneClick(`bairro_${bairro.slug}_hero`)}>
                     <Phone className="w-5 h-5" />
                     {PHONE_DISPLAY}
                   </a>

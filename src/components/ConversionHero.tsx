@@ -1,6 +1,6 @@
 import { MessageCircle, Phone, CheckCircle2, Zap, Shield, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { getWhatsAppLink, WHATSAPP_MESSAGES, PHONE_DISPLAY } from "@/lib/constants";
+import { getWhatsAppLink, WHATSAPP_MESSAGES, PHONE_DISPLAY, WHATSAPP_NUMBER } from "@/lib/constants";
 import { trackWhatsAppClick, trackPhoneClick, appendUtmToWhatsAppLink } from "@/lib/tracking";
 import botijaoHero from "@/assets/botijao-hero.png";
 import mascoteLiquigas from "@/assets/mascote-liquigas.png";
@@ -89,7 +89,7 @@ const ConversionHero = () => {
               </Button>
 
               <Button asChild size="lg" variant="outline" className="h-16 px-10 bg-white/10 backdrop-blur-sm border-2 border-white/40 text-white hover:bg-white/20 hover:text-white rounded-full font-bold text-lg transition-all">
-                <a href="tel:+5553991162002" onClick={() => trackPhoneClick("hero")}>
+                <a href={`tel:+${WHATSAPP_NUMBER}`} onClick={() => trackPhoneClick("hero")}>
                   <Phone className="w-5 h-5" />
                   Peça pelo Telefone
                 </a>

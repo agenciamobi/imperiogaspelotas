@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
-import { Plus, Save, Trash2, ExternalLink, Upload, LogOut, Copy, BarChart3, MessageCircle, Phone } from "lucide-react";
+import { Plus, Save, Trash2, ExternalLink, Upload, LogOut, Copy, BarChart3, MessageCircle, Phone, Settings } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import type { Tables } from "@/integrations/supabase/types";
 
@@ -27,6 +27,7 @@ export default function AdminLanding() {
   const [allMetrics, setAllMetrics] = useState<Record<string, PageMetrics>>({});
   const [metricsDays, setMetricsDays] = useState(30);
   const [showMetrics, setShowMetrics] = useState(false);
+  const [showInactive, setShowInactive] = useState(false);
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -183,6 +184,9 @@ export default function AdminLanding() {
       <div className="bg-primary text-primary-foreground p-4 flex items-center justify-between flex-wrap gap-2">
         <h1 className="text-lg font-bold">Admin — Landing Pages</h1>
         <div className="flex gap-2 flex-wrap">
+          <Button variant="outline" size="sm" onClick={() => navigate("/admin/integrations")} className="text-foreground">
+            <Settings className="w-4 h-4 mr-1" /> Integrações
+          </Button>
           <Button variant="outline" size="sm" onClick={() => setShowMetrics(!showMetrics)} className="text-foreground">
             <BarChart3 className="w-4 h-4 mr-1" /> {showMetrics ? "Editor" : "Métricas A/B"}
           </Button>
@@ -272,7 +276,13 @@ export default function AdminLanding() {
           {/* A/B Comparison Table */}
           {showMetrics && (
             <div className="bg-card rounded-xl p-6 shadow-sm">
-              <h2 className="font-bold text-foreground text-lg mb-4">Comparação A/B — Últimos {metricsDays} dias</h2>
+              <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
+                <h2 className="font-bold text-foreground text-lg">Comparação A/B — Últimos {metricsDays} dias</h2>
+                <label className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Switch checked={showInactive} onCheckedChange={setShowInactive} />
+                  Mostrar inativas
+                </label>
+              </div>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
@@ -285,7 +295,7 @@ export default function AdminLanding() {
                     </tr>
                   </thead>
                   <tbody>
-                    {pages.map((p) => {
+                    {pages.filter((p) => showInactive || p.is_active).map((p) => {
                       const m = allMetrics[p.id] || { whatsapp_clicks: 0, phone_clicks: 0, total: 0 };
                       return (
                         <tr key={p.id} className={`border-b border-border/50 ${selected.id === p.id ? "bg-accent" : ""}`}>
