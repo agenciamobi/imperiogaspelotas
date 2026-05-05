@@ -15,10 +15,11 @@ const ProductsGas = () => {
         >
           <Badge variant="secondary" className="mb-3">Nossos Produtos</Badge>
           <h2 className="font-display text-3xl sm:text-4xl font-black text-foreground">
-            Gás de Cozinha e Água Mineral em Pelotas
+            Nossos Produtos — Gás e Água em Pelotas
           </h2>
           <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">
-            Entrega rápida de botijão de gás P13, P45 e galão de água mineral 20L em todos os bairros de Pelotas RS. 
+            Botijão de gás P13 residencial, P08 para pequenos comércios, Liquinho 2kg portátil para fogareiro e camping,
+            e galão de água mineral 20L com entrega em domicílio em todos os bairros de Pelotas RS.
             Atendemos Centro, Fragata, Areal, Três Vendas, Porto, Navegantes e região. Peça pelo WhatsApp!
           </p>
         </motion.div>
@@ -34,17 +35,17 @@ const ProductsGas = () => {
               "@type": "ItemList",
               name: "Produtos - Disk Gás e Água Pelotas",
               description: "Gás de cozinha e água mineral com entrega rápida em Pelotas RS",
-              numberOfItems: 3,
+              numberOfItems: 4,
               itemListElement: [
                 {
                   "@type": "ListItem",
                   position: 1,
                   item: {
                     "@type": "Product",
-                    name: "Botijão de Gás P13 Liquigás",
-                    description: "Botijão de gás de cozinha P13 Liquigás para uso residencial. Entrega rápida em Pelotas RS.",
+                    name: "Botijão de Gás P13 Liquigás 13kg",
+                    description: "Botijão de gás de cozinha P13 Liquigás 13kg para uso residencial. O mais pedido em Pelotas RS, com entrega rápida pelo WhatsApp.",
                     brand: { "@type": "Brand", name: "Liquigás" },
-                    category: "Gás de Cozinha",
+                    category: "Gás de Cozinha Residencial",
                   },
                 },
                 {
@@ -52,10 +53,10 @@ const ProductsGas = () => {
                   position: 2,
                   item: {
                     "@type": "Product",
-                    name: "Botijão de Gás P45 Liquigás",
-                    description: "Botijão de gás P45 para uso comercial e industrial. Disk gás Pelotas.",
+                    name: "Botijão de Gás P08 Liquigás 8kg",
+                    description: "Botijão P08 de 8kg ideal para pequenos comércios, food trucks e estabelecimentos de baixo consumo em Pelotas RS.",
                     brand: { "@type": "Brand", name: "Liquigás" },
-                    category: "Gás Comercial",
+                    category: "Gás Comercial Pequeno Porte",
                   },
                 },
                 {
@@ -63,8 +64,19 @@ const ProductsGas = () => {
                   position: 3,
                   item: {
                     "@type": "Product",
+                    name: "Liquinho 2kg Liquigás Portátil",
+                    description: "Botijão portátil de 2kg (liquinho) para fogareiro, camping, churrasco e uso esporádico em Pelotas RS.",
+                    brand: { "@type": "Brand", name: "Liquigás" },
+                    category: "Gás Portátil",
+                  },
+                },
+                {
+                  "@type": "ListItem",
+                  position: 4,
+                  item: {
+                    "@type": "Product",
                     name: "Galão de Água Mineral 20 Litros",
-                    description: "Galão de água mineral 20L lacrado. Entrega em Pelotas RS.",
+                    description: "Galão de água mineral 20L lacrado com entrega em domicílio em Pelotas RS para residências e empresas.",
                     category: "Água Mineral",
                   },
                 },

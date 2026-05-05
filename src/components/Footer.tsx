@@ -14,10 +14,10 @@ const navigationLinks = [
 ];
 
 const productLinks = [
-  { label: "Botijão P13", to: "/produto/botijao-p13", title: "Botijão de Gás P13 Liquigás em Pelotas RS" },
-  { label: "Botijão P45", to: "/produto/botijao-p45", title: "Botijão de Gás P45 Comercial em Pelotas RS" },
+  { label: "Botijão P13", to: "/produto/botijao-p13", title: "Botijão de Gás P13 Liquigás 13kg residencial em Pelotas RS" },
+  { label: "Botijão P08", to: "/produto/botijao-p08", title: "Botijão de Gás P08 8kg para pequenos comércios em Pelotas RS" },
+  { label: "Liquinho 2kg", to: "/produto/liquinho-2kg", title: "Liquinho 2kg portátil para fogareiro e camping em Pelotas RS" },
   { label: "Água Mineral 20L", to: "/produto/agua-mineral-20l", title: "Galão de Água Mineral 20 Litros em Pelotas RS" },
-  { label: "Gás Comercial", to: "/produto/gas-comercial", title: "Gás Comercial e Industrial em Pelotas RS" },
 ];
 
 const Footer = () => {

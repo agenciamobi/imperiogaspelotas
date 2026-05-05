@@ -20,8 +20,8 @@ const faqs = [
     a: "Sim. Somos revenda autorizada Liquigás em Pelotas. Todos os botijões são inspecionados e possuem procedência garantida, seguindo as normas da ANP e do Inmetro.",
   },
   {
-    q: "Vocês atendem empresas, restaurantes e comércios em Pelotas?",
-    a: "Sim! Atendemos residências, restaurantes, hotéis, padarias, comércios e indústrias em toda Pelotas com botijões P13, P45 e P90. Condições especiais para pedidos recorrentes.",
+    q: "Vocês atendem pequenos comércios e food trucks em Pelotas?",
+    a: "Sim! Para pequenos comércios, food trucks, lanchonetes e estabelecimentos de baixo consumo em Pelotas RS, oferecemos o botijão P08 (8kg). Para residências, o P13 (13kg). Para uso portátil em fogareiro, camping e churrasco, o Liquinho 2kg. Condições especiais para pedidos recorrentes.",
   },
   {
     q: "Quais formas de pagamento o Disk Gás Pelotas aceita?",
@@ -37,7 +37,7 @@ const faqs = [
   },
   {
     q: "Como pedir gás pelo WhatsApp em Pelotas?",
-    a: "É simples: envie uma mensagem para o WhatsApp (53) 9 9116-2002 com seu endereço e o produto desejado (gás P13, P45, água mineral). Nossa equipe confirma e entrega em até 30 minutos.",
+    a: "É simples: envie uma mensagem para o WhatsApp (53) 9 9116-2002 com seu endereço e o produto desejado (botijão P13, P08, Liquinho 2kg ou água mineral 20L). Nossa equipe confirma e entrega em até 30 minutos em Pelotas RS.",
   },
   {
     q: "Qual o horário de funcionamento do Disk Gás Pelotas?",
