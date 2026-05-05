@@ -21,7 +21,7 @@ const BairroPage = () => {
       document.title = `Disk Gás e Água em ${bairro.nome} - Pelotas RS | Império Gás e Água`;
       const metaDesc = document.querySelector('meta[name="description"]');
       if (metaDesc) {
-        metaDesc.setAttribute("content", `Entrega rápida de gás de cozinha e água mineral no bairro ${bairro.nome} em Pelotas RS. Botijão P13, P45 e galão 20L. Peça pelo WhatsApp!`);
+        metaDesc.setAttribute("content", `Entrega rápida de gás de cozinha e água mineral no bairro ${bairro.nome} em Pelotas RS. Botijão P13 residencial, P08 comercial, Liquinho 2kg portátil e galão de água 20L. Peça pelo WhatsApp!`);
       }
     }
     window.scrollTo(0, 0);
@@ -39,7 +39,7 @@ const BairroPage = () => {
   const faqLocal = [
     {
       q: `Vocês entregam gás de cozinha no bairro ${bairro.nome} em Pelotas?`,
-      a: `Sim! Fazemos entrega de gás de cozinha (botijão P13 e P45) e água mineral 20L no bairro ${bairro.nome} em Pelotas RS, todos os dias das 09h às 22h.`,
+      a: `Sim! Fazemos entrega de gás de cozinha (botijão P13, P08 e Liquinho 2kg) e galão de água mineral 20L no bairro ${bairro.nome} em Pelotas RS, todos os dias das 09h às 22h.`,
     },
     {
       q: `Qual o tempo de entrega de gás no ${bairro.nome}?`,
@@ -116,11 +116,12 @@ const BairroPage = () => {
               Produtos Disponíveis no {bairro.nome}
             </motion.h2>
 
-            <div className="grid sm:grid-cols-3 gap-6">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
-                { icon: Flame, title: "Botijão P13", desc: "Gás de cozinha residencial Liquigás", alt: `Botijão P13 Liquigás - Disk Gás ${bairro.nome} Pelotas` },
-                { icon: Flame, title: "Botijão P45", desc: "Gás comercial e industrial", alt: `Botijão P45 Comercial - Gás ${bairro.nome} Pelotas` },
-                { icon: Droplets, title: "Água Mineral 20L", desc: "Galão lacrado de água mineral", alt: `Água Mineral 20L - Disk Água ${bairro.nome} Pelotas` },
+                { icon: Flame, title: "Botijão P13", desc: "Gás de cozinha residencial 13kg Liquigás", alt: `Botijão P13 Liquigás residencial — disk gás ${bairro.nome} Pelotas` },
+                { icon: Flame, title: "Botijão P08", desc: "Gás 8kg para pequenos comércios", alt: `Botijão P08 8kg comercial — gás ${bairro.nome} Pelotas` },
+                { icon: Flame, title: "Liquinho 2kg", desc: "Gás portátil para fogareiro e camping", alt: `Liquinho 2kg portátil — gás ${bairro.nome} Pelotas` },
+                { icon: Droplets, title: "Água Mineral 20L", desc: "Galão lacrado com entrega em domicílio", alt: `Água Mineral 20L — disk água ${bairro.nome} Pelotas` },
               ].map((prod, i) => (
                 <motion.div
                   key={prod.title}
@@ -242,7 +243,7 @@ const BairroPage = () => {
               "@context": "https://schema.org",
               "@type": "LocalBusiness",
               name: "Império Gás e Água",
-              description: `Disk Gás e Água Mineral no bairro ${bairro.nome} em Pelotas RS. Entrega rápida de botijão P13, P45 e galão 20L.`,
+              description: `Disk Gás e Água Mineral no bairro ${bairro.nome} em Pelotas RS. Entrega rápida de botijão P13, P08, Liquinho 2kg e galão de água 20L.`,
               url: `https://imperiogas.com.br/bairro/${bairro.slug}`,
               telephone: ["+555399116-2002", "+555332739559"],
               address: {
@@ -261,8 +262,9 @@ const BairroPage = () => {
                 "@type": "OfferCatalog",
                 name: `Produtos disponíveis no ${bairro.nome}`,
                 itemListElement: [
-                  { "@type": "Offer", itemOffered: { "@type": "Product", name: "Botijão de Gás P13 Liquigás" } },
-                  { "@type": "Offer", itemOffered: { "@type": "Product", name: "Botijão de Gás P45 Liquigás" } },
+                  { "@type": "Offer", itemOffered: { "@type": "Product", name: "Botijão de Gás P13 Liquigás 13kg" } },
+                  { "@type": "Offer", itemOffered: { "@type": "Product", name: "Botijão de Gás P08 Liquigás 8kg" } },
+                  { "@type": "Offer", itemOffered: { "@type": "Product", name: "Liquinho 2kg Liquigás Portátil" } },
                   { "@type": "Offer", itemOffered: { "@type": "Product", name: "Galão de Água Mineral 20L" } },
                 ],
               },
