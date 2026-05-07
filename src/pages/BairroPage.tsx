@@ -23,6 +23,27 @@ const BairroPage = () => {
       if (metaDesc) {
         metaDesc.setAttribute("content", `Entrega rápida de gás de cozinha e água mineral no bairro ${bairro.nome} em Pelotas RS. Botijão P13 residencial, P08 comercial, Liquinho 2kg portátil e galão de água 20L. Peça pelo WhatsApp!`);
       }
+      const url = `https://imperiogas.com.br/bairro/${bairro.slug}`;
+      const setMeta = (sel: string, attr: string, val: string) => {
+        let el = document.querySelector(sel) as HTMLMetaElement | HTMLLinkElement | null;
+        if (!el) {
+          if (sel.startsWith("link")) {
+            el = document.createElement("link");
+            (el as HTMLLinkElement).rel = "canonical";
+          } else {
+            el = document.createElement("meta");
+            const m = sel.match(/\[(.+?)="(.+?)"\]/);
+            if (m) (el as HTMLMetaElement).setAttribute(m[1], m[2]);
+          }
+          document.head.appendChild(el);
+        }
+        el.setAttribute(attr, val);
+      };
+      setMeta('link[rel="canonical"]', "href", url);
+      setMeta('meta[property="og:url"]', "content", url);
+      setMeta('meta[property="og:title"]', "content", document.title);
+      setMeta('meta[property="og:description"]', "content", `Disk gás e água no bairro ${bairro.nome} em Pelotas RS. Entrega rápida pelo WhatsApp.`);
+      setMeta('meta[name="twitter:title"]', "content", document.title);
     }
     window.scrollTo(0, 0);
   }, [bairro]);
