@@ -142,6 +142,12 @@ export type Database = {
           gtm_id: string | null
           id: string
           meta_pixel_id: string | null
+          seo_canonical_base: string | null
+          seo_default_description: string | null
+          seo_default_keywords: string | null
+          seo_default_title: string | null
+          seo_og_image_url: string | null
+          seo_robots: string | null
           updated_at: string
         }
         Insert: {
@@ -158,6 +164,12 @@ export type Database = {
           gtm_id?: string | null
           id?: string
           meta_pixel_id?: string | null
+          seo_canonical_base?: string | null
+          seo_default_description?: string | null
+          seo_default_keywords?: string | null
+          seo_default_title?: string | null
+          seo_og_image_url?: string | null
+          seo_robots?: string | null
           updated_at?: string
         }
         Update: {
@@ -174,6 +186,12 @@ export type Database = {
           gtm_id?: string | null
           id?: string
           meta_pixel_id?: string | null
+          seo_canonical_base?: string | null
+          seo_default_description?: string | null
+          seo_default_keywords?: string | null
+          seo_default_title?: string | null
+          seo_og_image_url?: string | null
+          seo_robots?: string | null
           updated_at?: string
         }
         Relationships: []
