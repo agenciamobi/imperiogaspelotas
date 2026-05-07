@@ -6,7 +6,7 @@ import { trackProductClick, appendUtmToWhatsAppLink } from "@/lib/tracking";
 import botijaoP13 from "@/assets/botijao-p13.avif";
 import botijaoP08 from "@/assets/botijao-p08.avif";
 import liquinho from "@/assets/liquinho-p2.avif";
-import aguaMineral from "@/assets/agua-mineral.png";
+import aguaMineral from "@/assets/agua-mineral.avif";
 import { motion } from "framer-motion";
 
 const products = [
