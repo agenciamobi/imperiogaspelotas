@@ -22,6 +22,12 @@ interface IntegrationsRow {
   custom_head_html: string | null;
   custom_body_html: string | null;
   enabled: boolean;
+  seo_default_title: string | null;
+  seo_default_description: string | null;
+  seo_default_keywords: string | null;
+  seo_og_image_url: string | null;
+  seo_canonical_base: string | null;
+  seo_robots: string | null;
 }
 
 const PATTERNS = {
@@ -115,6 +121,73 @@ export default function AdminIntegrations() {
             <p className="text-sm text-muted-foreground">Desligue para parar todo o rastreamento sem apagar os IDs.</p>
           </div>
           <Switch checked={row.enabled} onCheckedChange={(v) => update("enabled", v)} />
+        </div>
+
+        {/* SEO Meta Tags */}
+        <div className="bg-card rounded-xl p-6 shadow-sm space-y-4">
+          <div>
+            <h2 className="font-bold text-foreground text-lg">SEO & Meta Tags</h2>
+            <p className="text-sm text-muted-foreground">
+              Sobrescreve as meta tags padrão do site. Páginas internas (produtos/bairros) mantêm seus próprios títulos.
+            </p>
+          </div>
+          <div>
+            <Label>Título padrão (≤ 60 caracteres)</Label>
+            <Input
+              value={row.seo_default_title || ""}
+              onChange={(e) => update("seo_default_title", e.target.value || null)}
+              maxLength={70}
+              placeholder="Império Gás e Água – Disk Gás Pelotas RS"
+            />
+            <p className="text-xs text-muted-foreground mt-1">{(row.seo_default_title || "").length}/60</p>
+          </div>
+          <div>
+            <Label>Descrição padrão (≤ 160 caracteres)</Label>
+            <Textarea
+              rows={3}
+              value={row.seo_default_description || ""}
+              onChange={(e) => update("seo_default_description", e.target.value || null)}
+              maxLength={200}
+              placeholder="Disk gás e água em Pelotas RS. Entrega em até 30 minutos. Peça pelo WhatsApp!"
+            />
+            <p className="text-xs text-muted-foreground mt-1">{(row.seo_default_description || "").length}/160</p>
+          </div>
+          <div>
+            <Label>Palavras-chave (separadas por vírgula)</Label>
+            <Textarea
+              rows={2}
+              value={row.seo_default_keywords || ""}
+              onChange={(e) => update("seo_default_keywords", e.target.value || null)}
+              placeholder="disk gás Pelotas, gás de cozinha, água mineral, botijão P13"
+            />
+          </div>
+          <div>
+            <Label>URL da imagem de compartilhamento (Open Graph)</Label>
+            <Input
+              value={row.seo_og_image_url || ""}
+              onChange={(e) => update("seo_og_image_url", e.target.value.trim() || null)}
+              placeholder="https://imperiogas.com.br/og-image.png (1200x630)"
+            />
+            <p className="text-xs text-muted-foreground mt-1">Recomendado: 1200×630px, PNG ou JPG ≤ 2MB.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <Label>URL canônica base</Label>
+              <Input
+                value={row.seo_canonical_base || ""}
+                onChange={(e) => update("seo_canonical_base", e.target.value.trim() || null)}
+                placeholder="https://imperiogas.com.br"
+              />
+            </div>
+            <div>
+              <Label>Diretiva robots</Label>
+              <Input
+                value={row.seo_robots || ""}
+                onChange={(e) => update("seo_robots", e.target.value || null)}
+                placeholder="index, follow, max-image-preview:large"
+              />
+            </div>
+          </div>
         </div>
 
         {/* Google Ads */}
