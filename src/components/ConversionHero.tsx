@@ -123,6 +123,11 @@ const ConversionHero = () => {
                 src={botijaoHero}
                 alt="Botijão de Gás P13 Liquigás - Disk Gás Pelotas - Império Gás e Água"
                 className="w-[280px] sm:w-[340px] md:w-[420px] lg:w-[460px] drop-shadow-2xl"
+                width={460}
+                height={460}
+                loading="eager"
+                fetchPriority="high"
+                decoding="async"
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
