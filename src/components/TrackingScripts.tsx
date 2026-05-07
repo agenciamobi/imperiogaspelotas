@@ -14,6 +14,12 @@ interface IntegrationsRow extends SiteIntegrations {
   custom_head_html?: string | null;
   custom_body_html?: string | null;
   enabled?: boolean | null;
+  seo_default_title?: string | null;
+  seo_default_description?: string | null;
+  seo_default_keywords?: string | null;
+  seo_og_image_url?: string | null;
+  seo_canonical_base?: string | null;
+  seo_robots?: string | null;
 }
 
 function appendScript(id: string, attrs: Record<string, string>, body?: string): HTMLScriptElement {
@@ -57,6 +63,36 @@ export default function TrackingScripts() {
 
   useEffect(() => {
     if (!data || data.enabled === false) return;
+
+    // SEO meta tags overrides
+    const setMeta = (selector: string, attr: string, value: string) => {
+      if (!value) return;
+      const el = document.querySelector(selector);
+      if (el) el.setAttribute(attr, value);
+    };
+    if (data.seo_default_title) {
+      // Only override if current title still matches initial (avoid clobbering page-specific titles)
+      if (!document.title || document.title.includes("Império")) {
+        document.title = data.seo_default_title;
+      }
+      setMeta('meta[property="og:title"]', "content", data.seo_default_title);
+      setMeta('meta[name="twitter:title"]', "content", data.seo_default_title);
+    }
+    if (data.seo_default_description) {
+      setMeta('meta[name="description"]', "content", data.seo_default_description);
+      setMeta('meta[property="og:description"]', "content", data.seo_default_description);
+      setMeta('meta[name="twitter:description"]', "content", data.seo_default_description);
+    }
+    if (data.seo_default_keywords) {
+      setMeta('meta[name="keywords"]', "content", data.seo_default_keywords);
+    }
+    if (data.seo_og_image_url) {
+      setMeta('meta[property="og:image"]', "content", data.seo_og_image_url);
+      setMeta('meta[name="twitter:image"]', "content", data.seo_og_image_url);
+    }
+    if (data.seo_robots) {
+      setMeta('meta[name="robots"]', "content", data.seo_robots);
+    }
 
     // Expose for tracking.ts
     window.__imperio_integrations = {
