@@ -1,16 +1,12 @@
-import { MessageCircle, Phone, CheckCircle2, Zap, Shield, Clock } from "lucide-react";
+import { MessageCircle, Phone, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { getWhatsAppLink, WHATSAPP_MESSAGES, PHONE_DISPLAY, WHATSAPP_NUMBER } from "@/lib/constants";
+import { getWhatsAppLink, WHATSAPP_MESSAGES, WHATSAPP_NUMBER } from "@/lib/constants";
 import { trackWhatsAppClick, trackPhoneClick, appendUtmToWhatsAppLink } from "@/lib/tracking";
 import botijaoHero from "@/assets/botijao-hero.png";
 import mascoteLiquigas from "@/assets/mascote-liquigas.png";
 import { motion } from "framer-motion";
-
-const benefits = [
-  { icon: Zap, text: "Entrega em até 30 minutos" },
-  { icon: Shield, text: "Revenda autorizada Liquigás" },
-  { icon: Clock, text: "Atendimento até às 22h" },
-];
+import { useSiteContent } from "@/hooks/useSiteContent";
+import { Icon } from "@/lib/icon-map";
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 30 },
@@ -25,6 +21,7 @@ const fadeIn = (delay = 0) => ({
 });
 
 const ConversionHero = () => {
+  const c = useSiteContent<any>("hero");
   return (
     <section id="inicio" className="scroll-mt-28 relative overflow-hidden">
       {/* Background gradient */}
@@ -50,31 +47,31 @@ const ConversionHero = () => {
               className="inline-flex items-center gap-2 rounded-full bg-white/15 backdrop-blur-sm px-6 py-2.5 text-sm font-bold text-white border border-white/20"
             >
               <Zap className="w-4 h-4 text-[hsl(var(--cta))]" />
-              Entrega Rápida em Pelotas
+              {c.badge}
             </motion.span>
 
             <motion.h1
               {...fadeUp(0.15)}
               className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-[1.05] text-white drop-shadow-lg"
             >
-              PEÇA SEU <span className="text-[hsl(var(--cta))]">GÁS DE COZINHA</span> E ÁGUA MINERAL AGORA!
+              {c.title_pre} <span className="text-[hsl(var(--cta))]">{c.title_highlight}</span> {c.title_post}
             </motion.h1>
 
             <motion.p
               {...fadeUp(0.25)}
               className="text-lg sm:text-xl md:text-2xl text-white/85 max-w-xl mx-auto lg:mx-0"
             >
-              Sem taxa de entrega, preço justo e qualidade garantida para sua casa ou empresa em toda Pelotas.
+              {c.subtitle}
             </motion.p>
 
             {/* Benefits */}
             <motion.ul {...fadeUp(0.35)} className="space-y-3">
-              {benefits.map(({ icon: Icon, text }) => (
-                <li key={text} className="flex items-center gap-3 text-white font-medium justify-center lg:justify-start">
+              {(c.benefits || []).map((b: any) => (
+                <li key={b.text} className="flex items-center gap-3 text-white font-medium justify-center lg:justify-start">
                   <span className="flex items-center justify-center w-8 h-8 rounded-full bg-[hsl(var(--cta))] shrink-0">
-                    <Icon className="w-4 h-4 text-white" />
+                    <Icon name={b.icon} className="w-4 h-4 text-white" />
                   </span>
-                  <span className="text-base sm:text-lg">{text}</span>
+                  <span className="text-base sm:text-lg">{b.text}</span>
                 </li>
               ))}
             </motion.ul>
@@ -84,28 +81,26 @@ const ConversionHero = () => {
               <Button asChild size="lg" className="h-16 px-10 bg-[hsl(var(--cta))] hover:bg-[hsl(var(--cta-hover))] text-white rounded-full font-bold text-lg shadow-xl hover:shadow-2xl transition-all hover:scale-105">
                 <a href={appendUtmToWhatsAppLink(getWhatsAppLink(WHATSAPP_MESSAGES.order))} target="_blank" rel="noopener noreferrer" onClick={() => trackWhatsAppClick("hero")}>
                   <MessageCircle className="w-6 h-6" />
-                  Compre pelo WhatsApp
+                  {c.cta_whatsapp_label}
                 </a>
               </Button>
 
               <Button asChild size="lg" variant="outline" className="h-16 px-10 bg-white/10 backdrop-blur-sm border-2 border-white/40 text-white hover:bg-white/20 hover:text-white rounded-full font-bold text-lg transition-all">
                 <a href={`tel:+${WHATSAPP_NUMBER}`} onClick={() => trackPhoneClick("hero")}>
                   <Phone className="w-5 h-5" />
-                  Peça pelo Telefone
+                  {c.cta_phone_label}
                 </a>
               </Button>
             </motion.div>
 
             {/* Trust badges */}
             <motion.div {...fadeUp(0.55)} className="flex flex-wrap items-center gap-4 sm:gap-6 pt-2 justify-center lg:justify-start">
-              <div className="flex items-center gap-2 text-white/80 text-sm sm:text-base">
-                <CheckCircle2 className="w-5 h-5 text-[hsl(var(--cta))]" />
-                <span>+5.000 clientes atendidos</span>
-              </div>
-              <div className="flex items-center gap-2 text-white/80 text-sm sm:text-base">
-                <Shield className="w-5 h-5 text-[hsl(var(--cta))]" />
-                <span>100% seguro</span>
-              </div>
+              {(c.trust_badges || []).map((b: any) => (
+                <div key={b.text} className="flex items-center gap-2 text-white/80 text-sm sm:text-base">
+                  <Icon name={b.icon} className="w-5 h-5 text-[hsl(var(--cta))]" />
+                  <span>{b.text}</span>
+                </div>
+              ))}
             </motion.div>
           </div>
 
@@ -175,8 +170,8 @@ const ConversionHero = () => {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, delay: 0.7, type: "spring" }}
               >
-                <p className="text-sm sm:text-base md:text-lg font-black">30 MIN</p>
-                <p className="text-[9px] sm:text-[10px] md:text-xs font-medium">ENTREGA</p>
+                <p className="text-sm sm:text-base md:text-lg font-black">{c.delivery_badge_top}</p>
+                <p className="text-[9px] sm:text-[10px] md:text-xs font-medium">{c.delivery_badge_bottom}</p>
               </motion.div>
             </div>
           </motion.div>
