@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
-import { Plus, Save, Trash2, ExternalLink, Upload, LogOut, Copy, BarChart3, MessageCircle, Phone, Settings } from "lucide-react";
+import { Plus, Save, Trash2, ExternalLink, Upload, LogOut, Copy, BarChart3, MessageCircle, Phone, Settings, Users, FileText } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import type { Tables } from "@/integrations/supabase/types";
 
@@ -186,6 +186,12 @@ export default function AdminLanding() {
         <div className="flex gap-2 flex-wrap">
           <Button variant="outline" size="sm" onClick={() => navigate("/admin/integrations")} className="text-foreground">
             <Settings className="w-4 h-4 mr-1" /> Integrações
+          </Button>
+          <Button variant="outline" size="sm" onClick={() => navigate("/admin/site-content")} className="text-foreground">
+            <FileText className="w-4 h-4 mr-1" /> Conteúdo
+          </Button>
+          <Button variant="outline" size="sm" onClick={() => navigate("/admin/users")} className="text-foreground">
+            <Users className="w-4 h-4 mr-1" /> Usuários
           </Button>
           <Button variant="outline" size="sm" onClick={() => setShowMetrics(!showMetrics)} className="text-foreground">
             <BarChart3 className="w-4 h-4 mr-1" /> {showMetrics ? "Editor" : "Métricas A/B"}
