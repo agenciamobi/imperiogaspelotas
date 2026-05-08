@@ -4,6 +4,7 @@ import logo from "@/assets/logo.png";
 import { getWhatsAppLink, WHATSAPP_MESSAGES, PHONE_DISPLAY, PHONE_LANDLINE, BUSINESS_HOURS, LOCATION } from "@/lib/constants";
 import { bairros } from "@/lib/bairros";
 import { motion } from "framer-motion";
+import { useSiteContent } from "@/hooks/useSiteContent";
 
 const navigationLinks = [
   { label: "Disk Gás Pelotas", to: "/disk-gas-pelotas", title: "Disk Gás Pelotas - Entrega Rápida de Gás de Cozinha" },
@@ -21,6 +22,7 @@ const productLinks = [
 ];
 
 const Footer = () => {
+  const c = useSiteContent<any>("footer");
   return (
     <footer className="relative bg-primary text-primary-foreground pb-20 md:pb-0 overflow-hidden">
       <div className="texture-business-dark" />
@@ -37,7 +39,7 @@ const Footer = () => {
           <div className="space-y-5">
             <img src={logo} alt="Império Gás e Água - Disk Gás Pelotas RS" className="h-24 w-auto" loading="lazy" />
             <p className="text-sm text-primary-foreground/75 leading-relaxed max-w-xs">
-              Revenda autorizada Liquigás em Pelotas. Entrega rápida de gás de cozinha e água mineral todos os dias.
+              {c.tagline}
             </p>
             <a
               href={getWhatsAppLink(WHATSAPP_MESSAGES.order)}
@@ -47,7 +49,7 @@ const Footer = () => {
               className="inline-flex items-center gap-2 rounded-full bg-cta px-5 py-2.5 text-sm font-bold text-white hover:bg-cta-hover transition-colors"
             >
               <MessageCircle className="w-4 h-4" />
-              Pedir no WhatsApp
+              {c.cta_label}
             </a>
           </div>
 
@@ -128,7 +130,7 @@ const Footer = () => {
       {/* Bottom bar */}
       <div className="border-t border-primary-foreground/10 relative z-10">
         <div className="container mx-auto px-4 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-primary-foreground/50">
-          <p>© {new Date().getFullYear()} Império Gás e Água. Todos os direitos reservados.</p>
+          <p>© {new Date().getFullYear()} {String(c.copyright || "").replace(/^©\s*/, "")}</p>
           <div className="flex items-center gap-4">
             <Link to="/perguntas-frequentes" title="Política de Privacidade - Império Gás Pelotas" className="hover:text-primary-foreground/80 transition-colors">Política de Privacidade</Link>
             <Link to="/perguntas-frequentes" title="Termos de Uso - Império Gás Pelotas" className="hover:text-primary-foreground/80 transition-colors">Termos de Uso</Link>
