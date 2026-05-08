@@ -12,6 +12,8 @@ import LandingPromo from "./pages/LandingPromo";
 import AdminLanding from "./pages/AdminLanding";
 import AdminLogin from "./pages/AdminLogin";
 import AdminIntegrations from "./pages/AdminIntegrations";
+import AdminUsers from "./pages/AdminUsers";
+import AdminSiteContent from "./pages/AdminSiteContent";
 import AdminGuard from "./components/AdminGuard";
 import TrackingScripts from "./components/TrackingScripts";
 import { allPages } from "./lib/pages-data";
@@ -40,6 +42,8 @@ const App = () => (
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/landing" element={<AdminGuard><AdminLanding /></AdminGuard>} />
           <Route path="/admin/integrations" element={<AdminGuard><AdminIntegrations /></AdminGuard>} />
+          <Route path="/admin/users" element={<AdminGuard><AdminUsers /></AdminGuard>} />
+          <Route path="/admin/site-content" element={<AdminGuard><AdminSiteContent /></AdminGuard>} />
           <Route path="/bairro/:slug" element={<BairroPage />} />
           {allPages.map((page) => (
             <Route key={page.path} path={page.path} element={<PageTemplate page={page} />} />
