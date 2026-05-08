@@ -1,34 +1,18 @@
-import { BadgeCheck, Star } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { motion } from "framer-motion";
-
-const stats = [
-  { label: "Clientes atendidos", value: "5.000+" },
-  { label: "Anos no mercado", value: "15" },
-  { label: "Avaliação média", value: "4.9/5" },
-];
-
-const testimonials = [
-  {
-    name: "Mariana R.",
-    text: "Atendimento rápido e entregador sempre muito cuidadoso. Peço todo mês.",
-  },
-  {
-    name: "Carlos M.",
-    text: "Pedi no WhatsApp e chegou em menos de meia hora, excelente serviço.",
-  },
-  {
-    name: "Juliana P.",
-    text: "Preço justo e botijão em ótimo estado. Recomendo para toda família.",
-  },
-];
+import { useSiteContent } from "@/hooks/useSiteContent";
+import { Icon } from "@/lib/icon-map";
 
 const SocialProof = () => {
+  const c = useSiteContent<any>("social_proof");
+  const stats = c.stats || [];
+  const testimonials = c.testimonials || [];
+  const badges = c.badges || [];
   return (
     <section className="py-14 bg-background">
       <div className="container mx-auto px-4 space-y-8">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {stats.map((item, i) => (
+          {stats.map((item: any, i: number) => (
             <motion.div
               key={item.label}
               initial={{ opacity: 0, y: 20 }}
@@ -53,16 +37,15 @@ const SocialProof = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.3 }}
         >
-          <span className="inline-flex items-center gap-2 rounded-full bg-accent px-4 py-1.5 text-sm font-semibold text-accent-foreground">
-            <BadgeCheck className="w-4 h-4" /> Revenda autorizada Liquigás
-          </span>
-          <span className="inline-flex items-center gap-2 rounded-full bg-accent px-4 py-1.5 text-sm font-semibold text-accent-foreground">
-            <Star className="w-4 h-4" /> Entregas todos os dias até 22h
-          </span>
+          {badges.map((b: any) => (
+            <span key={b.text} className="inline-flex items-center gap-2 rounded-full bg-accent px-4 py-1.5 text-sm font-semibold text-accent-foreground">
+              <Icon name={b.icon} className="w-4 h-4" /> {b.text}
+            </span>
+          ))}
         </motion.div>
 
         <div className="grid md:grid-cols-3 gap-4">
-          {testimonials.map((item, i) => (
+          {testimonials.map((item: any, i: number) => (
             <motion.div
               key={item.name}
               initial={{ opacity: 0, y: 20 }}
