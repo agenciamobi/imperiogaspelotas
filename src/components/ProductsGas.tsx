@@ -1,8 +1,10 @@
 import { Badge } from "@/components/ui/badge";
 import PriceCards from "@/components/PriceCards";
 import { motion } from "framer-motion";
+import { useSiteContent } from "@/hooks/useSiteContent";
 
 const ProductsGas = () => {
+  const c = useSiteContent<any>("products");
   return (
     <section id="gas" className="py-20 bg-muted scroll-mt-28">
       <div className="container mx-auto px-4">
@@ -13,14 +15,12 @@ const ProductsGas = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <Badge variant="secondary" className="mb-3">Nossos Produtos</Badge>
+          <Badge variant="secondary" className="mb-3">{c.badge}</Badge>
           <h2 className="font-display text-3xl sm:text-4xl font-black text-foreground">
-            Nossos Produtos — Gás e Água em Pelotas
+            {c.title}
           </h2>
           <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">
-            Botijão de gás P13 residencial, P08 para pequenos comércios, Liquinho 2kg portátil para fogareiro e camping,
-            e galão de água mineral 20L com entrega em domicílio em todos os bairros de Pelotas RS.
-            Atendemos Centro, Fragata, Areal, Três Vendas, Porto, Navegantes e região. Peça pelo WhatsApp!
+            {c.subtitle}
           </p>
         </motion.div>
 

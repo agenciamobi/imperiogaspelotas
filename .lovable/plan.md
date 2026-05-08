@@ -1,88 +1,103 @@
-# Correção do Mix de Produtos + Reforço de SEO
+# Plano: Gestão de Admins + CMS da Homepage
 
-## Mix correto (conforme print enviado)
-1. **Botijão P13** — Residencial (mais pedido)
-2. **Botijão P08** — Comercial (pequenos comércios)
-3. **Liquinho 2kg** — Portátil
-4. **Água Mineral 20L** — Hidratação
+## Parte 1 — Criação de Usuários Admin
 
-Remover todas as menções a P45, P90, P02, P05, P20 e a "gás comercial/industrial P45" do site público.
+Hoje só dá pra logar com usuários criados manualmente. Vou implementar criação **de dentro do painel** com nome, e-mail e senha.
 
-## 1. Assets de imagens
-Copiar os arquivos enviados para `src/assets/`:
-- `user-uploads://gas_p13.avif` → `src/assets/botijao-p13.avif` (substitui o atual)
-- `user-uploads://gas_p08.avif` → `src/assets/botijao-p08.avif` (novo)
-- `user-uploads://gas_p20.avif` → `src/assets/liquinho-p2.avif` (novo, 2kg "liquinho")
-- Manter `agua-mineral.png` existente
+### Backend
+- **Tabela `profiles`** (id uuid PK = auth.users.id, full_name text, email text, created_at)
+  - RLS: `authenticated` lê todos; usuário só atualiza o próprio.
+- **Tabela `user_roles`** + enum `app_role ('admin')` + função `has_role()` (padrão seguro Lovable, separada do profile).
+- **Trigger `on_auth_user_created`** → cria profile automaticamente com `full_name` vindo de `raw_user_meta_data`.
+- **Edge Function `admin-create-user`** (verify_jwt = true):
+  - Verifica via `has_role(auth.uid(), 'admin')` se o solicitante é admin.
+  - Usa `SUPABASE_SERVICE_ROLE_KEY` + `supabase.auth.admin.createUser({ email, password, email_confirm: true, user_metadata: { full_name } })`.
+  - Insere role `admin` em `user_roles`.
+- **Migração de bootstrap**: marca o(s) usuário(s) atualmente existentes em `auth.users` como `admin` em `user_roles` para não perderem acesso.
 
-(O `botijao-p02.png` antigo será descontinuado.)
+### Frontend
+- Nova página `/admin/users` (protegida por `AdminGuard` + checagem `has_role`):
+  - Lista admins (nome, e-mail, criado em).
+  - Formulário "Novo admin" (nome, e-mail, senha com validação Zod ≥ 8 chars).
+  - Botão "Remover admin" (chama edge function `admin-delete-user`).
+- Botão de acesso no topo do `AdminLanding` ao lado de "Integrações".
+- `AdminGuard` passa a checar também role `admin` (não basta estar logado).
 
-## 2. Front-end — textos e cards
+---
 
-**`src/components/PriceCards.tsx`**
-- Trocar grid para 4 colunas (`md:grid-cols-2 lg:grid-cols-4`)
-- Atualizar array `products` para os 4 itens do print, com badges:
-  - P13: "Mais Pedido" (destaque amarelo)
-  - P08: "Comercial"
-  - Liquinho 2kg: "Portátil"
-  - Água 20L: "Hidratação"
-- Alts e seoTitles atualizados com cauda longa: ex. "Botijão P08 para pequenos comércios em Pelotas RS — entrega rápida pelo WhatsApp"
+## Parte 2 — CMS completo da Homepage
 
-**`src/components/ProductsGas.tsx`**
-- Subtítulo: "Botijão P13, P08, Liquinho 2kg e Água Mineral 20L com entrega rápida em Pelotas RS"
-- Schema `ItemList` reescrito com 4 produtos corretos
-- Título H2 mantém "Gás de Cozinha e Água Mineral em Pelotas"
+Hoje toda copy da home (`ConversionHero`, `SocialProof`, `ProductsGas`, `Differentials`, `HowItWorks`, `FAQ`, `Contact`, `Footer`) está hardcoded. Vou centralizar em uma única tabela editável.
 
-**`src/components/FAQ.tsx`**
-- Substituir "P13, P45 e P90" por "P13, P08 e Liquinho 2kg"
-- Reescrever a pergunta sobre comércios apontando P08 como solução comercial
+### Backend — tabela `site_content`
+Estrutura simples e flexível: 1 linha por **seção**, conteúdo em JSONB.
 
-**`src/components/Footer.tsx`**
-- Trocar links: P13, P08, Liquinho 2kg, Água Mineral
-- Remover "Botijão P45" e "Gás Comercial"
+```
+id uuid pk
+section text unique  -- 'hero' | 'social_proof' | 'products' | 'differentials'
+                      -- | 'how_it_works' | 'faq' | 'contact' | 'footer' | 'global'
+data   jsonb         -- estrutura específica da seção
+updated_at timestamptz
+```
 
-**`src/pages/BairroPage.tsx`**
-- Trocar referências P45 → P08; ajustar `desc` e schema JSON-LD
+RLS: `public` lê (site é público), `authenticated` faz CRUD.
 
-## 3. Páginas de produto (`src/lib/pages-data.ts`)
-- **Remover** páginas: `botijao-p45`, `gas-comercial`
-- **Adicionar** páginas: `botijao-p08`, `liquinho-2kg`
-- Atualizar descrição das páginas "home/entrega" para refletir o mix correto
-- FAQs por produto com palavras-chave de cauda longa:
-  - "qual o preço do botijão P08 em Pelotas"
-  - "onde comprar liquinho 2kg em Pelotas RS"
-  - "gás portátil para fogareiro Pelotas"
+**Seed inicial**: a migração popula cada seção com o conteúdo atual hardcoded — assim o site não muda visualmente até o admin editar algo.
 
-## 4. SEO — palavras-chave fluidas (não keyword stuffing)
+Exemplos de schema por seção:
+- `hero`: `{ badge, title_pre, title_highlight, title_post, subtitle, benefits:[{icon,text}], cta_whatsapp_label, cta_phone_label, trust_badges:[{icon,text}] }`
+- `social_proof`: `{ stats:[{value,label}], testimonials:[{name,text,rating}] }`
+- `products`: `{ section_title, section_subtitle, items:[{name,description,badge,image_key,price?}] }`
+- `differentials`: `{ title, items:[{icon,title,description}] }`
+- `how_it_works`: `{ title, steps:[{number,title,description}] }`
+- `faq`: `{ title, items:[{question,answer}] }`
+- `contact`: `{ title, address, hours, phone_label }`
+- `footer`: `{ tagline, columns:[{title,links:[{label,href}]}], copyright }`
+- `global`: `{ whatsapp_number, whatsapp_default_message, phone_display }` (substitui parte do `constants.ts`)
 
-**`index.html`**
-- `<meta description>`: reescrever mencionando "Botijão P13, P08, Liquinho 2kg portátil e galão de água mineral 20L em Pelotas RS — entrega rápida via WhatsApp todos os dias das 09h às 22h"
-- `<meta keywords>`: ajustar removendo P45/P90/P02 e adicionando: "botijão P08 Pelotas", "gás P08 comercial Pelotas", "liquinho 2kg Pelotas", "gás portátil Pelotas", "gás camping Pelotas", "botijão pequeno Pelotas", "recarga liquinho Pelotas"
-- JSON-LD: substituir produtos no `Product`/`ItemList`/`OfferCatalog` para os 4 corretos
-- FAQ schema: atualizar respostas P02..P90 → P13/P08/Liquinho 2kg
+### Frontend
+- **Hook `useSiteContent(section)`**: busca via React Query, faz cache, expõe `data` tipado + fallback para o conteúdo atual hardcoded (evita tela em branco se algo falhar).
+- **Refatorar componentes da home** (`ConversionHero`, `SocialProof`, `ProductsGas`, `Differentials`, `HowItWorks`, `FAQ`, `Contact`, `Footer`) para consumir o hook em vez de constantes locais.
+- **Estilos, animações, ícones e imagens** continuam em código (não vira CMS de design — só copy/dados estruturados).
+- Imagens de produto: campo `image_key` referencia assets já existentes (ex.: `botijao-p13`, `liquinho-p2`) via um mapa central `src/lib/asset-map.ts`. Para imagens novas, admin pode usar URL absoluta (bucket `landing-images` já existe).
 
-**Cauda longa fluida em copy** (inserir naturalmente em parágrafos existentes, sem repetir mecanicamente):
-- ProductsGas, Differentials, BairroPage, pages-data: usar variações como
-  - "entrega de botijão de gás 13kg em Pelotas RS no mesmo dia"
-  - "onde comprar liquinho 2kg em Pelotas para fogareiro e camping"
-  - "botijão P08 ideal para pequenos comércios e food trucks em Pelotas"
-  - "água mineral 20L com entrega em domicílio em Pelotas todos os dias"
+### Painel Admin — `/admin/site-content`
+- Sidebar com as 9 seções.
+- Editor por seção com formulário tipado (campos texto, textarea, listas dinâmicas com add/remove para benefits/testimonials/FAQ/etc.).
+- Botão "Pré-visualizar" abre `/` em nova aba.
+- Botão "Restaurar padrão" volta ao seed original (guardado como JSON em `src/lib/site-content-defaults.ts`).
+- Validação Zod por seção antes de salvar.
 
-## 5. Memória de projeto
-Atualizar `mem://negocio/mix-produtos` com a lista oficial:
-P13 (residencial), P08 (comercial), Liquinho 2kg (portátil), Água 20L.
+---
 
-## Arquivos
+## Estrutura de arquivos
 
-| Arquivo | Ação |
-|---|---|
-| `src/assets/` | Copiar 3 imagens novas (.avif) |
-| `src/components/PriceCards.tsx` | 4 cards + badges |
-| `src/components/ProductsGas.tsx` | Texto + JSON-LD |
-| `src/components/FAQ.tsx` | Atualizar produtos |
-| `src/components/Footer.tsx` | Links de produto |
-| `src/pages/BairroPage.tsx` | P45→P08, schema |
-| `src/lib/pages-data.ts` | Remover P45/comercial, criar P08/Liquinho |
-| `src/lib/bairros.ts` | Ajustar descrições |
-| `index.html` | Meta tags + JSON-LD + FAQ |
-| `mem://negocio/mix-produtos` | Atualizar regra |
+Novos:
+```
+supabase/migrations/<ts>_users_and_cms.sql
+supabase/functions/admin-create-user/index.ts
+supabase/functions/admin-delete-user/index.ts
+src/pages/AdminUsers.tsx
+src/pages/AdminSiteContent.tsx
+src/hooks/useSiteContent.ts
+src/lib/site-content-defaults.ts
+src/lib/asset-map.ts
+src/components/admin/SectionEditorHero.tsx
+src/components/admin/SectionEditorList.tsx  (genérico p/ FAQ, testimonials, etc.)
+```
+
+Editados:
+- `src/App.tsx` (rotas novas)
+- `src/components/AdminGuard.tsx` (checa role admin)
+- `src/pages/AdminLanding.tsx` (botões "Usuários" e "Conteúdo")
+- Todos os componentes da home listados acima (consomem hook)
+
+---
+
+## Considerações técnicas
+
+- **Segurança**: roles em tabela separada (`user_roles`) + `has_role()` SECURITY DEFINER, conforme padrão obrigatório. Edge functions validam `has_role` antes de qualquer admin action.
+- **Sem signup público**: nenhuma rota de sign-up no frontend. Único caminho para criar admin é via `/admin/users` por outro admin já autenticado.
+- **Bootstrap**: o(s) usuário(s) já existentes em `auth.users` recebem role `admin` na migração para não ficarem trancados fora.
+- **Fallback de conteúdo**: se o fetch do `site_content` falhar, componentes renderizam os defaults — site nunca quebra.
+- **SEO/JSON-LD**: continua funcionando (consome os mesmos dados via hook).
