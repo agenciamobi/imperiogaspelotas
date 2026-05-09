@@ -4,8 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import { ArrowLeft, Plus, Trash2, UserPlus } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Plus, Trash2 } from "lucide-react";
 import { z } from "zod";
 
 const schema = z.object({
@@ -26,7 +25,6 @@ export default function AdminUsers() {
   const [form, setForm] = useState({ full_name: "", email: "", password: "" });
   const [saving, setSaving] = useState(false);
   const [meId, setMeId] = useState<string | null>(null);
-  const navigate = useNavigate();
 
   const fetchUsers = async () => {
     const { data: roles } = await supabase.from("user_roles").select("user_id").eq("role", "admin");
@@ -72,14 +70,7 @@ export default function AdminUsers() {
   };
 
   return (
-    <div className="min-h-screen bg-muted">
-      <div className="bg-primary text-primary-foreground p-4 flex items-center justify-between">
-        <h1 className="text-lg font-bold flex items-center gap-2"><UserPlus className="w-5 h-5" /> Admin — Usuários</h1>
-        <Button variant="outline" size="sm" onClick={() => navigate("/admin/landing")} className="text-foreground">
-          <ArrowLeft className="w-4 h-4 mr-1" /> Voltar
-        </Button>
-      </div>
-
+    <div>
       <div className="container max-w-3xl mx-auto p-6 space-y-6">
         <form onSubmit={handleCreate} className="bg-card rounded-xl p-6 shadow-sm space-y-4">
           <h2 className="font-bold text-lg">Novo administrador</h2>
