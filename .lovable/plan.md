@@ -1,103 +1,113 @@
-# Plano: Gestão de Admins + CMS da Homepage
+## Objetivo
 
-## Parte 1 — Criação de Usuários Admin
-
-Hoje só dá pra logar com usuários criados manualmente. Vou implementar criação **de dentro do painel** com nome, e-mail e senha.
-
-### Backend
-- **Tabela `profiles`** (id uuid PK = auth.users.id, full_name text, email text, created_at)
-  - RLS: `authenticated` lê todos; usuário só atualiza o próprio.
-- **Tabela `user_roles`** + enum `app_role ('admin')` + função `has_role()` (padrão seguro Lovable, separada do profile).
-- **Trigger `on_auth_user_created`** → cria profile automaticamente com `full_name` vindo de `raw_user_meta_data`.
-- **Edge Function `admin-create-user`** (verify_jwt = true):
-  - Verifica via `has_role(auth.uid(), 'admin')` se o solicitante é admin.
-  - Usa `SUPABASE_SERVICE_ROLE_KEY` + `supabase.auth.admin.createUser({ email, password, email_confirm: true, user_metadata: { full_name } })`.
-  - Insere role `admin` em `user_roles`.
-- **Migração de bootstrap**: marca o(s) usuário(s) atualmente existentes em `auth.users` como `admin` em `user_roles` para não perderem acesso.
-
-### Frontend
-- Nova página `/admin/users` (protegida por `AdminGuard` + checagem `has_role`):
-  - Lista admins (nome, e-mail, criado em).
-  - Formulário "Novo admin" (nome, e-mail, senha com validação Zod ≥ 8 chars).
-  - Botão "Remover admin" (chama edge function `admin-delete-user`).
-- Botão de acesso no topo do `AdminLanding` ao lado de "Integrações".
-- `AdminGuard` passa a checar também role `admin` (não basta estar logado).
+Refinar o painel `/admin` para ter:
+1. **Sidebar persistente** (estilo WordPress) com navegação organizada entre todas as áreas
+2. **Editor de Conteúdo do Site** com formulários campo-a-campo (não JSON cru) e **rich text** onde fizer sentido
+3. **Layout unificado** em todas as telas admin
 
 ---
 
-## Parte 2 — CMS completo da Homepage
+## Parte 1 — Layout Admin (Sidebar + Shell)
 
-Hoje toda copy da home (`ConversionHero`, `SocialProof`, `ProductsGas`, `Differentials`, `HowItWorks`, `FAQ`, `Contact`, `Footer`) está hardcoded. Vou centralizar em uma única tabela editável.
+Criar um layout único reutilizado por todas as páginas `/admin/*`.
 
-### Backend — tabela `site_content`
-Estrutura simples e flexível: 1 linha por **seção**, conteúdo em JSONB.
+**Novos arquivos:**
+- `src/components/admin/AdminLayout.tsx` — Shell com `SidebarProvider`, header fino com `SidebarTrigger`, breadcrumb e botão "Sair"
+- `src/components/admin/AdminSidebar.tsx` — `Sidebar collapsible="icon"` shadcn
 
+**Estrutura da navegação (agrupada como WP):**
+
+```text
+Dashboard          → /admin           (visão geral, atalhos, métricas resumo)
+─────────────────
+CONTEÚDO
+  Páginas (LPs)    → /admin/landing
+  Conteúdo do Site → /admin/site-content
+─────────────────
+MARKETING
+  SEO & Meta Tags  → /admin/seo
+  Rastreamento     → /admin/tracking
+─────────────────
+USUÁRIOS
+  Administradores  → /admin/users
+─────────────────
+[Sair]
 ```
-id uuid pk
-section text unique  -- 'hero' | 'social_proof' | 'products' | 'differentials'
-                      -- | 'how_it_works' | 'faq' | 'contact' | 'footer' | 'global'
-data   jsonb         -- estrutura específica da seção
-updated_at timestamptz
-```
 
-RLS: `public` lê (site é público), `authenticated` faz CRUD.
+A página atual `/admin/integrations` será dividida em duas rotas (`/admin/seo` e `/admin/tracking`) reusando o mesmo componente com props (ou seções separadas), porque hoje mistura ambos. Adicionar também rota `/admin` (Dashboard) com cards de atalho.
 
-**Seed inicial**: a migração popula cada seção com o conteúdo atual hardcoded — assim o site não muda visualmente até o admin editar algo.
-
-Exemplos de schema por seção:
-- `hero`: `{ badge, title_pre, title_highlight, title_post, subtitle, benefits:[{icon,text}], cta_whatsapp_label, cta_phone_label, trust_badges:[{icon,text}] }`
-- `social_proof`: `{ stats:[{value,label}], testimonials:[{name,text,rating}] }`
-- `products`: `{ section_title, section_subtitle, items:[{name,description,badge,image_key,price?}] }`
-- `differentials`: `{ title, items:[{icon,title,description}] }`
-- `how_it_works`: `{ title, steps:[{number,title,description}] }`
-- `faq`: `{ title, items:[{question,answer}] }`
-- `contact`: `{ title, address, hours, phone_label }`
-- `footer`: `{ tagline, columns:[{title,links:[{label,href}]}], copyright }`
-- `global`: `{ whatsapp_number, whatsapp_default_message, phone_display }` (substitui parte do `constants.ts`)
-
-### Frontend
-- **Hook `useSiteContent(section)`**: busca via React Query, faz cache, expõe `data` tipado + fallback para o conteúdo atual hardcoded (evita tela em branco se algo falhar).
-- **Refatorar componentes da home** (`ConversionHero`, `SocialProof`, `ProductsGas`, `Differentials`, `HowItWorks`, `FAQ`, `Contact`, `Footer`) para consumir o hook em vez de constantes locais.
-- **Estilos, animações, ícones e imagens** continuam em código (não vira CMS de design — só copy/dados estruturados).
-- Imagens de produto: campo `image_key` referencia assets já existentes (ex.: `botijao-p13`, `liquinho-p2`) via um mapa central `src/lib/asset-map.ts`. Para imagens novas, admin pode usar URL absoluta (bucket `landing-images` já existe).
-
-### Painel Admin — `/admin/site-content`
-- Sidebar com as 9 seções.
-- Editor por seção com formulário tipado (campos texto, textarea, listas dinâmicas com add/remove para benefits/testimonials/FAQ/etc.).
-- Botão "Pré-visualizar" abre `/` em nova aba.
-- Botão "Restaurar padrão" volta ao seed original (guardado como JSON em `src/lib/site-content-defaults.ts`).
-- Validação Zod por seção antes de salvar.
+Atualizar `App.tsx` para envolver as rotas admin no `AdminLayout` (via rota pai com `<Outlet />`).
 
 ---
 
-## Estrutura de arquivos
+## Parte 2 — Editor de Conteúdo (estilo WordPress)
 
-Novos:
-```
-supabase/migrations/<ts>_users_and_cms.sql
-supabase/functions/admin-create-user/index.ts
-supabase/functions/admin-delete-user/index.ts
-src/pages/AdminUsers.tsx
-src/pages/AdminSiteContent.tsx
-src/hooks/useSiteContent.ts
-src/lib/site-content-defaults.ts
-src/lib/asset-map.ts
-src/components/admin/SectionEditorHero.tsx
-src/components/admin/SectionEditorList.tsx  (genérico p/ FAQ, testimonials, etc.)
+Substituir o `<Textarea>` JSON em `AdminSiteContent.tsx` por **formulários estruturados** por seção, com tipo de campo correto:
+
+**Tipos de campo:**
+- `text` → `<Input>` (títulos curtos, labels, badges)
+- `textarea` → `<Textarea>` (subtítulos curtos)
+- `richtext` → editor rich text com toolbar (negrito, itálico, link, lista, headings) para campos longos: subtítulos descritivos, respostas de FAQ, descrição de produtos
+- `select-icon` → dropdown de ícones Lucide com preview (Zap, Shield, Clock, etc.)
+- `image` → input URL + botão upload para `landing-images` bucket + preview
+- `repeater` → lista de cards (benefícios, badges, depoimentos, items, steps, FAQ items, stats) com adicionar/remover/reordenar (drag handle simples com setas ↑↓)
+
+**Schema de cada seção** (definido em `src/lib/site-content-schema.ts`):
+```text
+hero: { badge:text, title_pre:text, title_highlight:text, title_post:text,
+        subtitle:richtext, benefits:repeater(icon,text),
+        cta_whatsapp_label:text, cta_phone_label:text,
+        trust_badges:repeater(icon,text),
+        delivery_badge_top:text, delivery_badge_bottom:text }
+faq:   { title:text, subtitle:textarea,
+        items:repeater(q:text, a:richtext) }
+... (idem para todas as 9 seções, baseado em SITE_CONTENT_DEFAULTS)
 ```
 
-Editados:
-- `src/App.tsx` (rotas novas)
-- `src/components/AdminGuard.tsx` (checa role admin)
-- `src/pages/AdminLanding.tsx` (botões "Usuários" e "Conteúdo")
-- Todos os componentes da home listados acima (consomem hook)
+**Novos componentes:**
+- `src/components/admin/RichTextEditor.tsx` — usa **TipTap** (`@tiptap/react`, `@tiptap/starter-kit`, `@tiptap/extension-link`) com toolbar básica. Salva HTML.
+- `src/components/admin/IconPicker.tsx` — popover com grid pesquisável dos ícones de `icon-map.tsx`
+- `src/components/admin/ImageField.tsx` — input + upload Supabase Storage + preview
+- `src/components/admin/RepeaterField.tsx` — array editor genérico
+- `src/components/admin/SectionForm.tsx` — renderiza um schema → formulário
+
+**UX (estilo WP Gutenberg/Classic):**
+- Coluna esquerda: lista de seções (já existe)
+- Coluna principal: card branco com header da seção, formulário, e barra inferior fixa "Salvar" / "Restaurar padrão" / link "Pré-visualizar"
+- Toggle no canto superior direito: **"Modo avançado (JSON)"** mantém acesso ao editor JSON antigo como fallback para usuários técnicos
+
+**Renderização no site:** componentes que hoje renderizam strings simples passarão a renderizar HTML via `dangerouslySetInnerHTML` apenas nos campos marcados `richtext` no schema (FAQ answers, subtitles longos, descrições). Strings simples continuam como texto puro.
 
 ---
 
-## Considerações técnicas
+## Detalhes técnicos
 
-- **Segurança**: roles em tabela separada (`user_roles`) + `has_role()` SECURITY DEFINER, conforme padrão obrigatório. Edge functions validam `has_role` antes de qualquer admin action.
-- **Sem signup público**: nenhuma rota de sign-up no frontend. Único caminho para criar admin é via `/admin/users` por outro admin já autenticado.
-- **Bootstrap**: o(s) usuário(s) já existentes em `auth.users` recebem role `admin` na migração para não ficarem trancados fora.
-- **Fallback de conteúdo**: se o fetch do `site_content` falhar, componentes renderizam os defaults — site nunca quebra.
-- **SEO/JSON-LD**: continua funcionando (consome os mesmos dados via hook).
+- **Dependência nova:** `@tiptap/react`, `@tiptap/starter-kit`, `@tiptap/extension-link`, `@tiptap/extension-placeholder`
+- Backwards-compat: `useSiteContent` segue retornando o mesmo objeto JSONB; rich text vira string HTML no mesmo lugar onde antes era texto. Defaults atualizados para incluir HTML básico onde necessário (ex.: `<p>...</p>`).
+- `AdminGuard` continua envolvendo cada rota; `AdminLayout` fica dentro dele.
+- Sem mudanças de banco de dados — `site_content.data` continua JSONB livre.
+- Mobile: sidebar colapsa para offcanvas com trigger no header.
+
+---
+
+## Arquivos a criar
+- `src/components/admin/AdminLayout.tsx`
+- `src/components/admin/AdminSidebar.tsx`
+- `src/components/admin/RichTextEditor.tsx`
+- `src/components/admin/IconPicker.tsx`
+- `src/components/admin/ImageField.tsx`
+- `src/components/admin/RepeaterField.tsx`
+- `src/components/admin/SectionForm.tsx`
+- `src/lib/site-content-schema.ts`
+- `src/pages/AdminDashboard.tsx`
+- `src/pages/AdminSeo.tsx` (extrai metade SEO de AdminIntegrations)
+- `src/pages/AdminTracking.tsx` (extrai metade tracking)
+
+## Arquivos a modificar
+- `src/App.tsx` — rotas aninhadas com AdminLayout
+- `src/pages/AdminSiteContent.tsx` — usa SectionForm + toggle JSON
+- `src/pages/AdminLanding.tsx` — remove top bar de navegação (sidebar assume)
+- `src/pages/AdminUsers.tsx` — remove top bar
+- `src/pages/AdminIntegrations.tsx` — depreca em favor das duas novas (ou mantém como redirect)
+- `src/components/FAQ.tsx`, `src/components/ConversionHero.tsx` etc. — renderizar HTML em campos rich text via `dangerouslySetInnerHTML`
+- `src/lib/site-content-defaults.ts` — marcar campos rich text com HTML
