@@ -11,10 +11,12 @@ import PageTemplate from "./pages/PageTemplate";
 import LandingPromo from "./pages/LandingPromo";
 import AdminLanding from "./pages/AdminLanding";
 import AdminLogin from "./pages/AdminLogin";
-import AdminIntegrations from "./pages/AdminIntegrations";
 import AdminUsers from "./pages/AdminUsers";
 import AdminSiteContent from "./pages/AdminSiteContent";
-import AdminGuard from "./components/AdminGuard";
+import AdminDashboard from "./pages/AdminDashboard";
+import AdminSeo from "./pages/AdminSeo";
+import AdminTracking from "./pages/AdminTracking";
+import AdminLayout from "./components/admin/AdminLayout";
 import TrackingScripts from "./components/TrackingScripts";
 import { allPages } from "./lib/pages-data";
 import { captureUtmParams } from "./lib/tracking";
@@ -40,10 +42,14 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/lp/:slug" element={<LandingPromo />} />
           <Route path="/admin/login" element={<AdminLogin />} />
-          <Route path="/admin/landing" element={<AdminGuard><AdminLanding /></AdminGuard>} />
-          <Route path="/admin/integrations" element={<AdminGuard><AdminIntegrations /></AdminGuard>} />
-          <Route path="/admin/users" element={<AdminGuard><AdminUsers /></AdminGuard>} />
-          <Route path="/admin/site-content" element={<AdminGuard><AdminSiteContent /></AdminGuard>} />
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<AdminDashboard />} />
+            <Route path="landing" element={<AdminLanding />} />
+            <Route path="site-content" element={<AdminSiteContent />} />
+            <Route path="seo" element={<AdminSeo />} />
+            <Route path="tracking" element={<AdminTracking />} />
+            <Route path="users" element={<AdminUsers />} />
+          </Route>
           <Route path="/bairro/:slug" element={<BairroPage />} />
           {allPages.map((page) => (
             <Route key={page.path} path={page.path} element={<PageTemplate page={page} />} />

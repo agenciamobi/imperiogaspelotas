@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
-import { Save, ArrowLeft, ExternalLink, CheckCircle2, AlertCircle } from "lucide-react";
+import { Save, ExternalLink, CheckCircle2, AlertCircle } from "lucide-react";
 
 interface IntegrationsRow {
   id: string;
@@ -46,8 +45,9 @@ function StatusBadge({ ok, label }: { ok: boolean; label: string }) {
   );
 }
 
-export default function AdminIntegrations() {
-  const navigate = useNavigate();
+interface AdminIntegrationsProps { only?: "seo" | "tracking" | "all"; }
+
+export default function AdminIntegrations({ only = "all" }: AdminIntegrationsProps) {
   const [row, setRow] = useState<IntegrationsRow | null>(null);
   const [saving, setSaving] = useState(false);
 
@@ -99,22 +99,13 @@ export default function AdminIntegrations() {
 
   const isValid = (val: string | null, pattern: RegExp) => !!val && pattern.test(val);
 
-  return (
-    <div className="min-h-screen bg-muted">
-      <div className="bg-primary text-primary-foreground p-4 flex items-center justify-between flex-wrap gap-2">
-        <div className="flex items-center gap-3">
-          <Button variant="outline" size="sm" onClick={() => navigate("/admin/landing")} className="text-foreground">
-            <ArrowLeft className="w-4 h-4 mr-1" /> Landing Pages
-          </Button>
-          <h1 className="text-lg font-bold">Integrações & Pixels</h1>
-        </div>
-        <Button size="sm" onClick={handleSave} disabled={saving} className="bg-cta hover:bg-cta-hover text-white">
-          <Save className="w-4 h-4 mr-1" /> {saving ? "Salvando..." : "Salvar"}
-        </Button>
-      </div>
+  const showSeo = only === "all" || only === "seo";
+  const showTracking = only === "all" || only === "tracking";
 
+  return (
+    <div>
       <div className="max-w-3xl mx-auto p-6 space-y-6">
-        {/* Master switch */}
+        {showTracking && (
         <div className="bg-card rounded-xl p-6 shadow-sm flex items-center justify-between">
           <div>
             <Label className="text-base font-bold">Pixels ativos</Label>
@@ -122,8 +113,9 @@ export default function AdminIntegrations() {
           </div>
           <Switch checked={row.enabled} onCheckedChange={(v) => update("enabled", v)} />
         </div>
+        )}
 
-        {/* SEO Meta Tags */}
+        {showSeo && (<>
         <div className="bg-card rounded-xl p-6 shadow-sm space-y-4">
           <div>
             <h2 className="font-bold text-foreground text-lg">SEO & Meta Tags</h2>
@@ -189,8 +181,9 @@ export default function AdminIntegrations() {
             </div>
           </div>
         </div>
+        </>)}
 
-        {/* Google Ads */}
+        {showTracking && (<>
         <div className="bg-card rounded-xl p-6 shadow-sm space-y-4">
           <div className="flex items-center justify-between">
             <h2 className="font-bold text-foreground text-lg">Google Ads</h2>
@@ -336,10 +329,11 @@ export default function AdminIntegrations() {
             </a>
           </div>
         </div>
+        </>)}
 
         <div className="text-center pb-12">
           <Button onClick={handleSave} disabled={saving} className="bg-cta hover:bg-cta-hover text-white px-12 py-6 text-lg">
-            <Save className="w-5 h-5 mr-2" /> {saving ? "Salvando..." : "Salvar Integrações"}
+            <Save className="w-5 h-5 mr-2" /> {saving ? "Salvando..." : "Salvar"}
           </Button>
         </div>
       </div>

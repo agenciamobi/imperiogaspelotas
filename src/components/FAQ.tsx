@@ -53,7 +53,7 @@ const FAQ = () => {
                   itemProp="acceptedAnswer"
                   itemType="https://schema.org/Answer"
                 >
-                  <span itemProp="text">{faq.a}</span>
+                  <div itemProp="text" className="prose prose-sm max-w-none prose-p:my-2" dangerouslySetInnerHTML={{ __html: faq.a || "" }} />
                 </AccordionContent>
               </AccordionItem>
             </motion.div>
