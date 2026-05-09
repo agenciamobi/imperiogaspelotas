@@ -6,8 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
-import { Plus, Save, Trash2, ExternalLink, Upload, LogOut, Copy, BarChart3, MessageCircle, Phone, Settings, Users, FileText } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Plus, Save, Trash2, ExternalLink, Upload, Copy, BarChart3, MessageCircle, Phone } from "lucide-react";
 import type { Tables } from "@/integrations/supabase/types";
 
 type LandingPage = Tables<"landing_pages">;
@@ -28,12 +27,6 @@ export default function AdminLanding() {
   const [metricsDays, setMetricsDays] = useState(30);
   const [showMetrics, setShowMetrics] = useState(false);
   const [showInactive, setShowInactive] = useState(false);
-  const navigate = useNavigate();
-
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    navigate("/admin/login");
-  };
 
   const handleDuplicate = async () => {
     if (!selected) return;
@@ -179,39 +172,23 @@ export default function AdminLanding() {
   }
 
   return (
-    <div className="min-h-screen bg-muted">
-      {/* Top Bar */}
-      <div className="bg-primary text-primary-foreground p-4 flex items-center justify-between flex-wrap gap-2">
-        <h1 className="text-lg font-bold">Admin — Landing Pages</h1>
-        <div className="flex gap-2 flex-wrap">
-          <Button variant="outline" size="sm" onClick={() => navigate("/admin/integrations")} className="text-foreground">
-            <Settings className="w-4 h-4 mr-1" /> Integrações
-          </Button>
-          <Button variant="outline" size="sm" onClick={() => navigate("/admin/site-content")} className="text-foreground">
-            <FileText className="w-4 h-4 mr-1" /> Conteúdo
-          </Button>
-          <Button variant="outline" size="sm" onClick={() => navigate("/admin/users")} className="text-foreground">
-            <Users className="w-4 h-4 mr-1" /> Usuários
-          </Button>
-          <Button variant="outline" size="sm" onClick={() => setShowMetrics(!showMetrics)} className="text-foreground">
-            <BarChart3 className="w-4 h-4 mr-1" /> {showMetrics ? "Editor" : "Métricas A/B"}
-          </Button>
-          <Button variant="outline" size="sm" onClick={handleCreate} className="text-foreground">
-            <Plus className="w-4 h-4 mr-1" /> Nova
-          </Button>
-          <Button variant="outline" size="sm" onClick={handleDuplicate} className="text-foreground" disabled={!selected}>
-            <Copy className="w-4 h-4 mr-1" /> Duplicar (A/B)
-          </Button>
-          <Button variant="outline" size="sm" onClick={handleDelete} className="text-destructive border-destructive/30 hover:bg-destructive/10">
-            <Trash2 className="w-4 h-4 mr-1" /> Deletar
-          </Button>
-          <Button size="sm" onClick={handleSave} disabled={saving} className="bg-cta hover:bg-cta-hover text-white">
-            <Save className="w-4 h-4 mr-1" /> {saving ? "Salvando..." : "Salvar"}
-          </Button>
-          <Button variant="outline" size="sm" onClick={handleLogout} className="text-foreground">
-            <LogOut className="w-4 h-4 mr-1" /> Sair
-          </Button>
-        </div>
+    <div>
+      <div className="bg-card border-b border-border px-4 py-3 flex items-center justify-end gap-2 flex-wrap sticky top-14 z-20">
+        <Button variant="outline" size="sm" onClick={() => setShowMetrics(!showMetrics)}>
+          <BarChart3 className="w-4 h-4 mr-1" /> {showMetrics ? "Editor" : "Métricas A/B"}
+        </Button>
+        <Button variant="outline" size="sm" onClick={handleCreate}>
+          <Plus className="w-4 h-4 mr-1" /> Nova
+        </Button>
+        <Button variant="outline" size="sm" onClick={handleDuplicate} disabled={!selected}>
+          <Copy className="w-4 h-4 mr-1" /> Duplicar
+        </Button>
+        <Button variant="outline" size="sm" onClick={handleDelete} className="text-destructive border-destructive/30 hover:bg-destructive/10">
+          <Trash2 className="w-4 h-4 mr-1" /> Deletar
+        </Button>
+        <Button size="sm" onClick={handleSave} disabled={saving} className="bg-cta hover:bg-cta-hover text-white">
+          <Save className="w-4 h-4 mr-1" /> {saving ? "Salvando..." : "Salvar"}
+        </Button>
       </div>
 
       <div className="flex flex-col lg:flex-row">
