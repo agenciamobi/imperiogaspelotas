@@ -127,6 +127,96 @@ export type Database = {
           },
         ]
       }
+      page_views: {
+        Row: {
+          created_at: string
+          duration_ms: number | null
+          id: string
+          is_bounce: boolean | null
+          path: string
+          referrer: string | null
+          session_id: string
+          user_agent: string | null
+          utm_campaign: string | null
+          utm_medium: string | null
+          utm_source: string | null
+          visitor_id: string
+        }
+        Insert: {
+          created_at?: string
+          duration_ms?: number | null
+          id?: string
+          is_bounce?: boolean | null
+          path: string
+          referrer?: string | null
+          session_id: string
+          user_agent?: string | null
+          utm_campaign?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          visitor_id: string
+        }
+        Update: {
+          created_at?: string
+          duration_ms?: number | null
+          id?: string
+          is_bounce?: boolean | null
+          path?: string
+          referrer?: string | null
+          session_id?: string
+          user_agent?: string | null
+          utm_campaign?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          visitor_id?: string
+        }
+        Relationships: []
+      }
+      pagespeed_cache: {
+        Row: {
+          accessibility: number | null
+          best_practices: number | null
+          cls: number | null
+          fetched_at: string
+          id: string
+          inp_ms: number | null
+          lcp_ms: number | null
+          performance: number | null
+          raw: Json | null
+          seo: number | null
+          strategy: string
+          url: string
+        }
+        Insert: {
+          accessibility?: number | null
+          best_practices?: number | null
+          cls?: number | null
+          fetched_at?: string
+          id?: string
+          inp_ms?: number | null
+          lcp_ms?: number | null
+          performance?: number | null
+          raw?: Json | null
+          seo?: number | null
+          strategy: string
+          url: string
+        }
+        Update: {
+          accessibility?: number | null
+          best_practices?: number | null
+          cls?: number | null
+          fetched_at?: string
+          id?: string
+          inp_ms?: number | null
+          lcp_ms?: number | null
+          performance?: number | null
+          raw?: Json | null
+          seo?: number | null
+          strategy?: string
+          url?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
@@ -267,6 +357,33 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      analytics_summary: {
+        Args: { from_ts: string; to_ts: string }
+        Returns: {
+          avg_duration_ms: number
+          bounce_rate: number
+          pageviews: number
+          unique_sessions: number
+          unique_visitors: number
+        }[]
+      }
+      analytics_timeseries: {
+        Args: { from_ts: string; to_ts: string }
+        Returns: {
+          day: string
+          pageviews: number
+          unique_visitors: number
+        }[]
+      }
+      analytics_top_pages: {
+        Args: { from_ts: string; lim?: number; to_ts: string }
+        Returns: {
+          avg_duration_ms: number
+          pageviews: number
+          path: string
+          unique_visitors: number
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]

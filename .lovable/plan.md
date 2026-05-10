@@ -1,113 +1,144 @@
-## Objetivo
+## Dashboard de Analytics — Visualizações, Visitas e SEO
 
-Refinar o painel `/admin` para ter:
-1. **Sidebar persistente** (estilo WordPress) com navegação organizada entre todas as áreas
-2. **Editor de Conteúdo do Site** com formulários campo-a-campo (não JSON cru) e **rich text** onde fizer sentido
-3. **Layout unificado** em todas as telas admin
+Vou implementar um sistema próprio de analytics (1st-party) integrado ao painel admin, somado à integração com a Google PageSpeed Insights API.
 
 ---
 
-## Parte 1 — Layout Admin (Sidebar + Shell)
+### 1. Banco de dados (novas tabelas)
 
-Criar um layout único reutilizado por todas as páginas `/admin/*`.
+**`page_views`** — uma linha por pageview anônimo
+- `path` (text), `referrer` (text), `user_agent` (text), `country` (text, opcional)
+- `visitor_id` (text) — id anônimo persistido em `localStorage` (UUID gerado client-side)
+- `session_id` (text) — id de sessão (expira em 30min de inatividade)
+- `duration_ms` (int, atualizado no `beforeunload`)
+- `is_bounce` (bool, calculado: 1 pageview por sessão)
+- `utm_source/medium/campaign` (text)
+- `created_at` (timestamptz)
+- RLS: INSERT público (anon), SELECT só admin
 
-**Novos arquivos:**
-- `src/components/admin/AdminLayout.tsx` — Shell com `SidebarProvider`, header fino com `SidebarTrigger`, breadcrumb e botão "Sair"
-- `src/components/admin/AdminSidebar.tsx` — `Sidebar collapsible="icon"` shadcn
+**`pagespeed_cache`** — cache dos resultados PSI
+- `url` (text), `strategy` (text: mobile|desktop)
+- `performance`, `seo`, `accessibility`, `best_practices` (int)
+- `lcp_ms`, `inp_ms`, `cls` (numeric)
+- `raw` (jsonb), `fetched_at` (timestamptz)
+- Unique (url, strategy)
+- RLS: SELECT/UPSERT só admin
 
-**Estrutura da navegação (agrupada como WP):**
+Índices em `page_views(created_at)`, `(path)`, `(visitor_id)`, `(session_id)`.
+
+---
+
+### 2. Tracking client-side (`src/lib/analytics.ts` + hook em App)
+
+- Hook `usePageviewTracking()` colocado dentro do `<BrowserRouter>` (escuta `useLocation`).
+- Em cada mudança de rota:
+  1. **Verifica se o usuário é admin** via `supabase.auth.getSession()` + checagem em `user_roles` (cacheada em memória por sessão). Se admin → não envia.
+  2. Não rastreia rotas `/admin/*` nem `/admin/login`.
+  3. Insere row em `page_views` (via supabase client, RLS permite anon INSERT).
+  4. Atualiza `duration_ms` via `navigator.sendBeacon` no `visibilitychange`/`beforeunload`.
+- `visitor_id` em `localStorage` (`imperio_vid`), `session_id` em `sessionStorage` com timeout.
+- Bounce: marca `is_bounce=true` no insert; quando 2º pageview da sessão chegar, edge function (ou simples flag) considera não-bounce no agregado.
+
+---
+
+### 3. Edge function `pagespeed-insights`
+
+`supabase/functions/pagespeed-insights/index.ts`:
+- Input: `{ url, strategy: "mobile"|"desktop" }`
+- Verifica auth admin (JWT + `has_role`).
+- Lê `pagespeed_cache` — se `fetched_at` < N horas (default 6h, configurável), retorna cache.
+- Senão chama `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=...&strategy=...&category=performance&category=seo&category=accessibility&category=best-practices` (com `key=PAGESPEED_API_KEY` se houver).
+- Extrai scores e Core Web Vitals (LCP, INP, CLS) e faz upsert no cache.
+- Retorna o registro normalizado.
+
+Uso de **API key opcional**: PSI funciona sem key (cota baixa). Vou pedir a `PAGESPEED_API_KEY` como secret opcional — se não fornecida, segue sem.
+
+---
+
+### 4. Página `AdminDashboard` (refatorada)
+
+Substitui o dashboard atual (cards de atalho movem para sidebar/menu próprio "Atalhos").
+
+**Layout:**
 
 ```text
-Dashboard          → /admin           (visão geral, atalhos, métricas resumo)
-─────────────────
-CONTEÚDO
-  Páginas (LPs)    → /admin/landing
-  Conteúdo do Site → /admin/site-content
-─────────────────
-MARKETING
-  SEO & Meta Tags  → /admin/seo
-  Rastreamento     → /admin/tracking
-─────────────────
-USUÁRIOS
-  Administradores  → /admin/users
-─────────────────
-[Sair]
+┌─ Cards de resumo (4) ────────────────────────────────┐
+│  Visitas hoje | Visitantes únicos 7d | Bounce rate   │
+│  Tempo médio | Score SEO médio (PSI)                 │
+├─ Gráfico de linha (Recharts) ────────────────────────┤
+│  Visitas últimos 7d / 30d (toggle)                   │
+├─ Tabela: Páginas mais visitadas ─────────────────────┤
+│  Path | Pageviews | Únicos | Avg Time | PSI Score    │
+│       | (badge cor 🔴🟡🟢) | botão "Atualizar PSI"   │
+└──────────────────────────────────────────────────────┘
 ```
 
-A página atual `/admin/integrations` será dividida em duas rotas (`/admin/seo` e `/admin/tracking`) reusando o mesmo componente com props (ou seções separadas), porque hoje mistura ambos. Adicionar também rota `/admin` (Dashboard) com cards de atalho.
+- **Filtros de período**: Hoje / Ontem / 7d / 30d.
+- **Cards** mostram delta vs período anterior.
+- **Gráfico**: `recharts` (já no projeto via shadcn/chart) — linha de pageviews + linha de visitantes únicos.
+- **Tabela**: top 20 páginas; coluna PSI score com badge colorido (`< 50` vermelho, `50–89` âmbar, `≥ 90` verde) + toggle mobile/desktop por linha; botão refresh roda a edge function.
 
-Atualizar `App.tsx` para envolver as rotas admin no `AdminLayout` (via rota pai com `<Outlet />`).
+**Hooks/queries:**
+- `useTrafficStats(period)` — `supabase.rpc` ou queries agregadas em SQL.
+- `useTopPages(period)` — top paths com counts.
+- `usePageSpeed(url, strategy)` — invoca edge function, com `react-query` e `staleTime` longo.
 
----
-
-## Parte 2 — Editor de Conteúdo (estilo WordPress)
-
-Substituir o `<Textarea>` JSON em `AdminSiteContent.tsx` por **formulários estruturados** por seção, com tipo de campo correto:
-
-**Tipos de campo:**
-- `text` → `<Input>` (títulos curtos, labels, badges)
-- `textarea` → `<Textarea>` (subtítulos curtos)
-- `richtext` → editor rich text com toolbar (negrito, itálico, link, lista, headings) para campos longos: subtítulos descritivos, respostas de FAQ, descrição de produtos
-- `select-icon` → dropdown de ícones Lucide com preview (Zap, Shield, Clock, etc.)
-- `image` → input URL + botão upload para `landing-images` bucket + preview
-- `repeater` → lista de cards (benefícios, badges, depoimentos, items, steps, FAQ items, stats) com adicionar/remover/reordenar (drag handle simples com setas ↑↓)
-
-**Schema de cada seção** (definido em `src/lib/site-content-schema.ts`):
-```text
-hero: { badge:text, title_pre:text, title_highlight:text, title_post:text,
-        subtitle:richtext, benefits:repeater(icon,text),
-        cta_whatsapp_label:text, cta_phone_label:text,
-        trust_badges:repeater(icon,text),
-        delivery_badge_top:text, delivery_badge_bottom:text }
-faq:   { title:text, subtitle:textarea,
-        items:repeater(q:text, a:richtext) }
-... (idem para todas as 9 seções, baseado em SITE_CONTENT_DEFAULTS)
-```
-
-**Novos componentes:**
-- `src/components/admin/RichTextEditor.tsx` — usa **TipTap** (`@tiptap/react`, `@tiptap/starter-kit`, `@tiptap/extension-link`) com toolbar básica. Salva HTML.
-- `src/components/admin/IconPicker.tsx` — popover com grid pesquisável dos ícones de `icon-map.tsx`
-- `src/components/admin/ImageField.tsx` — input + upload Supabase Storage + preview
-- `src/components/admin/RepeaterField.tsx` — array editor genérico
-- `src/components/admin/SectionForm.tsx` — renderiza um schema → formulário
-
-**UX (estilo WP Gutenberg/Classic):**
-- Coluna esquerda: lista de seções (já existe)
-- Coluna principal: card branco com header da seção, formulário, e barra inferior fixa "Salvar" / "Restaurar padrão" / link "Pré-visualizar"
-- Toggle no canto superior direito: **"Modo avançado (JSON)"** mantém acesso ao editor JSON antigo como fallback para usuários técnicos
-
-**Renderização no site:** componentes que hoje renderizam strings simples passarão a renderizar HTML via `dangerouslySetInnerHTML` apenas nos campos marcados `richtext` no schema (FAQ answers, subtitles longos, descrições). Strings simples continuam como texto puro.
+**SQL helpers** (criados na migração como funções `security definer` restritas a admin):
+- `analytics_summary(from_ts, to_ts)` → totais
+- `analytics_timeseries(from_ts, to_ts, bucket)` → linhas por dia
+- `analytics_top_pages(from_ts, to_ts, limit)` → top paths
 
 ---
 
-## Detalhes técnicos
+### 5. Exclusão de admin
 
-- **Dependência nova:** `@tiptap/react`, `@tiptap/starter-kit`, `@tiptap/extension-link`, `@tiptap/extension-placeholder`
-- Backwards-compat: `useSiteContent` segue retornando o mesmo objeto JSONB; rich text vira string HTML no mesmo lugar onde antes era texto. Defaults atualizados para incluir HTML básico onde necessário (ex.: `<p>...</p>`).
-- `AdminGuard` continua envolvendo cada rota; `AdminLayout` fica dentro dele.
-- Sem mudanças de banco de dados — `site_content.data` continua JSONB livre.
-- Mobile: sidebar colapsa para offcanvas com trigger no header.
+Camadas:
+1. **Client**: hook checa role antes de enviar — admins logados nunca disparam pageview.
+2. **Defesa em profundidade**: filtro nas queries do dashboard ignora rows com `user_agent` contendo header customizado `x-admin` (não confiável, só client). A camada principal é a (1).
+3. Bots filtrados por regex de UA (`bot|crawler|spider|preview`) no insert client-side.
 
 ---
 
-## Arquivos a criar
-- `src/components/admin/AdminLayout.tsx`
-- `src/components/admin/AdminSidebar.tsx`
-- `src/components/admin/RichTextEditor.tsx`
-- `src/components/admin/IconPicker.tsx`
-- `src/components/admin/ImageField.tsx`
-- `src/components/admin/RepeaterField.tsx`
-- `src/components/admin/SectionForm.tsx`
-- `src/lib/site-content-schema.ts`
-- `src/pages/AdminDashboard.tsx`
-- `src/pages/AdminSeo.tsx` (extrai metade SEO de AdminIntegrations)
-- `src/pages/AdminTracking.tsx` (extrai metade tracking)
+### 6. Detalhes técnicos
 
-## Arquivos a modificar
-- `src/App.tsx` — rotas aninhadas com AdminLayout
-- `src/pages/AdminSiteContent.tsx` — usa SectionForm + toggle JSON
-- `src/pages/AdminLanding.tsx` — remove top bar de navegação (sidebar assume)
-- `src/pages/AdminUsers.tsx` — remove top bar
-- `src/pages/AdminIntegrations.tsx` — depreca em favor das duas novas (ou mantém como redirect)
-- `src/components/FAQ.tsx`, `src/components/ConversionHero.tsx` etc. — renderizar HTML em campos rich text via `dangerouslySetInnerHTML`
-- `src/lib/site-content-defaults.ts` — marcar campos rich text com HTML
+- **Dependências**: já temos `recharts` e `date-fns`. Nenhuma nova lib.
+- **Realtime**: opcional — ativar publication em `page_views` para atualizar dashboard ao vivo (toggle de auto-refresh a cada 30s via `react-query` `refetchInterval` cobre o caso sem realtime).
+- **Performance**: insert é fire-and-forget; falha silenciosa.
+- **Privacidade**: nenhum PII, IP não armazenado (Supabase loga IP separadamente; não copiamos para nossa tabela).
+
+---
+
+### 7. Refinos extras no painel admin
+
+Aproveitando a passagem:
+- Item "Analytics" no `AdminSidebar` (já existe Dashboard, vira "Visão geral" + "Analytics"; ou Dashboard absorve tudo). Decisão: o Dashboard atual vira **Analytics**, e os atalhos antigos vão para a sidebar.
+- Adiciona breadcrumb melhor no header com período selecionado.
+- Botão "Rodar análise PSI agora" para a homepage e cada LP.
+
+---
+
+### Arquivos
+
+**Criar:**
+- `supabase/migrations/<ts>_analytics.sql` (tabelas, RLS, RPCs)
+- `supabase/functions/pagespeed-insights/index.ts`
+- `src/lib/analytics.ts` (tracker client)
+- `src/hooks/usePageviewTracking.ts`
+- `src/hooks/useAnalytics.ts` (queries dashboard)
+- `src/hooks/usePageSpeed.ts`
+- `src/components/admin/analytics/StatCard.tsx`
+- `src/components/admin/analytics/TrafficChart.tsx`
+- `src/components/admin/analytics/TopPagesTable.tsx`
+- `src/components/admin/analytics/PsiScoreBadge.tsx`
+
+**Modificar:**
+- `src/App.tsx` — adicionar `<PageviewTracker/>` e refatorar dashboard
+- `src/pages/AdminDashboard.tsx` — substituir conteúdo
+- `src/components/admin/AdminSidebar.tsx` — possíveis novos itens
+- `src/integrations/supabase/types.ts` — auto
+
+---
+
+### Pergunta antes de implementar
+
+Vou pedir a chave PSI como secret opcional (`PAGESPEED_API_KEY`). Sem ela, a edge function ainda funciona mas com cota menor da Google. Se preferir, posso seguir sem pedir e você adiciona depois. Confirme se quer que eu solicite a chave já no fluxo.
