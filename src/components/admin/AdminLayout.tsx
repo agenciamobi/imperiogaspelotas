@@ -4,7 +4,7 @@ import AdminSidebar from "./AdminSidebar";
 import AdminGuard from "@/components/AdminGuard";
 
 const TITLES: Record<string, string> = {
-  "/admin": "Dashboard",
+  "/admin": "Analytics",
   "/admin/site-content": "Conteúdo do Site",
   "/admin/landing": "Landing Pages",
   "/admin/seo": "SEO & Meta Tags",

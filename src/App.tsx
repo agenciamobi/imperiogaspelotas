@@ -20,6 +20,7 @@ import AdminLayout from "./components/admin/AdminLayout";
 import TrackingScripts from "./components/TrackingScripts";
 import { allPages } from "./lib/pages-data";
 import { captureUtmParams } from "./lib/tracking";
+import usePageviewTracking from "./hooks/usePageviewTracking";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,11 @@ function UtmCapture() {
   useEffect(() => {
     captureUtmParams();
   }, []);
+  return null;
+}
+
+function PageviewTracker() {
+  usePageviewTracking();
   return null;
 }
 
@@ -38,6 +44,7 @@ const App = () => (
       <TrackingScripts />
       <BrowserRouter>
         <UtmCapture />
+        <PageviewTracker />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/lp/:slug" element={<LandingPromo />} />
