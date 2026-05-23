@@ -14,8 +14,8 @@ export const SITE_CONTENT_DEFAULTS: Record<string, any> = {
     subtitle: "Sem taxa de entrega, preço justo e qualidade garantida para sua casa ou empresa em toda Pelotas.",
     benefits: [
       { icon: "Zap", text: "Entrega em até 30 minutos" },
-      { icon: "Shield", text: "Revenda autorizada Liquigás" },
-      { icon: "Clock", text: "Atendimento até às 22h" },
+      { icon: "Shield", text: "Revenda Autorizada" },
+      { icon: "Clock", text: "Atendimento até às 22:30h" },
     ],
     cta_whatsapp_label: "Compre pelo WhatsApp",
     cta_phone_label: "Peça pelo Telefone",
@@ -33,8 +33,8 @@ export const SITE_CONTENT_DEFAULTS: Record<string, any> = {
       { label: "Avaliação média", value: "4.9/5" },
     ],
     badges: [
-      { icon: "BadgeCheck", text: "Revenda autorizada Liquigás" },
-      { icon: "Star", text: "Entregas todos os dias até 22h" },
+      { icon: "BadgeCheck", text: "Revenda Autorizada" },
+      { icon: "Star", text: "Entregas todos os dias até 22:30h" },
     ],
     testimonials: [
       { name: "Mariana R.", text: "Atendimento rápido e entregador sempre muito cuidadoso. Peço todo mês." },
@@ -77,7 +77,7 @@ export const SITE_CONTENT_DEFAULTS: Record<string, any> = {
     items: [
       { q: "Quanto tempo demora a entrega de gás em Pelotas?", a: "Na maioria dos pedidos, entregamos em até 30 minutos em toda Pelotas — incluindo Centro, Fragata, Areal, Três Vendas, Navegantes, Porto e demais bairros. Basta pedir pelo WhatsApp (53) 9 9116-2002." },
       { q: "A entrega de gás em Pelotas tem taxa?", a: "Não cobramos taxa de entrega de gás e água mineral em Pelotas para pedidos dentro da nossa área de atendimento. Entrega grátis em todos os bairros que atendemos." },
-      { q: "Os botijões de gás Liquigás são seguros?", a: "Sim. Somos revenda autorizada Liquigás em Pelotas. Todos os botijões são inspecionados e possuem procedência garantida, seguindo as normas da ANP e do Inmetro." },
+      { q: "Os botijões de gás são seguros?", a: "Sim. Somos Revenda Autorizada em Pelotas. Todos os botijões são inspecionados e possuem procedência garantida, seguindo as normas da ANP e do Inmetro." },
     ],
   },
   contact: {
@@ -85,13 +85,13 @@ export const SITE_CONTENT_DEFAULTS: Record<string, any> = {
     title: "Não perca tempo: peça seu gás agora",
     subtitle: "Atendimento imediato no WhatsApp com entrega rápida em Pelotas.",
     info: [
-      { icon: "Clock3", text: "Entregas até 22h" },
+      { icon: "Clock3", text: "Entregas até 22:30h" },
       { icon: "MapPin", text: "Cobertura em toda Pelotas" },
     ],
     cta_label: "Quero pedir no WhatsApp",
   },
   footer: {
-    tagline: "Revenda autorizada Liquigás em Pelotas. Entrega rápida de gás de cozinha e água mineral todos os dias.",
+    tagline: "Revenda Autorizada em Pelotas. Entrega rápida de gás de cozinha e água mineral todos os dias.",
     cta_label: "Pedir no WhatsApp",
     copyright: "© Império Gás e Água. Todos os direitos reservados.",
   },

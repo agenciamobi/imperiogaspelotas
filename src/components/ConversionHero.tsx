@@ -132,7 +132,7 @@ const ConversionHero = () => {
               {/* Mascote floating */}
               <motion.img
                 src={mascoteLiquigas}
-                alt="Mascote Liquigás - Revenda Autorizada Pelotas"
+                alt="Mascote - Revenda Autorizada Pelotas"
                 className="absolute -left-6 bottom-4 sm:-left-10 sm:bottom-6 md:-left-16 md:bottom-10 w-[90px] sm:w-[120px] md:w-[150px] lg:w-[170px] drop-shadow-xl"
                 initial={{ opacity: 0, x: -30 }}
                 animate={{ opacity: 1, x: 0 }}
