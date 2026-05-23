@@ -23,7 +23,7 @@ export const bairros: Bairro[] = [
   { nome: "Pestano", slug: "pestano", descricao: "Entrega de botijão de gás e água mineral no bairro Pestano em Pelotas. Peça pelo WhatsApp." },
   { nome: "Sanga Funda", slug: "sanga-funda", descricao: "Disk gás Sanga Funda Pelotas. Botijão P13 e água mineral 20L com entrega expressa." },
   { nome: "Getúlio Vargas", slug: "getulio-vargas", descricao: "Gás de cozinha e água mineral no bairro Getúlio Vargas em Pelotas RS." },
-  { nome: "Obelisco", slug: "obelisco", descricao: "Entrega rápida de gás e água mineral no Obelisco em Pelotas. Todos os dias das 09h às 22h." },
+  { nome: "Obelisco", slug: "obelisco", descricao: "Entrega rápida de gás e água mineral no Obelisco em Pelotas. Todos os dias das 09h às 22:30h." },
   { nome: "Santa Terezinha", slug: "santa-terezinha", descricao: "Disk gás Santa Terezinha Pelotas. Botijão de gás e água mineral com entrega rápida." },
   { nome: "Cruzeiro", slug: "cruzeiro", descricao: "Gás de cozinha e água mineral no bairro Cruzeiro em Pelotas. Peça agora pelo WhatsApp." },
   { nome: "Hipódromo", slug: "hipodromo", descricao: "Entrega de gás e água mineral no Hipódromo em Pelotas RS. Atendimento todos os dias." },

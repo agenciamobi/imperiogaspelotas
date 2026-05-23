@@ -60,7 +60,7 @@ const BairroPage = () => {
   const faqLocal = [
     {
       q: `Vocês entregam gás de cozinha no bairro ${bairro.nome} em Pelotas?`,
-      a: `Sim! Fazemos entrega de gás de cozinha (botijão P13, P08 e Liquinho 2kg) e galão de água mineral 20L no bairro ${bairro.nome} em Pelotas RS, todos os dias das 09h às 22h.`,
+      a: `Sim! Fazemos entrega de gás de cozinha (botijão P13, P08 e Liquinho 2kg) e galão de água mineral 20L no bairro ${bairro.nome} em Pelotas RS, todos os dias das 09h às 22:30h.`,
     },
     {
       q: `Qual o tempo de entrega de gás no ${bairro.nome}?`,
@@ -277,7 +277,7 @@ const BairroPage = () => {
                 "@type": "Place",
                 name: `${bairro.nome}, Pelotas, RS`,
               },
-              openingHours: "Mo-Su 09:00-22:00",
+              openingHours: "Mo-Su 09:00-22:30",
               priceRange: "$$",
               hasOfferCatalog: {
                 "@type": "OfferCatalog",

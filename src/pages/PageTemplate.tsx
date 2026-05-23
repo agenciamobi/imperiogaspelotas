@@ -80,7 +80,7 @@ const PageTemplate = ({ page }: Props) => {
       description: page.metaDescription,
       telephone: ["+555399116-2002", "+555332739559"],
       address: { "@type": "PostalAddress", addressLocality: "Pelotas", addressRegion: "RS", addressCountry: "BR" },
-      openingHours: "Mo-Su 09:00-22:00",
+      openingHours: "Mo-Su 09:00-22:30",
       areaServed: { "@type": "Place", name: "Pelotas, RS, Brasil" },
     };
   };
