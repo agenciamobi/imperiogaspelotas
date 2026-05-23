@@ -64,7 +64,7 @@ export const navigationPages: PageData[] = [
       { q: "Quais formas de pagamento a Império Gás aceita?", a: "Aceitamos dinheiro, PIX, cartão de débito e crédito. Consulte condições especiais pelo WhatsApp." },
       { q: "Quais bairros de Pelotas a Império Gás atende?", a: "Atendemos mais de 20 bairros em Pelotas RS, incluindo Centro, Fragata, Areal, Três Vendas, Porto, Navegantes, e muitos outros." },
       { q: "Preciso devolver o botijão vazio?", a: "Sim, para os botijões P13 e P08 é necessário ter um vazio para troca. Se não tiver, consulte-nos sobre a aquisição de um casco. O Liquinho 2kg também segue o sistema de troca." },
-      { q: "A Império trabalha com qual marca de gás?", a: "Somos revenda autorizada Liquigás, uma das maiores e mais confiáveis marcas de gás do Brasil." },
+      { q: "A Império trabalha com qual marca de gás?", a: "Somos Revenda Autorizada, uma das maiores e mais confiáveis marcas de gás do Brasil." },
       { q: "Posso agendar uma entrega recorrente de gás?", a: "Sim! Entre em contato pelo WhatsApp para combinar entregas programadas conforme sua necessidade." },
     ],
   },
@@ -96,7 +96,7 @@ export const productPages: PageData[] = [
     faqs: [
       { q: "Qual o preço do botijão P13 em Pelotas?", a: "O preço do botijão de gás P13 13kg pode variar. Consulte o valor atualizado pelo nosso WhatsApp para garantir o melhor preço em Pelotas RS." },
       { q: "Preciso ter botijão vazio para trocar?", a: "Sim, para adquirir o gás P13 é necessário ter um botijão vazio (casco) para realizar a troca. Caso não tenha, consulte-nos." },
-      { q: "O botijão P13 da Império é Liquigás?", a: "Sim! Somos revenda autorizada Liquigás, garantindo qualidade e segurança no gás de cozinha que entregamos." },
+      { q: "O botijão P13 da Império é original?", a: "Sim! Somos Revenda Autorizada, garantindo qualidade e segurança no gás de cozinha que entregamos." },
     ],
   },
   {

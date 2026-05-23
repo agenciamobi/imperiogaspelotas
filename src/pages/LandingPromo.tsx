@@ -334,7 +334,7 @@ export default function LandingPromo() {
         {/* Minimal footer */}
         <footer className="py-6 bg-foreground text-background text-center text-sm">
           <p>© {new Date().getFullYear()} Império Gás e Água — Pelotas RS</p>
-          <p className="mt-1 opacity-60">Revenda autorizada Liquigás</p>
+          <p className="mt-1 opacity-60">Revenda Autorizada</p>
         </footer>
       </div>
 
