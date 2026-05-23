@@ -4,6 +4,7 @@ import { Eye, Users as UsersIcon, MousePointerClick, Clock, Gauge } from "lucide
 import StatCard from "@/components/admin/analytics/StatCard";
 import TrafficChart from "@/components/admin/analytics/TrafficChart";
 import TopPagesTable from "@/components/admin/analytics/TopPagesTable";
+import UtmBreakdownTable from "@/components/admin/analytics/UtmBreakdownTable";
 import { useTrafficSummary, useAllPagespeed, type Period } from "@/hooks/useAnalytics";
 
 const PERIODS: { v: Period; label: string }[] = [
@@ -65,6 +66,8 @@ export default function AdminDashboard() {
       </div>
 
       <TopPagesTable period={period} />
+
+      <UtmBreakdownTable period={period} />
     </div>
   );
 }
