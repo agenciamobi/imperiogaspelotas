@@ -1,69 +1,71 @@
 ## Objetivo
 
-Eliminar todas as ocorrências remanescentes de "Revenda Autorizada Liquigás" (deixando apenas "Revenda Autorizada") e padronizar horários que ainda mostram "22h" para "22:30h" nos contextos de atendimento/entrega.
+1. Corrigir a homepage para não renderizar mais textos antigos com `Liquigás` em atributos/SEO da home nem horários antigos com `22h`.
+2. Adicionar ao Dashboard de Analytics uma seção de breakdown por `utm_source`, `utm_medium` e `utm_campaign`, para identificar campanhas que geram mais visitas.
 
-## Diagnóstico
+## Correção da homepage
 
-A correção anterior atualizou apenas `site-content-defaults.ts` (fallback). O conteúdo real exibido vem da tabela `site_content` no banco, que ainda contém os textos antigos:
+A inspeção da home mostra que os badges visíveis já estão corretos (`Revenda Autorizada`, `22:30h`), mas ainda há ocorrências renderizadas no DOM por atributos de imagem, títulos e JSON-LD de produtos da home.
 
-- `hero.benefits` → "Revenda autorizada Liquigás" e "Atendimento até às 22h"
-- `social_proof.badges` → "Revenda autorizada Liquigás" e "Entregas todos os dias até 22h"
-- `faq.items` → 4 respostas mencionam "revenda autorizada Liquigás" e "8h às 22h"
-- `global.business_hours` → "Todos os dias das 09h às 22h"
+Vou ajustar a homepage para:
 
-Há também ocorrências no código que não foram atualizadas:
+- Trocar alt/title do hero e cards de produto removendo `Liquigás`.
+- Remover `Liquigás` do JSON-LD de produtos renderizado na home (`ProductsGas`).
+- Padronizar `Revenda autorizada` para `Revenda Autorizada` na seção de vantagens.
+- Ajustar a lógica/texto do `UrgencyBar` para considerar fim às `22:30h`, evitando qualquer referência residual a `22h`.
+- Manter `Liquigás` apenas onde for estritamente nome de arquivo/import interno, sem aparecer no DOM.
 
-- `src/lib/constants.ts` → `BUSINESS_HOURS = "09h às 22h"`
-- `src/lib/site-content-defaults.ts` linhas 6, 59 → "business_hours" e card "Revenda autorizada"
-- `src/lib/pages-data.ts` → FAQs e descrições com "09h às 22h" e "Revenda Autorizada Liquigás"
-- `src/lib/bairros.ts` → descrição com "09h às 22h"
-- `src/pages/BairroPage.tsx` → FAQ dinâmica "09h às 22h"
+## Breakdown de UTM no Admin
 
-> Observação: a marca "Liquigás" será mantida nos nomes de produto e `schema.org` Brand (ex.: "Botijão P13 Liquigás"), porque ali é identificação do produto, não posicionamento da revenda. Será removida apenas quando aparecer na frase "Revenda Autorizada Liquigás" ou similar.
+### Backend de analytics
 
-## Plano de execução
+Criar uma função segura no banco:
 
-### 1. Sincronizar banco (`site_content`)
+```sql
+analytics_utm_breakdown(from_ts, to_ts, lim)
+```
 
-Migration SQL com `UPDATE` em registros existentes:
+Ela retorna agrupamentos por:
 
-- `hero.benefits[1].text` → "Revenda Autorizada"
-- `hero.benefits[2].text` → "Atendimento até às 22:30h"
-- `social_proof.badges[0].text` → "Revenda Autorizada"
-- `social_proof.badges[1].text` → "Entregas todos os dias até 22:30h"
-- `faq.items[*].a/q` → substituir "revenda autorizada Liquigás"/"Liquigás são seguros" por "Revenda Autorizada"/"são seguros"; trocar "8h às 22h" e "09h às 22h" por "09h às 22:30h"
-- `global.business_hours` → "Todos os dias das 09h às 22:30h"
+- `utm_source`
+- `utm_medium`
+- `utm_campaign`
 
-Uso de `jsonb_set` + `regexp_replace` por registro.
+Com métricas:
 
-### 2. Atualizar fallback e constantes
+- pageviews
+- visitantes únicos
+- sessões
+- bounce rate
+- tempo médio na página
+- percentual do tráfego do período
 
-- `src/lib/constants.ts`: `BUSINESS_HOURS = "Todos os dias das 09h às 22:30h"`
-- `src/lib/site-content-defaults.ts`: `business_hours` e card "Revenda autorizada" → texto normalizado
+A função continuará protegida para admin via `has_role(auth.uid(), 'admin')`, seguindo o padrão das funções existentes.
 
-### 3. Atualizar conteúdo estático de páginas
+### Frontend
 
-- `src/lib/pages-data.ts` (≈10 ocorrências de "09h às 22h" + 2 de "Revenda Autorizada" / "Liquigás" no contexto de revenda)
-- `src/lib/bairros.ts` (descrição Obelisco)
-- `src/pages/BairroPage.tsx` (FAQ template das LPs de bairro)
-- `src/pages/LandingPromo.tsx` (já estava OK, conferir)
+Adicionar em `src/hooks/useAnalytics.ts`:
 
-### 4. JSON-LD / SEO
+- `useUtmBreakdown(period)` usando a nova RPC.
 
-- `src/pages/PageTemplate.tsx` e `src/pages/BairroPage.tsx`: `openingHours: "Mo-Su 09:00-22:30"`
+Criar componente:
 
-### 5. Não alterar
+- `src/components/admin/analytics/UtmBreakdownTable.tsx`
 
-- Nomes de produto / `Brand: Liquigás` em schema.org dos produtos
-- `mascote-liquigas.png` (asset)
-- Lógica do `UrgencyBar` (cálculo do próximo dia após 22h) — pode permanecer; ajuste de horário de corte é uma decisão à parte e não foi pedido.
+Interface proposta:
 
-### 6. Memória
+- Card no Dashboard abaixo do gráfico e acima/ao lado da tabela de páginas.
+- Tabela com colunas: Origem, Mídia, Campanha, Views, Únicos, Sessões, Bounce, Tempo médio, Participação.
+- Agrupar valores vazios como `(direto)` / `(sem mídia)` / `(sem campanha)`.
+- Ordenar por pageviews desc.
+- Estado vazio: “Sem UTMs no período”.
 
-Atualizar `mem://index.md` Core: "Open 09:00-22:00" → "Atendimento 09:00-22:30".
+### Dashboard
+
+Atualizar `AdminDashboard.tsx` para incluir a nova seção de UTMs respeitando o filtro de período já existente (`Hoje`, `Ontem`, `7 dias`, `30 dias`).
 
 ## Verificação
 
-- `rg -i "revenda autorizada liquig|às 22h|09h às 22h"` em `src/` deve retornar vazio.
-- `psql` consulta em `site_content` confirma textos atualizados.
-- Preview da home mostra badges/benefícios já com novos textos.
+- Rodar busca em `src/` por `22h`, `09h às 22h` e ocorrências renderizadas de `Liquigás` na homepage.
+- Verificar via browser extract que a homepage não expõe mais `22h` nem `Revenda autorizada Liquigás`.
+- Confirmar que o Dashboard carrega a nova tabela de UTMs sem quebrar as métricas existentes.
