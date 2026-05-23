@@ -3,7 +3,7 @@ export const SITE_CONTENT_DEFAULTS: Record<string, any> = {
     whatsapp_number: "5553991162002",
     phone_display: "(53) 9 9116-2002",
     phone_landline: "(53) 3273-9559",
-    business_hours: "Todos os dias das 09h às 22h",
+    business_hours: "Todos os dias das 09h às 22:30h",
     location: "Pelotas - RS",
   },
   hero: {
@@ -56,7 +56,7 @@ export const SITE_CONTENT_DEFAULTS: Record<string, any> = {
       { icon: "HandCoins", title: "Sem taxa extra", desc: "Preço transparente, sem surpresas no seu pedido." },
       { icon: "ShieldCheck", title: "Segurança certificada", desc: "Botijões inspecionados dentro dos padrões de qualidade." },
       { icon: "RefreshCcw", title: "Troca rápida", desc: "Troca do botijão vazio pelo cheio em poucos minutos." },
-      { icon: "BadgeCheck", title: "Revenda autorizada", desc: "Atendimento profissional com procedência garantida." },
+      { icon: "BadgeCheck", title: "Revenda Autorizada", desc: "Atendimento profissional com procedência garantida." },
       { icon: "PackageCheck", title: "Botijões inspecionados", desc: "Produtos em ótimo estado de uso e conservação." },
       { icon: "MessageCircle", title: "Pedido simplificado", desc: "Tudo resolvido em uma conversa no WhatsApp." },
       { icon: "MapPin", title: "Cobertura total", desc: "Atendimento em todos os bairros de Pelotas." },
