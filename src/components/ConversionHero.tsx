@@ -116,7 +116,7 @@ const ConversionHero = () => {
             <div className="relative z-10">
               <motion.img
                 src={botijaoHero}
-                alt="Botijão de Gás P13 Liquigás - Disk Gás Pelotas - Império Gás e Água"
+                alt="Botijão de Gás P13 - Disk Gás Pelotas - Império Gás e Água"
                 className="w-[280px] sm:w-[340px] md:w-[420px] lg:w-[460px] drop-shadow-2xl"
                 width={460}
                 height={460}

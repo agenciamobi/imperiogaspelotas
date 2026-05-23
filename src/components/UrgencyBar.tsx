@@ -1,6 +1,6 @@
 import { Clock } from "lucide-react";
 import { useState, useEffect } from "react";
-import { DELIVERY_START_HOUR, DELIVERY_END_HOUR } from "@/lib/constants";
+import { DELIVERY_START_HOUR, DELIVERY_END_HOUR, DELIVERY_END_MINUTE } from "@/lib/constants";
 
 const UrgencyBar = () => {
   const [timeLeft, setTimeLeft] = useState("");
@@ -10,11 +10,15 @@ const UrgencyBar = () => {
     const calculateTimeLeft = () => {
       const now = new Date();
       const hours = now.getHours();
+      const minutes = now.getMinutes();
+      const beforeClose =
+        hours < DELIVERY_END_HOUR ||
+        (hours === DELIVERY_END_HOUR && minutes < DELIVERY_END_MINUTE);
 
-      if (hours >= DELIVERY_START_HOUR && hours < DELIVERY_END_HOUR) {
+      if (hours >= DELIVERY_START_HOUR && beforeClose) {
         // Durante o horário de entrega
         const end = new Date();
-        end.setHours(DELIVERY_END_HOUR, 0, 0, 0);
+        end.setHours(DELIVERY_END_HOUR, DELIVERY_END_MINUTE, 0, 0);
         const diff = end.getTime() - now.getTime();
         const h = Math.floor(diff / (1000 * 60 * 60));
         const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
@@ -28,8 +32,8 @@ const UrgencyBar = () => {
         // Fora do horário — calcular até próxima abertura (09h)
         setIsOpen(false);
         const nextOpen = new Date();
-        if (hours >= DELIVERY_END_HOUR) {
-          // Após 22h — próximo dia 09h
+        if (hours > DELIVERY_END_HOUR || (hours === DELIVERY_END_HOUR && minutes >= DELIVERY_END_MINUTE)) {
+          // Após 22:30 — próximo dia 09h
           nextOpen.setDate(nextOpen.getDate() + 1);
         }
         nextOpen.setHours(DELIVERY_START_HOUR, 0, 0, 0);

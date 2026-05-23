@@ -23,5 +23,6 @@ export const WHATSAPP_MESSAGES = {
 // Business hours
 export const DELIVERY_START_HOUR = 9;
 export const DELIVERY_END_HOUR = 22;
+export const DELIVERY_END_MINUTE = 30;
 export const BUSINESS_HOURS = "Todos os dias das 09h às 22:30h";
 export const LOCATION = "Pelotas - RS";

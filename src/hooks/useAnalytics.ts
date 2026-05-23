@@ -71,6 +71,31 @@ export function useAllPagespeed() {
   });
 }
 
+export function useUtmBreakdown(p: Period) {
+  const { from, to } = periodRange(p);
+  return useQuery({
+    queryKey: ["analytics-utm", p],
+    queryFn: async () => {
+      const { data, error } = await supabase.rpc("analytics_utm_breakdown" as any, {
+        from_ts: from.toISOString(), to_ts: to.toISOString(), lim: 50,
+      });
+      if (error) throw error;
+      return (data ?? []) as Array<{
+        utm_source: string;
+        utm_medium: string;
+        utm_campaign: string;
+        pageviews: number;
+        unique_visitors: number;
+        unique_sessions: number;
+        bounce_rate: number;
+        avg_duration_ms: number;
+        share_pct: number;
+      }>;
+    },
+    refetchInterval: 60_000,
+  });
+}
+
 export async function runPagespeed(url: string, strategy: "mobile"|"desktop", force = false) {
   const { data, error } = await supabase.functions.invoke("pagespeed-insights", {
     body: { url, strategy, force },
