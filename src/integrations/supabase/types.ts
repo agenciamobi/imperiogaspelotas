@@ -384,6 +384,20 @@ export type Database = {
           unique_visitors: number
         }[]
       }
+      analytics_utm_breakdown: {
+        Args: { from_ts: string; lim?: number; to_ts: string }
+        Returns: {
+          avg_duration_ms: number
+          bounce_rate: number
+          pageviews: number
+          share_pct: number
+          unique_sessions: number
+          unique_visitors: number
+          utm_campaign: string
+          utm_medium: string
+          utm_source: string
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
