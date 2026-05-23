@@ -17,8 +17,8 @@ const products = [
     tag: "RESIDENCIAL",
     badge: "Mais Pedido",
     image: botijaoP13,
-    alt: "Botijão de gás P13 Liquigás 13kg residencial — disk gás Pelotas RS com entrega rápida",
-    seoTitle: "Pedir Botijão P13 Liquigás 13kg em Pelotas RS pelo WhatsApp",
+    alt: "Botijão de gás P13 13kg residencial — disk gás Pelotas RS com entrega rápida",
+    seoTitle: "Pedir Botijão P13 13kg em Pelotas RS pelo WhatsApp",
   },
   {
     title: "Botijão P08",
@@ -26,7 +26,7 @@ const products = [
     description: "Ideal para pequenos comércios.",
     tag: "COMERCIAL",
     image: botijaoP08,
-    alt: "Botijão de gás P08 Liquigás 8kg para pequenos comércios e food trucks em Pelotas RS",
+    alt: "Botijão de gás P08 8kg para pequenos comércios e food trucks em Pelotas RS",
     seoTitle: "Pedir Botijão P08 8kg para comércios em Pelotas RS pelo WhatsApp",
   },
   {
@@ -35,7 +35,7 @@ const products = [
     description: "Portátil e prático.",
     tag: "PORTÁTIL",
     image: liquinho,
-    alt: "Liquinho 2kg Liquigás — gás portátil para fogareiro, camping e churrasco em Pelotas RS",
+    alt: "Liquinho 2kg — gás portátil para fogareiro, camping e churrasco em Pelotas RS",
     seoTitle: "Pedir Liquinho 2kg portátil em Pelotas RS pelo WhatsApp",
   },
   {
@@ -86,7 +86,7 @@ const PriceCards = () => {
                   <h3 className="font-display text-xl font-bold text-foreground" itemProp="name">{product.title}</h3>
                   <p className="text-xs font-bold text-secondary tracking-wider">{product.tag}</p>
                   <p className="text-sm text-muted-foreground pt-1" itemProp="description">{product.description}</p>
-                  <meta itemProp="brand" content="Liquigás" />
+                  <meta itemProp="brand" content="Império Gás e Água" />
                 </div>
                 <Button asChild className="w-full bg-cta hover:bg-cta-hover text-primary-foreground rounded-full font-bold">
                   <a
