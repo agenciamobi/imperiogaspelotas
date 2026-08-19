@@ -40,40 +40,44 @@ function PageviewTracker() {
   return null;
 }
 
-const App = () => (
+export const AppContent = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
       <Sonner />
       <TrackingScripts />
-      <BrowserRouter>
-        <UtmCapture />
-        <PageviewTracker />
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/lp/:slug" element={<LandingPromo />} />
-          <Route path="/admin/login" element={<AdminLogin />} />
-          <Route path="/admin" element={<AdminLayout />}>
-            <Route index element={<AdminDashboard />} />
-            <Route path="landing" element={<AdminLanding />} />
-            <Route path="site-content" element={<AdminSiteContent />} />
-            <Route path="seo" element={<AdminSeo />} />
-            <Route path="tracking" element={<AdminTracking />} />
-            <Route path="users" element={<AdminUsers />} />
-          </Route>
-          <Route path="/bairros-atendidos-pelotas" element={<BairrosIndexPage />} />
-          <Route path="/guias" element={<GuiasPage />} />
-          <Route path="/preco-gas-pelotas" element={<PrecoGasPelotasPage />} />
-          <Route path="/seguranca-botijao-gas" element={<SegurancaBotijaoPage />} />
-          <Route path="/bairro/:slug" element={<BairroPage />} />
-          {allPages.map((page) => (
-            <Route key={page.path} path={page.path} element={<PageTemplate page={page} />} />
-          ))}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
+      <UtmCapture />
+      <PageviewTracker />
+      <Routes>
+        <Route path="/" element={<Index />} />
+        <Route path="/lp/:slug" element={<LandingPromo />} />
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<AdminDashboard />} />
+          <Route path="landing" element={<AdminLanding />} />
+          <Route path="site-content" element={<AdminSiteContent />} />
+          <Route path="seo" element={<AdminSeo />} />
+          <Route path="tracking" element={<AdminTracking />} />
+          <Route path="users" element={<AdminUsers />} />
+        </Route>
+        <Route path="/bairros-atendidos-pelotas" element={<BairrosIndexPage />} />
+        <Route path="/guias" element={<GuiasPage />} />
+        <Route path="/preco-gas-pelotas" element={<PrecoGasPelotasPage />} />
+        <Route path="/seguranca-botijao-gas" element={<SegurancaBotijaoPage />} />
+        <Route path="/bairro/:slug" element={<BairroPage />} />
+        {allPages.map((page) => (
+          <Route key={page.path} path={page.path} element={<PageTemplate page={page} />} />
+        ))}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
     </TooltipProvider>
   </QueryClientProvider>
+);
+
+const App = () => (
+  <BrowserRouter>
+    <AppContent />
+  </BrowserRouter>
 );
 
 export default App;
