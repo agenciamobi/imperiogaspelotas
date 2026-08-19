@@ -7,6 +7,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Index from "./pages/Index";
 import BairroPage from "./pages/BairroPage";
 import BairrosIndexPage from "./pages/BairrosIndexPage";
+import PrecoGasPelotasPage from "./pages/PrecoGasPelotasPage";
 import NotFound from "./pages/NotFound";
 import PageTemplate from "./pages/PageTemplate";
 import LandingPromo from "./pages/LandingPromo";
@@ -59,6 +60,7 @@ const App = () => (
             <Route path="users" element={<AdminUsers />} />
           </Route>
           <Route path="/bairros-atendidos-pelotas" element={<BairrosIndexPage />} />
+          <Route path="/preco-gas-pelotas" element={<PrecoGasPelotasPage />} />
           <Route path="/bairro/:slug" element={<BairroPage />} />
           {allPages.map((page) => (
             <Route key={page.path} path={page.path} element={<PageTemplate page={page} />} />
