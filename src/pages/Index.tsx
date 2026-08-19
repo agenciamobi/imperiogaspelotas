@@ -14,7 +14,7 @@ import WhatsAppFloat from "@/components/WhatsAppFloat";
 import MobileBar from "@/components/MobileBar";
 import { SITE_URL } from "@/lib/constants";
 
-const HOME_TITLE = "Disk Gás e Água em Pelotas RS | Império Gás e Água";
+const HOME_TITLE = "Gás e Água Mineral em Pelotas RS | Império Gás e Água";
 const HOME_DESCRIPTION =
   "Peça gás de cozinha e água mineral em Pelotas pelo WhatsApp ou telefone. Consulte P13, P08, Liquinho 2kg e água 20L, com disponibilidade e prazo confirmados para seu endereço.";
 
