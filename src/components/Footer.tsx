@@ -16,6 +16,7 @@ import { useSiteContent } from "@/hooks/useSiteContent";
 const navigationLinks = [
   { label: "Disk Gás em Pelotas", to: "/disk-gas-pelotas", title: "Disk gás em Pelotas RS" },
   { label: "Entrega de Gás", to: "/entrega-rapida-gas", title: "Entrega de gás em Pelotas RS" },
+  { label: "Preço do Gás em Pelotas", to: "/preco-gas-pelotas", title: "Como consultar o preço do gás em Pelotas" },
   { label: "Água Mineral em Pelotas", to: "/agua-mineral-pelotas", title: "Água mineral em Pelotas RS" },
   { label: "Bairros Atendidos", to: "/bairros-atendidos-pelotas", title: "Bairros atendidos em Pelotas RS" },
   { label: "Perguntas Frequentes", to: "/perguntas-frequentes", title: "Dúvidas sobre gás e água em Pelotas" },
