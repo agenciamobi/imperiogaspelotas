@@ -11,15 +11,43 @@ import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
 import MobileBar from "@/components/MobileBar";
+import { SITE_URL } from "@/lib/constants";
+
+const HOME_TITLE = "Disk Gás e Água em Pelotas RS | Império Gás e Água";
+const HOME_DESCRIPTION =
+  "Peça gás de cozinha e água mineral em Pelotas pelo WhatsApp ou telefone. Consulte P13, P08, Liquinho 2kg e água 20L, com disponibilidade e prazo confirmados para seu endereço.";
 
 const Index = () => {
   useEffect(() => {
-    document.title = "Império Gás e Água – Disk Gás Pelotas RS | Entrega Rápida";
-    const url = "https://imperiogaspelotas.com.br/";
-    const canonical = document.querySelector('link[rel="canonical"]');
-    if (canonical) canonical.setAttribute("href", url);
-    const ogUrl = document.querySelector('meta[property="og:url"]');
-    if (ogUrl) ogUrl.setAttribute("content", url);
+    const url = `${SITE_URL}/`;
+    document.title = HOME_TITLE;
+
+    const setMeta = (selector: string, attribute: string, value: string) => {
+      let element = document.querySelector(selector) as HTMLMetaElement | HTMLLinkElement | null;
+
+      if (!element) {
+        if (selector.startsWith("link")) {
+          element = document.createElement("link");
+          (element as HTMLLinkElement).rel = "canonical";
+        } else {
+          element = document.createElement("meta");
+          const match = selector.match(/\[(.+?)="(.+?)"\]/);
+          if (match) (element as HTMLMetaElement).setAttribute(match[1], match[2]);
+        }
+        document.head.appendChild(element);
+      }
+
+      element.setAttribute(attribute, value);
+    };
+
+    setMeta('meta[name="description"]', "content", HOME_DESCRIPTION);
+    setMeta('meta[name="robots"]', "content", "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1");
+    setMeta('link[rel="canonical"]', "href", url);
+    setMeta('meta[property="og:url"]', "content", url);
+    setMeta('meta[property="og:title"]', "content", HOME_TITLE);
+    setMeta('meta[property="og:description"]', "content", HOME_DESCRIPTION);
+    setMeta('meta[name="twitter:title"]', "content", HOME_TITLE);
+    setMeta('meta[name="twitter:description"]', "content", HOME_DESCRIPTION);
   }, []);
 
   return (
