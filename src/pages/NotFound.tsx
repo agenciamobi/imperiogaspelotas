@@ -9,6 +9,38 @@ const NotFound = () => {
 
   useEffect(() => {
     console.error("404 Error: User attempted to access non-existent route:", location.pathname);
+
+    const previousTitle = document.title;
+    document.title = "Página não encontrada | Império Gás e Água Pelotas";
+
+    let robots = document.querySelector('meta[name="robots"]') as HTMLMetaElement | null;
+    const robotsWasCreated = !robots;
+    const previousRobots = robots?.getAttribute("content") ?? null;
+
+    if (!robots) {
+      robots = document.createElement("meta");
+      robots.name = "robots";
+      document.head.appendChild(robots);
+    }
+    robots.content = "noindex, follow";
+
+    const canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
+    const previousCanonical = canonical?.getAttribute("href") ?? null;
+    canonical?.removeAttribute("href");
+
+    return () => {
+      document.title = previousTitle;
+
+      if (robotsWasCreated) {
+        robots?.remove();
+      } else if (previousRobots !== null) {
+        robots!.content = previousRobots;
+      }
+
+      if (canonical && previousCanonical !== null) {
+        canonical.href = previousCanonical;
+      }
+    };
   }, [location.pathname]);
 
   return (
