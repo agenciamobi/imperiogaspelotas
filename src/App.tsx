@@ -3,9 +3,10 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Index from "./pages/Index";
 import BairroPage from "./pages/BairroPage";
+import BairrosIndexPage from "./pages/BairrosIndexPage";
 import NotFound from "./pages/NotFound";
 import PageTemplate from "./pages/PageTemplate";
 import LandingPromo from "./pages/LandingPromo";
@@ -57,11 +58,11 @@ const App = () => (
             <Route path="tracking" element={<AdminTracking />} />
             <Route path="users" element={<AdminUsers />} />
           </Route>
+          <Route path="/bairros-atendidos-pelotas" element={<BairrosIndexPage />} />
           <Route path="/bairro/:slug" element={<BairroPage />} />
           {allPages.map((page) => (
             <Route key={page.path} path={page.path} element={<PageTemplate page={page} />} />
           ))}
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
