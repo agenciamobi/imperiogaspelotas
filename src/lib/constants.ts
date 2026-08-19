@@ -1,3 +1,7 @@
+// Canonical site identity
+export const SITE_URL = "https://imperiogaspelotas.com.br";
+export const BUSINESS_NAME = "Império Gás e Água";
+
 // WhatsApp configuration
 export const WHATSAPP_NUMBER = "5553991162002";
 export const PHONE_DISPLAY = "(53) 9 9116-2002";
@@ -15,7 +19,10 @@ export const WHATSAPP_MESSAGES = {
   default: "Olá! Gostaria de fazer um pedido.",
   promo: "Olá! Quero aproveitar a promoção da Império Gás e Água.",
   order: "Olá! Quero fazer um pedido agora.",
-  product: (name: string, price?: string) => price ? `Olá! Quero pedir ${name} pelo valor promocional de ${price}.` : `Olá! Quero pedir ${name}.`,
+  product: (name: string, price?: string) =>
+    price
+      ? `Olá! Quero pedir ${name} pelo valor promocional de ${price}.`
+      : `Olá! Quero pedir ${name}.`,
   orderForm: (nome: string, telefone: string, endereco: string) =>
     `Olá! Quero fazer um pedido na Império.\nNome: ${nome || "não informado"}\nTelefone: ${telefone || "não informado"}\nEndereço: ${endereco || "não informado"}`,
 };
