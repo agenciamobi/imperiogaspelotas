@@ -1,0 +1,43 @@
+# Império Gás e Água
+
+Site oficial: https://imperiogaspelotas.com.br/
+Área de atendimento: Pelotas, Rio Grande do Sul, Brasil
+Idioma principal: português do Brasil (pt-BR)
+
+## O que a empresa oferece
+
+A Império Gás e Água atende pedidos de gás de cozinha e água mineral em Pelotas/RS.
+
+Produtos apresentados no site:
+- Botijão P13 de 13 kg
+- Botijão P08 de 8 kg
+- Liquinho de 2 kg
+- Galão de água mineral de 20 litros
+
+## Pedidos e atendimento
+
+WhatsApp: +55 53 99116-2002
+Telefone: +55 53 3273-9559
+Horário informado no site: todos os dias, das 09:00 às 22:30.
+A disponibilidade e o prazo de entrega devem ser confirmados para o endereço do cliente no momento do pedido.
+
+## Páginas principais
+
+- Início: https://imperiogaspelotas.com.br/
+- Disk gás em Pelotas: https://imperiogaspelotas.com.br/disk-gas-pelotas
+- Entrega de gás: https://imperiogaspelotas.com.br/entrega-rapida-gas
+- Água mineral em Pelotas: https://imperiogaspelotas.com.br/agua-mineral-pelotas
+- Perguntas frequentes: https://imperiogaspelotas.com.br/perguntas-frequentes
+- Contato: https://imperiogaspelotas.com.br/fale-conosco
+
+## Produtos
+
+- P13: https://imperiogaspelotas.com.br/produto/botijao-p13
+- P08: https://imperiogaspelotas.com.br/produto/botijao-p08
+- Liquinho 2 kg: https://imperiogaspelotas.com.br/produto/liquinho-2kg
+- Água mineral 20 L: https://imperiogaspelotas.com.br/produto/agua-mineral-20l
+
+## Cobertura local
+
+O site possui páginas de atendimento para bairros de Pelotas. Consulte o sitemap oficial para a relação de URLs indexáveis:
+https://imperiogaspelotas.com.br/sitemap.xml
