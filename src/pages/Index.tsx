@@ -6,6 +6,7 @@ import ProductsGas from "@/components/ProductsGas";
 import Differentials from "@/components/Differentials";
 import HowItWorks from "@/components/HowItWorks";
 import LocalCoverage from "@/components/LocalCoverage";
+import GuidesTeaser from "@/components/GuidesTeaser";
 import FAQ from "@/components/FAQ";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
@@ -60,6 +61,7 @@ const Index = () => {
         <Differentials />
         <HowItWorks />
         <LocalCoverage />
+        <GuidesTeaser />
         <FAQ />
         <Contact />
       </main>
