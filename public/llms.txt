@@ -6,7 +6,7 @@ Idioma principal: português do Brasil (pt-BR)
 
 ## O que a empresa oferece
 
-A Império Gás e Água atende pedidos de gás de cozinha e água mineral em Pelotas/RS.
+A Império Gás e Água recebe pedidos de gás de cozinha e água mineral em Pelotas/RS.
 
 Produtos apresentados no site:
 - Botijão P13 de 13 kg
@@ -19,7 +19,7 @@ Produtos apresentados no site:
 WhatsApp: +55 53 99116-2002
 Telefone: +55 53 3273-9559
 Horário informado no site: todos os dias, das 09:00 às 22:30.
-A disponibilidade e o prazo de entrega devem ser confirmados para o endereço do cliente no momento do pedido.
+A cobertura, a disponibilidade, o valor e o prazo devem ser confirmados para o endereço informado no momento do pedido.
 
 ## Páginas principais
 
@@ -27,6 +27,8 @@ A disponibilidade e o prazo de entrega devem ser confirmados para o endereço do
 - Disk gás em Pelotas: https://imperiogaspelotas.com.br/disk-gas-pelotas
 - Entrega de gás: https://imperiogaspelotas.com.br/entrega-rapida-gas
 - Água mineral em Pelotas: https://imperiogaspelotas.com.br/agua-mineral-pelotas
+- Bairros apresentados como área de atendimento: https://imperiogaspelotas.com.br/bairros-atendidos-pelotas
+- Como consultar e comparar o preço do gás em Pelotas: https://imperiogaspelotas.com.br/preco-gas-pelotas
 - Perguntas frequentes: https://imperiogaspelotas.com.br/perguntas-frequentes
 - Contato: https://imperiogaspelotas.com.br/fale-conosco
 
@@ -37,7 +39,19 @@ A disponibilidade e o prazo de entrega devem ser confirmados para o endereço do
 - Liquinho 2 kg: https://imperiogaspelotas.com.br/produto/liquinho-2kg
 - Água mineral 20 L: https://imperiogaspelotas.com.br/produto/agua-mineral-20l
 
+## Conteúdo local e fontes
+
+A página de preço do gás explica que valores variam conforme data, estabelecimento e condição de entrega. Ela usa como referência uma pesquisa oficial publicada pela Prefeitura de Pelotas/Procon e deixa explícito que uma pesquisa histórica não representa o preço atual da Império Gás e Água.
+
+Fonte oficial citada no conteúdo:
+https://pelotas.rs.gov.br/noticia/aumentam-os-precos-do-gas-de-cozinha
+
 ## Cobertura local
 
-O site possui páginas de atendimento para bairros de Pelotas. Consulte o sitemap oficial para a relação de URLs indexáveis:
+O site possui um hub com as áreas de atendimento apresentadas e páginas específicas por bairro. O endereço exato deve ser confirmado no atendimento.
+
+Hub de bairros:
+https://imperiogaspelotas.com.br/bairros-atendidos-pelotas
+
+Sitemap oficial:
 https://imperiogaspelotas.com.br/sitemap.xml
