@@ -21,13 +21,13 @@ const LocalCoverage = () => {
           </span>
 
           <h2 id="local-coverage-title" className="mt-5 font-display text-3xl font-black tracking-tight text-foreground sm:text-4xl">
-            Disk gás e água com entrega em Pelotas
+            Disk gás e água com atendimento em Pelotas
           </h2>
 
           <p className="mx-auto mt-5 max-w-3xl text-base leading-7 text-muted-foreground sm:text-lg">
-            A Império Gás e Água atende pedidos de gás de cozinha e água mineral em Pelotas, Rio Grande do Sul.
-            Você pode solicitar botijão P13 de 13 kg, P08 de 8 kg, Liquinho de 2 kg e galão de água mineral de 20 litros
-            pelo WhatsApp ou telefone. A disponibilidade e o prazo são confirmados para o seu endereço no momento do pedido.
+            A Império Gás e Água recebe pedidos de gás de cozinha e água mineral em Pelotas, Rio Grande do Sul.
+            Você pode consultar botijão P13 de 13 kg, P08 de 8 kg, Liquinho de 2 kg e galão de água mineral de 20 litros
+            pelo WhatsApp ou telefone. A disponibilidade e o prazo são confirmados para o endereço informado.
           </p>
         </div>
 
@@ -35,7 +35,7 @@ const LocalCoverage = () => {
           <div className="rounded-2xl border border-border bg-card p-5">
             <MapPin className="h-6 w-6 text-primary" aria-hidden="true" />
             <h3 className="mt-3 font-display text-lg font-bold text-foreground">Área de atendimento</h3>
-            <p className="mt-2 text-sm leading-6 text-muted-foreground">Pelotas/RS e bairros atendidos pela operação local.</p>
+            <p className="mt-2 text-sm leading-6 text-muted-foreground">Pelotas/RS, com confirmação pelo endereço informado no pedido.</p>
           </div>
 
           <div className="rounded-2xl border border-border bg-card p-5">
@@ -58,8 +58,15 @@ const LocalCoverage = () => {
             <div>
               <h3 className="font-display text-2xl font-black text-foreground">Bairros atendidos em Pelotas</h3>
               <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
-                Consulte a página do seu bairro para informações de atendimento e confirme a disponibilidade pelo WhatsApp.
+                Navegue pelas áreas apresentadas no site e confirme a cobertura para o endereço exato antes de concluir o pedido.
               </p>
+              <Link
+                to="/bairros-atendidos-pelotas"
+                className="mt-3 inline-flex text-sm font-bold text-primary underline-offset-4 hover:underline"
+                aria-label="Ver todos os bairros atendidos em Pelotas"
+              >
+                Ver todos os bairros e como confirmar o atendimento
+              </Link>
             </div>
 
             <a
@@ -68,10 +75,10 @@ const LocalCoverage = () => {
               rel="noopener noreferrer"
               onClick={() => trackWhatsAppClick("local_coverage")}
               className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-cta px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-cta-hover"
-              aria-label="Pedir gás ou água em Pelotas pelo WhatsApp"
+              aria-label="Consultar gás ou água em Pelotas pelo WhatsApp"
             >
               <MessageCircle className="h-4 w-4" aria-hidden="true" />
-              Pedir pelo WhatsApp
+              Consultar pelo WhatsApp
             </a>
           </div>
 
@@ -81,7 +88,7 @@ const LocalCoverage = () => {
                 key={bairro.slug}
                 to={`/bairro/${bairro.slug}`}
                 className="text-sm font-semibold text-foreground underline-offset-4 transition-colors hover:text-primary hover:underline"
-                aria-label={`Disk gás e água no bairro ${bairro.nome}, Pelotas`}
+                aria-label={`Consultar atendimento no bairro ${bairro.nome}, Pelotas`}
               >
                 {bairro.nome}
               </Link>
