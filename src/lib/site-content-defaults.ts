@@ -8,9 +8,9 @@ export const SITE_CONTENT_DEFAULTS: Record<string, any> = {
   },
   hero: {
     badge: "Disk Gás e Água em Pelotas",
-    title_pre: "PEÇA SEU",
-    title_highlight: "GÁS DE COZINHA",
-    title_post: "E ÁGUA MINERAL AGORA!",
+    title_pre: "GÁS DE COZINHA E",
+    title_highlight: "ÁGUA MINERAL",
+    title_post: "EM PELOTAS",
     subtitle: "Peça pelo WhatsApp ou telefone e informe seu endereço para confirmar disponibilidade e prazo de entrega em Pelotas.",
     benefits: [
       { icon: "MapPin", text: "Atendimento local em Pelotas" },
