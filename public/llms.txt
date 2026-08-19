@@ -24,11 +24,11 @@ A cobertura, a disponibilidade, o valor e o prazo devem ser confirmados para o e
 ## Páginas principais
 
 - Início: https://imperiogaspelotas.com.br/
-- Disk gás em Pelotas: https://imperiogaspelotas.com.br/disk-gas-pelotas
+- Gás de cozinha em Pelotas: https://imperiogaspelotas.com.br/disk-gas-pelotas
 - Entrega de gás: https://imperiogaspelotas.com.br/entrega-rapida-gas
 - Água mineral em Pelotas: https://imperiogaspelotas.com.br/agua-mineral-pelotas
 - Bairros apresentados como área de atendimento: https://imperiogaspelotas.com.br/bairros-atendidos-pelotas
-- Como consultar e comparar o preço do gás em Pelotas: https://imperiogaspelotas.com.br/preco-gas-pelotas
+- Guias: https://imperiogaspelotas.com.br/guias
 - Perguntas frequentes: https://imperiogaspelotas.com.br/perguntas-frequentes
 - Contato: https://imperiogaspelotas.com.br/fale-conosco
 
@@ -39,12 +39,24 @@ A cobertura, a disponibilidade, o valor e o prazo devem ser confirmados para o e
 - Liquinho 2 kg: https://imperiogaspelotas.com.br/produto/liquinho-2kg
 - Água mineral 20 L: https://imperiogaspelotas.com.br/produto/agua-mineral-20l
 
-## Conteúdo local e fontes
+## Guias e conteúdo local
+
+- Como consultar e comparar o preço do gás em Pelotas:
+  https://imperiogaspelotas.com.br/preco-gas-pelotas
+- Segurança com botijão de gás:
+  https://imperiogaspelotas.com.br/seguranca-botijao-gas
 
 A página de preço do gás explica que valores variam conforme data, estabelecimento e condição de entrega. Ela usa como referência uma pesquisa oficial publicada pela Prefeitura de Pelotas/Procon e deixa explícito que uma pesquisa histórica não representa o preço atual da Império Gás e Água.
 
-Fonte oficial citada no conteúdo:
+Fonte oficial citada no guia de preço:
 https://pelotas.rs.gov.br/noticia/aumentam-os-precos-do-gas-de-cozinha
+
+O guia de segurança reúne cuidados básicos para compra, instalação, armazenamento e uso de GLP. O conteúdo referencia materiais oficiais da ANP e do Inmetro e não substitui orientação técnica ou atendimento de emergência.
+
+Fontes oficiais citadas no guia de segurança:
+https://www.gov.br/anp/pt-br/canais_atendimento/consumidor/dicas-para-o-consumidor-2013-glp-gas-de-cozinha
+https://www.gov.br/anp/pt-br/centrais-de-conteudo/publicacoes/cartilhas-e-guias/gas-de-botijao-glp-10-orientacoes-para-garantir-seus-direitos-e-sua-seguranca
+https://www.gov.br/inmetro/pt-br/acesso-a-informacao/perguntas-frequentes/avaliacao-da-conformidade/mangueiras-de-pvc-para-glp/mangueiras-de-pvc-para-glp
 
 ## Cobertura local
 
